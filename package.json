@@ -2,11 +2,11 @@
   "name": "bachelor-thesis",
   "version": "1.0.0",
   "description": "",
-  "main": "index.js",
+  "main": "",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "server": "node server/index.js",
-    "client": "cd client &&  npm start"
+    "client": "cd client && npm start"
   },
   "repository": {
     "type": "git",

@@ -9,6 +9,8 @@
   "author": "Karolina <vorlickovakarolina@gmail.com>",
   "license": "ISC",
   "dependencies": {
-    "express": "^4.17.3"
+    "cors": "^2.8.5",
+    "express": "^4.17.3",
+    "mysql": "^2.18.1"
   }
 }

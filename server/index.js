@@ -1,10 +1,37 @@
-const express = require("express")
+const express = require('express')
+const db = require('./config/db')
+const cors = require('cors')
+
 const app = express()
+const PORT = 3001;
+app.use(cors());
+app.use(express.json())
 
-app.get("/", function(req, res) {
-  res.send({"name": "Jane Doe"}) // Should be json format
+// Route to get all years
+app.get('/api/get', (req,res)=>{
+  db.query('SELECT * FROM years', (err,result)=>{
+      if(err) {
+        console.log(err)
+      } 
+  res.send(result)
+  });
+});
+
+
+// Route for creating a year
+app.post('/api/create', (req,res)=> {
+
+  const year = req.body.year;
+  
+  db.query('INSERT INTO years (year) VALUES (?)',[year], (err,result)=>{
+     if(err) {
+      console.log(err)
+     } 
+    console.log(result)
+  });
 })
+  
 
-app.listen(3000, () => {
-  console.log("app listening on port 3000")
+app.listen(PORT, () => {
+  console.log(`Server is running on ${PORT}`)
 })
