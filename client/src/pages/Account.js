@@ -5,11 +5,11 @@ import '../index.css'
 function Account() {
 
     return (
-        <div className="content">
+        <main>
             <h1>
                 Account
             </h1>
-        </div>
+        </main>
     )
 }
 

@@ -1,5 +1,5 @@
 import React from 'react'
-import { Link, Outlet } from "react-router-dom"
+import { NavLink, Outlet } from "react-router-dom"
 
 import '../index.css'
 
@@ -7,10 +7,10 @@ function Navbar() {
 
     return (
         <nav>
-            <Link to="/">Main Page</Link>
-            <Link to="/login">Login</Link>
-            <Link to="/register">Register</Link>
-            <Link to="/account">Account</Link>
+            <NavLink to="/" className={({ isActive }) => isActive ? "active" : ""} >Main Page</NavLink>
+            <NavLink to="/login" className={({ isActive }) => isActive ? "active" : ""} >Login</NavLink>
+            <NavLink to="/register" className={({ isActive }) => isActive ? "active" : ""} >Register</NavLink>
+            <NavLink to="/account" className={({ isActive }) => isActive ? "active" : ""} >Account</NavLink>
         </nav>
     )
 }

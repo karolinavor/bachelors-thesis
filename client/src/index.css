@@ -18,8 +18,8 @@ body {
   min-height: 100vh;
 }
 
-.content {
-  height: -webkit-fill-available;
+main {
+  height: 100%;
 }
 
 nav {
@@ -36,7 +36,11 @@ a {
   text-decoration: none;
 }
 
-h1 {
+a.active {
+  text-decoration: underline;
+}
+
+h1, h2 {
   text-align: center;
 }
 

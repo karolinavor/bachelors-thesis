@@ -5,11 +5,11 @@ import '../index.css'
 function Register() {
 
     return (
-        <div className="content">
+        <main>
             <h1>
                 Register
             </h1>
-        </div>
+        </main>
     )
 }
 

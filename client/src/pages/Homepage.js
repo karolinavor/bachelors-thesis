@@ -5,11 +5,11 @@ import '../index.css'
 function Homepage() {
 
     return (
-        <div className="content">
+        <main>
             <h1>
                 Bachelor Thesis
             </h1>
-        </div>
+        </main>
     )
 }
 

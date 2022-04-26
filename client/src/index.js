@@ -21,6 +21,15 @@ root.render(
           <Route path="login" element={<Login />} />
           <Route path="register" element={<Register />} />
           <Route path="account" element={<Account />} />
+          <Route
+            path="*"
+            element={
+              <main>
+                <h1>ERROR 404</h1>
+                <h2>NOT FOUND</h2>
+              </main>
+            }
+          />
         </Route>
       </Routes>
     </BrowserRouter>
