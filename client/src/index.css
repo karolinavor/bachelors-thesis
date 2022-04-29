@@ -18,6 +18,20 @@ body {
   min-height: 100vh;
 }
 
+.text-center {
+  text-align: center;
+}
+
+.flex-column {
+  display: flex;
+  flex-direction: column;
+}
+
+.warning {
+  color: grey;
+  font-size: .75rem;
+}
+
 main {
   height: 100%;
 }
@@ -51,4 +65,12 @@ nav, footer {
 footer {
   display: flex;
   justify-content: center;
+}
+
+button {
+  border: none;
+  background: none;
+  font-size: 1rem;
+  cursor: pointer;
+  margin: 0;
 }

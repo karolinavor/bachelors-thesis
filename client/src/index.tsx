@@ -7,11 +7,11 @@ import App from "./App";
 import Homepage from "./pages/Homepage";
 import Register from "./pages/Register";
 import Login from "./pages/Login";
-import Account from "./pages/Account";
+import Profile from "./pages/Profile";
 
 import './index.css';
 
-const root = ReactDOM.createRoot(document.getElementById('root'));
+const root = ReactDOM.createRoot(document.getElementById('root')  as HTMLElement);
 root.render(
   <React.StrictMode>
     <BrowserRouter>
@@ -20,7 +20,7 @@ root.render(
           <Route path="" element={<Homepage />} />
           <Route path="login" element={<Login />} />
           <Route path="register" element={<Register />} />
-          <Route path="account" element={<Account />} />
+          <Route path="user/:userId" element={<Profile />} />
           <Route
             path="*"
             element={

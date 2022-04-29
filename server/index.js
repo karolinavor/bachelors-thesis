@@ -1,37 +1,28 @@
+require('dotenv').config();
 const express = require('express')
-const db = require('./config/db')
 const cors = require('cors')
+const mongoose = require('mongoose');
 
 const app = express()
-const PORT = 3001;
 app.use(cors());
 app.use(express.json())
 
-// Route to get all years
-app.get('/api/get', (req,res)=>{
-  db.query('SELECT * FROM years', (err,result)=>{
-      if(err) {
-        console.log(err)
-      } 
-  res.send(result)
-  });
+// Set up default mongoose connection
+
+mongoose.connect(process.env.MONGO_DB_URL);
+mongoose.Promise = global.Promise;
+const db = mongoose.connection;
+db.on('error', console.error.bind(console, 'MongoDB connection error:'));
+
+app.use((req, res, next) => {
+  res.header('Access-Control-Allow-Origin', '*');
+  next();
 });
 
+// API routes
 
-// Route for creating a year
-app.post('/api/create', (req,res)=> {
+app.use('/api/users', require('./routes/users'));
 
-  const year = req.body.year;
-  
-  db.query('INSERT INTO years (year) VALUES (?)',[year], (err,result)=>{
-     if(err) {
-      console.log(err)
-     } 
-    console.log(result)
-  });
-})
-  
-
-app.listen(PORT, () => {
-  console.log(`Server is running on ${PORT}`)
+app.listen(process.env.PORT, () => {
+  console.log(`Server is running on ${process.env.PORT}`)
 })

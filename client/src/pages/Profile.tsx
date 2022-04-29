@@ -2,15 +2,15 @@ import React from 'react'
 
 import '../index.css'
 
-function Register() {
+function Profile() {
 
     return (
         <main>
             <h1>
-                Register
+                Profile
             </h1>
         </main>
     )
 }
 
-export default Register
+export default Profile

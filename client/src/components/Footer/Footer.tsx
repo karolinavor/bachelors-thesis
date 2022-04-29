@@ -1,7 +1,6 @@
 import React from 'react'
-import { Link, Outlet } from "react-router-dom"
 
-import '../index.css'
+import '../../index.css'
 
 function Footer() {
 
