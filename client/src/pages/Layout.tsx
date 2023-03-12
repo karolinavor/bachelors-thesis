@@ -1,12 +1,11 @@
 import React, { useEffect, useState } from 'react';
 import { Outlet, useNavigate } from 'react-router-dom';
 import axios from 'axios';
-import Navbar from './components/Navbar';
-import Footer from './components/Footer';
+import Header from '../components/Header';
+import Footer from '../components/Footer';
+import Sidebar from '../components/Sidebar';
 
-import './index.css'
-
-function App() {
+export default function Layout() {
 
     const navigate = useNavigate();
 
@@ -22,6 +21,9 @@ function App() {
             if (res.data.isLoggedIn) {
                 setUsername(res.data.username);
                 navigate('/');
+            } else {
+                setUsername(null);
+                navigate('login');
             }
         })
     }, [])
@@ -29,11 +31,12 @@ function App() {
 
     return (
         <div className="page">
-            <Navbar username={username} />
-            <Outlet />
+            <Header username={username} />
+            <Sidebar />
+            <main>
+                <Outlet />
+            </main>
             <Footer />
         </div>
     )
 }
-
-export default App

@@ -1,0 +1,41 @@
+button + a,
+a + button,
+a + a {
+  margin-left: 1rem;
+}
+
+button, a {
+  display: inline-flex;
+  gap: .5rem;
+  justify-content: center;
+  align-items: center;  
+
+  color: inherit;
+}
+
+.Button {
+  padding: 10px;
+
+  background: lightcoral;
+  border: none;
+  border-radius: 5px;
+  
+  font-size: 1rem;
+  cursor: pointer;
+}
+
+.Link {
+  padding: 0;
+
+  background: none;
+  border: none;
+
+  font-size: 1rem;
+  cursor: pointer;
+  text-decoration: none;
+
+  &.active,
+  &:hover {
+    text-decoration: underline;
+  }
+}

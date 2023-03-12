@@ -1,38 +1,18 @@
 import React from 'react';
 import ReactDOM from 'react-dom/client';
 import reportWebVitals from './reportWebVitals';
-import { BrowserRouter, Routes, Route } from "react-router-dom"
+import RoutesProvider from './routes/RoutesProvider'
+import './styles/style.scss';
 
-import App from "./App";
-import Homepage from "./pages/Homepage";
-import Register from "./pages/Register";
-import Login from "./pages/Login";
-import Profile from "./pages/Profile";
-
-import './index.css';
+import { store } from './store/store'
+import { Provider } from 'react-redux'
 
 const root = ReactDOM.createRoot(document.getElementById('root')  as HTMLElement);
 root.render(
   <React.StrictMode>
-    <BrowserRouter>
-      <Routes>
-        <Route path="/" element={<App />}>
-          <Route path="" element={<Homepage />} />
-          <Route path="login" element={<Login />} />
-          <Route path="register" element={<Register />} />
-          <Route path="user/:userId" element={<Profile />} />
-          <Route
-            path="*"
-            element={
-              <main>
-                <h1>ERROR 404</h1>
-                <h2>NOT FOUND</h2>
-              </main>
-            }
-          />
-        </Route>
-      </Routes>
-    </BrowserRouter>
+    <Provider store={store}>
+      <RoutesProvider />
+    </Provider>
   </React.StrictMode>
 );
 

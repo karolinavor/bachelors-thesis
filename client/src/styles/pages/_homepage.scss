@@ -1,0 +1,9 @@
+.Homepage-grid {
+  display: grid;
+  gap: 3rem;
+  grid-template-columns: 1fr;
+
+  @include media(md) {
+    grid-template-columns: 1fr 1fr;
+  }
+}

@@ -1,0 +1,34 @@
+.Comment {
+  display: grid;
+  gap: .25rem 1rem;
+  grid-template-columns: 2rem auto;
+  grid-template-rows: 1fr auto;
+  grid-template-areas: 
+  'picture heading'
+  'picture content';
+
+  &-picture {
+    display: inline-block;
+    grid-area: picture;
+    width: 2rem;
+    height: 2rem;
+  
+    margin-right: 1rem;
+    
+    border: 1px solid $black;
+    border-radius: 50%;
+  }
+
+  &-heading {
+    grid-area: heading;
+  }
+
+  &-content {
+    grid-area: content;
+
+  }
+
+  & + & {
+    margin-top: 2rem;
+  }
+}

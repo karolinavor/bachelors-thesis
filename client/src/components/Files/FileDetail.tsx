@@ -1,15 +1,12 @@
 import React from 'react'
 
-export default function Profile() {
+export default function FileDetail() {
 
     return (
         <section>
             <h1>
-                Profil
+                File Detail
             </h1>
-            <div>
-                
-            </div>
         </section>
     )
 }

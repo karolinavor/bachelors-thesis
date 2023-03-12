@@ -2,9 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 
-import '../index.css';
-
-function Register() {
+export default function Register() {
 
     const navigate = useNavigate();
 
@@ -20,23 +18,19 @@ function Register() {
             password: form[2].value
         }
 
-        try {
-            axios.post(`http://localhost:3001/api/users/register`, {
-                headers: {
-                    "Content-type": "application/json"
-                },
-                body: user
-            })
-            .then(res => {
-                if (res.data.registered) {
-                    navigate('/login');
-                } else {
-                    setWarning(res.data.message);
-                }
-            })
-        } catch (error) {
-            console.log(error)
-        }
+        axios.post(`http://localhost:3001/api/users/register`, {
+            headers: {
+                "Content-type": "application/json"
+            },
+            body: user
+        })
+        .then(res => {
+            if (res.data.registered) {
+                navigate('/login');
+            } else {
+                setWarning(res.data.message);
+            }
+        })
     }
 
     useEffect(() => {
@@ -49,38 +43,34 @@ function Register() {
     }, [])
 
     return (
-        <main>
-            <section>
-                <h1>
-                    Register
-                </h1>
-            </section>
-            <section>
-                <form onSubmit={event => handleRegister(event)} className="text-center flex-column">
-                    <div className="warning">{warning}</div>
-                    <label htmlFor="username">Username</label>
-                    <input
-                        id="username"
-                        type="text"
-                        required
-                    ></input>
-                    <label htmlFor="email">Email</label>
-                    <input
-                        id="email"
-                        type="email"
-                        required
-                    ></input>
-                    <label htmlFor="password">Password</label>
-                    <input
-                        id="password"
-                        type="password"
-                        required
-                    ></input>
-                    <button type="submit">Register</button>
-                </form>
-            </section>
-        </main>
+        <section>
+            <h1>
+                Registrace
+            </h1>
+            <form onSubmit={event => handleRegister(event)} className="text-center flex-column">
+                <div className="warning">{warning}</div>
+                <label htmlFor="username">Uživatelské jméno</label>
+                <input
+                    id="username"
+                    type="text"
+                    required
+                ></input>
+                <label htmlFor="email">Email</label>
+                <input
+                    id="email"
+                    type="email"
+                    required
+                ></input>
+                <label htmlFor="password">Heslo</label>
+                <input
+                    id="password"
+                    type="password"
+                    required
+                ></input>
+                <button type="submit">Registrovat se</button>
+            </form>
+
+            <button>SSO</button>
+        </section>
     )
 }
-
-export default Register

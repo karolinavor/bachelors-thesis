@@ -1,0 +1,47 @@
+html {
+  font-size: $font-size;
+}
+
+body {
+  margin: 0;
+  height: 100%;
+  font-family: $font-family;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+
+  color: $text;
+}
+
+aside {
+  background-color: rgb(234, 234, 234);
+}
+
+header, footer {
+  grid-column: span 2;
+  background-color: $grey;
+}
+
+header, aside, main, footer {
+  padding: 1rem;
+}
+
+ul {
+  list-style: none;
+  padding: 0;
+}
+
+a, p {
+  margin: 0;
+}
+
+img {
+  max-width: 100%;
+  height: auto;
+}
+
+.page {
+  display: grid;
+  grid-template-columns: minmax(100px, 300px) minmax(200px, 1fr);
+  grid-template-rows: 55px auto 55px;
+  min-height: 100vh;
+}

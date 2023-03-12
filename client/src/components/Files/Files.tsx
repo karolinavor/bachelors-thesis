@@ -1,15 +1,10 @@
 import React from 'react'
-import { NavLink, Outlet } from "react-router-dom"
 
-import '../../index.css'
-
-function Files() {
+export default function Files() {
 
     return (
-        <>
-            Files
-        </>
+        <div>
+            Tady jsou soubory
+        </div>
     )
 }
-
-export default Files

@@ -1,0 +1,70 @@
+@mixin breakpointhelper($min, $max) {
+  $query: "all";
+  @if $min != 0 and $max != 0 {
+    $query: "(min-width: #{$min}) and (max-width: #{$max})";
+  }
+  @else if $min != 0 and $max == 0 {
+    $query: "(min-width: #{$min})";
+  }
+  @else if $min == 0 and $max != 0 {
+    $query: "(max-width: #{$max})";
+  }
+
+  @media #{$query} {
+    @content;
+  }
+}
+
+@mixin media($mediaFrom, $mediaTo: null) {
+  $boundaryFrom: 0px;
+
+  $breakpoints: (
+    xxs: (from: 320px, to: 479px),
+    xs: (from: 480px, to: 574px),
+    sm: (from: 575px, to: 767px),
+    md: (from: 768px, to: 991px),
+    lg: (from: 992px, to: 1199px),
+    xl: (from: 1200px, to: 1399px),
+    xxl: (from: 1400px, to: 1499px),
+    xxxl: (from: 1500px, to: 1920px),
+    2K: (from: 1924px, to: 3199px),
+    4K: (from: 3200px, to: 0)
+  );
+
+  @if not map-has-key($breakpoints, $mediaFrom) {
+    @error 'No media breakpoint found for "#{$mediaFrom}" in the breakpoints map.';
+  }
+
+  @if $mediaTo != null and not map-has-key($breakpoints, $mediaTo) {
+    @error 'No media breakpoint found for "#{$mediaTo}" in the breakpoints map.';
+  }
+
+  $fromBreakpoint: map-get($breakpoints, $mediaFrom);
+  $fromBoundary: map-get($fromBreakpoint, "from");
+  $toBoundary: map-get($fromBreakpoint, "to");
+
+  @if $mediaTo == null {
+    // only one breakpoints is specified (from only)
+    @if $fromBoundary > 0 {
+      // boundary from
+      @include breakpointhelper($fromBoundary, 0) {
+          @content;
+      }
+
+    } @else {
+      // boundary to
+      @include breakpointhelper(0, $toBoundary) {
+          @content;
+      }
+    }
+
+  } @else {
+    // two breakpoints are specified (from - to)
+    $toBreakpoint: map-get($breakpoints, $mediaTo);
+    $toBoundary: map-get($toBreakpoint, "to");
+
+    @include breakpointhelper($fromBoundary, $toBoundary) {
+        @content;
+    }
+  }
+}

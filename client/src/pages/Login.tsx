@@ -1,10 +1,8 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 
-import '../index.css';
-
-function Login() {
+export default function Login() {
 
     const navigate = useNavigate();
 
@@ -40,24 +38,18 @@ function Login() {
     }
 
     return (
-        <main>
-            <section>
-                <h1>
-                    Login
-                </h1>
-            </section>
-            <section>
-                <form onSubmit={event => handleLogin(event)} className="text-center flex-column">
-                    <div className="warning">{warning}</div>
-                    <label htmlFor="username">Username</label>
-                    <input id="username" type="text" required></input>
-                    <label htmlFor="password">Password</label>
-                    <input id="password" type="password" required></input>
-                    <button type="submit">Login</button>
-                </form>
-            </section>
-        </main>
+        <section>
+            <h1>
+                Přihlášení
+            </h1>
+            <form onSubmit={event => handleLogin(event)} className="text-center flex-column">
+                <div className="warning">{warning}</div>
+                <label htmlFor="username">Uživatelské jméno</label>
+                <input id="username" type="text" required></input>
+                <label htmlFor="password">Heslo</label>
+                <input id="password" type="password" required></input>
+                <button type="submit">Přihlásit se</button>
+            </form>
+        </section>
     )
 }
-
-export default Login
