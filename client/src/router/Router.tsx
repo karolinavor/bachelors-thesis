@@ -1,5 +1,5 @@
 import React from 'react'
-import { BrowserRouter, Route, Routes } from 'react-router-dom'
+import { BrowserRouter, createBrowserRouter, Route, Routes } from 'react-router-dom'
 
 import Layout from '../pages/Layout';
 import Dashboard from '../pages/Dashboard';
@@ -45,7 +45,7 @@ export const RoutesList = {
     url: `file/test/`,
     name: `Soubor`
   },
-  user: {
+  profile: {
     url: `user/test/`,
     name: `Uživatel`
   },
@@ -55,32 +55,50 @@ export const RoutesList = {
   },
 }
 
-export default function Router() {
-  return (
-    <BrowserRouter>
-      <Routes>
-        <Route path={RoutesList.dashboard.url} element={<Layout />} >
-          <Route index element={<Dashboard />} />
+const router = createBrowserRouter([{
+  path: "/",
+  element: <Layout />,
+  errorElement: <Error />,
+  children: [
+    {
+      index: true,
+      element: <Dashboard />
+    },
+    {
+      path: RoutesList.textpage.url,
+      element: <Textpage />,
+    },
+    {
+      path: RoutesList.login.url,
+      element: <Login />,
+    },
+    {
+      path: RoutesList.settings.url,
+      element: <Settings />,
+    },
+    {
+      path: RoutesList.profile.url, /* :userId */
+      element: <Profile />,
+    },
+    {
+      path: RoutesList.course.url,
+      element: <Course />,
+      children: [
+        {
+          path: RoutesList.file.url, /* :fileId */
+          element: <File />,
+        },
+      ]
+    },
+    {
+      path: RoutesList.course.url + RoutesList.editCourse.url,  /* :coursetId */
+      element: <CourseEdit />,
+    },
+    {
+      path: RoutesList.course.url + RoutesList.addCourse.url,
+      element: <CourseEdit />,
+    },
+  ],
+}]);
 
-          <Route path={RoutesList.textpage.url} element={<Textpage />} />
-
-          <Route path={RoutesList.login.url} element={<Login />} />
-
-          <Route path={RoutesList.settings.url} element={<Settings />} />
-
-          <Route path={RoutesList.user.url} element={<Profile />} /> {/* :userId */}
-
-          <Route path={RoutesList.course.url} element={<Course />} />
-
-          <Route path={RoutesList.course.url + RoutesList.editCourse.url} element={<CourseEdit />} /> {/* :coursetId */}
-
-          <Route path={RoutesList.course.url + RoutesList.addCourse.url} element={<CourseEdit />} />
-
-          <Route path={RoutesList.course.url + RoutesList.file.url} element={<File />} /> {/* :fileId */}
-
-          <Route path={RoutesList.error.url} element={<Error />} />
-        </Route>
-      </Routes>
-    </BrowserRouter>
-  )
-}
+export default router;

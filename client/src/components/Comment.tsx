@@ -16,9 +16,9 @@ export default function Comment({user, course, content}: CommentProps) {
       <div className="Comment">
         <span className="Comment-picture"></span>
         <div>
-          <Link className="Comment-heading" to={RoutesList.user.url}>{user}</Link>
+          <Link className="Comment-heading" to={RoutesList.profile.url}>{user}</Link>
           <span> v predmetu </span>
-          <Link to={course.url}>{course.short}</Link>
+          <Link to={RoutesList.course.url}>{course.short}</Link>
         </div>
         <p className="Comment-content">{content}</p>
       </div>

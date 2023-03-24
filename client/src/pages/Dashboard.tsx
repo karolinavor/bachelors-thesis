@@ -65,13 +65,13 @@ export default function Dashboard() {
                 <div>
                     <h2>Latest files</h2>
                     <div>
-                        <Link className="Link" to={RoutesList.file.url}>XBP2 - Pololetni test</Link>
+                        <Link className="Link" to={RoutesList.course.url + RoutesList.file.url}>XBP2 - Pololetni test</Link>
                     </div>
                     <div>
-                        <Link className="Link" to={RoutesList.file.url}>XBP2 - Pololetni test</Link>
+                        <Link className="Link" to={RoutesList.course.url + RoutesList.file.url}>XBP2 - Pololetni test</Link>
                     </div>
                     <div>
-                        <Link className="Link" to={RoutesList.file.url}>XBP1 - Pololetni test</Link>
+                        <Link className="Link" to={RoutesList.course.url + RoutesList.file.url}>XBP1 - Pololetni test</Link>
                     </div>
                 </div>
             </div>

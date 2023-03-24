@@ -32,7 +32,7 @@ export default function Sidebar() {
                             courses
                             .map(course =>
                                 <li key={course._id}>
-                                    <NavLink to={"/courses/" + course._id}>
+                                    <NavLink to={RoutesList.course.url}>
                                         {course.short} - {course.name}
                                     </NavLink>
                                 </li>

@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { NavLink, useNavigate } from "react-router-dom";
-import home from "../assets/home.svg"
+import homeIcon from "../assets/home.svg"
 import userIcon from "../assets/user.svg"
 import settingsIcon from "../assets/settings.svg"
 import logoutIcon from "../assets/logout.svg"
@@ -20,12 +20,14 @@ export default function Header(props) {
     return (
         <header>
             <div>
-                <NavLink className="Link" to={RoutesList.dashboard.url}><img src={home} alt="home" width="32" height="32"/></NavLink>
+                <NavLink className="Link" to={RoutesList.dashboard.url}>
+                    <img src={homeIcon} alt="home" width="32" height="32" />
+                </NavLink>
             </div>
             <div className="flex align-center">
                 {user ?
                     <>
-                        <NavLink className="Link" to={RoutesList.user.url}>
+                        <NavLink className="Link" to={RoutesList.profile.url}>
                             <img src={userIcon} alt="user" width="28" height="28" />
                             {user}
                         </NavLink>
