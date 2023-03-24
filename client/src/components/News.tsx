@@ -5,7 +5,7 @@ type NewProps = {
   content: string
 }
 
-export default function New({date, content}: NewProps) {
+export default function News({date, content}: NewProps) {
     return (
       <div className="New">
         <div className="New-date">

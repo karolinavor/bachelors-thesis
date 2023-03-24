@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import axios from 'axios';
 
 export default function CourseEdit() {
 
@@ -17,12 +16,14 @@ export default function CourseEdit() {
             short: form[1].value
         }
 
+        /*
         axios.put(`http://localhost:3001/api/courses/add`, course)
         .then(res => {
             if (res.data.created) {
                 navigate('/courses');
             }
         })
+        */
     }
 
     return (

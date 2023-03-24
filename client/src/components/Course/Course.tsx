@@ -1,6 +1,6 @@
-import React, { useState, useEffect } from 'react';
-import { useParams, Link, Outlet } from 'react-router-dom';
-import axios from 'axios';
+import React, { useState } from 'react';
+import { useParams, Outlet } from 'react-router-dom';
+import Comment from "../Comment"
 
 export default function Course() {
 
@@ -15,7 +15,6 @@ export default function Course() {
     const [course, setCourse] = useState<Course>();
 
     {/*
-
     useEffect(() => {
         console.log(id);
         axios.get(`http://localhost:3001/api/courses/` + id)
@@ -46,43 +45,41 @@ export default function Course() {
     return (
         <>
             <h1>
-                Informacni technologie
+                KMI - Informacni technologie
             </h1>
-            <div className="mb-1 flex">
-                <div className="mr-1">
-                    <div>
-                        Zkratka
+            <div className="flex">
+                <div className='w-100'>
+                    <div className="mb-1 flex">
+                        Souborovy system
                     </div>
-                    <div>
-                        XMAT1
-                    </div>
+                    <div>Soubor</div>
                 </div>
-                <div className="mr-1">
-                    <div>
-                        Roky
-                    </div>
-                    <div>
-                        2020-2022
-                    </div>
-                </div>
-                <div>
-                    <div>
-                        Vyučující
-                    </div>
-                    <div>
-                        Karel Novak
-                    </div>
-                </div>
-            </div>
-            <div className="mb-1 flex">
-                <div className="mr-1">
-                    <Link to="files">Přednášky</Link>
-                </div>
-                <div className="mr-1">
-                    <Link to="files">Cvičení</Link>
-                </div>
-                <div>
-                    <Link to="files">Testy</Link>
+                <div className='w-100'>
+                    <h2 className='mt-0'>Latest comments</h2>
+                    <Comment
+                        user="Joe Doe"
+                        content="Ahoj, nevite nekdo jak vypadal test?"
+                        course={{
+                            short: "KMI",
+                            url: "users/root"
+                        }}
+                    />
+                    <Comment
+                        user="Joe Doe"
+                        content="Ahoj, nevite nekdo jak vypadal test?"
+                        course={{
+                            short: "KMI",
+                            url: "users/root"
+                        }}
+                    />
+                    <Comment
+                        user="Joe Doe"
+                        content="Ahoj, nevite nekdo jak vypadal test?"
+                        course={{
+                            short: "KMI",
+                            url: "users/root"
+                        }}
+                    />
                 </div>
             </div>
             <Outlet />

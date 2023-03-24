@@ -1,13 +1,16 @@
-import React from "react";
+import React, { useState } from "react";
 import { NavLink, useNavigate } from "react-router-dom";
 import home from "../assets/home.svg"
-import user from "../assets/user.svg"
-import settings from "../assets/settings.svg"
-import logout from "../assets/logout.svg"
+import userIcon from "../assets/user.svg"
+import settingsIcon from "../assets/settings.svg"
+import logoutIcon from "../assets/logout.svg"
+import { RoutesList } from "../router/Router";
 
 export default function Header(props) {
 
     const navigate = useNavigate();
+
+    const [user, setUser] = useState<string | null>(null)
 
     function logOutUser() {
         localStorage.removeItem("token");
@@ -17,35 +20,29 @@ export default function Header(props) {
     return (
         <header>
             <div>
-                <NavLink className="Link" to="/"><img src={home} alt="home" width="32" height="32"/></NavLink>
+                <NavLink className="Link" to={RoutesList.dashboard.url}><img src={home} alt="home" width="32" height="32"/></NavLink>
             </div>
             <div className="flex align-center">
-                {/*}
-                {props.username
-                    ?
-                <>*/}
-                <NavLink className="Link" to={"/user/root"}>
-                    <img src={user} alt="user" width="28" height="28" />
-                    xvorli01
-                </NavLink>
-                <NavLink className="Link" to="settings">
-                    <img src={settings} alt="settings" width="28" height="28" />
-                    Settings
-                </NavLink>
-                <button className="Link" onClick={() => logOutUser()} >
-                    <img src={logout} alt="logout" width="28" height="28" />
-                    Log out
-                </button>
-                {/*
+                {user ?
+                    <>
+                        <NavLink className="Link" to={RoutesList.user.url}>
+                            <img src={userIcon} alt="user" width="28" height="28" />
+                            {user}
+                        </NavLink>
+                        <NavLink className="Link" to={RoutesList.settings.url}>
+                            <img src={settingsIcon} alt="settings" width="28" height="28" />
+                            Settings
+                        </NavLink>
+                        <button className="Link" onClick={() => logOutUser()} >
+                            <img src={logoutIcon} alt="logout" width="28" height="28" />
+                            Logout
+                        </button>
                     </>
                     :
-            <>*/}
-                <NavLink className="Link" to="/login">
-                    Log in
-                </NavLink>
-                <NavLink className="Link" to="/register">Register</NavLink>
-                {/*</>
-                }*/}
+                    <NavLink className="Link" to={RoutesList.login.url}>
+                        Login
+                    </NavLink>
+                }
             </div>
         </header>
     )

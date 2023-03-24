@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { NavLink } from "react-router-dom";
-import axios from 'axios';
+import { RoutesList } from '../router/Router';
 
 export default function Sidebar() {
 
@@ -12,6 +12,7 @@ export default function Sidebar() {
 
     const [courses, setCourses] = useState<Array<Course>>([]);
 
+    /*
     useEffect(() => {
         axios.get(`http://localhost:3001/api/courses/all`)
         .then(res => {
@@ -19,6 +20,7 @@ export default function Sidebar() {
             setCourses(courses);
         })
     }, [])
+    */
 
     return (
         <aside>
@@ -38,47 +40,47 @@ export default function Sidebar() {
                         }
                     */}
                     <li>
-                        <NavLink className="Link" to={"/courses/xtest"}>
+                        <NavLink className="Link" to={RoutesList.course.url}>
                             XTEST
                         </NavLink>
                     </li>
                     <li>
-                        <NavLink className="Link" to={"/courses/xtest"}>
+                        <NavLink className="Link" to={RoutesList.course.url}>
                             XKBIO
                         </NavLink>
                     </li>
                     <li>
-                        <NavLink className="Link" to={"/courses/xtest"}>
+                        <NavLink className="Link" to={RoutesList.course.url}>
                             XKCHEM
                         </NavLink>
                     </li>
                     <li>
-                        <NavLink className="Link" to={"/courses/xtest"}>
+                        <NavLink className="Link" to={RoutesList.course.url}>
                             XKBIO
                         </NavLink>
                     </li>
                     <li>
-                        <NavLink className="Link" to={"/courses/xtest"}>
+                        <NavLink className="Link" to={RoutesList.course.url}>
                             XKCHEM
                         </NavLink>
                     </li>
                     <li>
-                        <NavLink className="Link" to={"/courses/xtest"}>
+                        <NavLink className="Link" to={RoutesList.course.url}>
                             XKBIO
                         </NavLink>
                     </li>
                     <li>
-                        <NavLink className="Link" to={"/courses/xtest"}>
+                        <NavLink className="Link" to={RoutesList.course.url}>
                             XKCHEM
                         </NavLink>
                     </li>
                     <li>
-                        <NavLink className="Link" to={"/courses/xtest"}>
+                        <NavLink className="Link" to={RoutesList.course.url}>
                             XKINF
                         </NavLink>
                     </li>
                     <li>
-                        <NavLink className="Link" to={"/courses/xtest"}>
+                        <NavLink className="Link" to={RoutesList.course.url}>
                             MKJAVA
                         </NavLink>
                     </li>

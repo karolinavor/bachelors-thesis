@@ -1,7 +1,8 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import New from '../components/New';
+import News from '../components/News';
 import Comment from '../components/Comment';
+import { RoutesList } from '../router/Router';
 
 export default function Dashboard() {
 
@@ -13,11 +14,11 @@ export default function Dashboard() {
             <div className="Homepage-grid">
                 <div>
                     <h2>News</h2>
-                    <New
+                    <News
                         date="26.09.2022"
                         content="Bylo zprovozněno přihlašování k portalu pomocí SSO (Single sign-on). Prosíme studenty, aby přednostně využívali tento typ přihlašování. Přihlašování na portal pomocí jména a hesla bude do budoucna zrušeno."
                     />
-                    <New
+                    <News
                         date="26.09.2022"
                         content="Bylo zprovozněno přihlašování k portalu pomocí SSO (Single sign-on). Prosíme studenty, aby přednostně využívali tento typ přihlašování. Přihlašování na portal pomocí jména a hesla bude do budoucna zrušeno."
                     />
@@ -52,25 +53,25 @@ export default function Dashboard() {
                 <div>
                     <h2>Latest courses</h2>
                     <div>
-                        <Link className="Link" to="courses/xtest">XKMI - Matematicka informatika</Link>
+                        <Link className="Link" to={RoutesList.course.url}>XKMI - Matematicka informatika</Link>
                     </div>
                     <div>
-                        <Link className="Link" to="courses/xtest">XBP2 - Matematicka informatika</Link>
+                        <Link className="Link" to={RoutesList.course.url}>XBP2 - Matematicka informatika</Link>
                     </div>
                     <div>
-                        <Link className="Link" to="courses/xtest">XBP1 - Matematicka informatika</Link>
+                        <Link className="Link" to={RoutesList.course.url}>XBP1 - Matematicka informatika</Link>
                     </div>
                 </div>
                 <div>
                     <h2>Latest files</h2>
                     <div>
-                        <Link className="Link" to="courses/xtest/files/file-test">XBP2 - Pololetni test</Link>
+                        <Link className="Link" to={RoutesList.file.url}>XBP2 - Pololetni test</Link>
                     </div>
                     <div>
-                        <Link className="Link" to="courses/xtest/files/file-test">XBP2 - Pololetni test</Link>
+                        <Link className="Link" to={RoutesList.file.url}>XBP2 - Pololetni test</Link>
                     </div>
                     <div>
-                        <Link className="Link" to="courses/xtest/files/file-test">XBP1 - Pololetni test</Link>
+                        <Link className="Link" to={RoutesList.file.url}>XBP1 - Pololetni test</Link>
                     </div>
                 </div>
             </div>

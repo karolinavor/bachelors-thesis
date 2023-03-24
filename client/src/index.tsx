@@ -1,7 +1,7 @@
 import React from 'react';
 import ReactDOM from 'react-dom/client';
 import reportWebVitals from './reportWebVitals';
-import RoutesProvider from './routes/RoutesProvider'
+import Router from './router/Router'
 import './styles/style.scss';
 
 import { store } from './store/store'
@@ -11,7 +11,7 @@ const root = ReactDOM.createRoot(document.getElementById('root')  as HTMLElement
 root.render(
   <React.StrictMode>
     <Provider store={store}>
-      <RoutesProvider />
+      <Router />
     </Provider>
   </React.StrictMode>
 );

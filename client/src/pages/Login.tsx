@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import axios from 'axios';
 
 export default function Login() {
 
@@ -17,6 +16,7 @@ export default function Login() {
             password: form[1].value
         }
 
+        /*
         try {
             axios.post(`http://localhost:3001/api/users/login`, {
                 headers: {
@@ -35,6 +35,7 @@ export default function Login() {
         } catch (error) {
             console.log(error)
         }
+        */
     }
 
     return (
@@ -42,7 +43,7 @@ export default function Login() {
             <h1>
                 Přihlášení
             </h1>
-            <form onSubmit={event => handleLogin(event)} className="text-center flex-column">
+            <form onSubmit={event => handleLogin(event)} className="flex flex-column">
                 <div className="warning">{warning}</div>
                 <label htmlFor="username">Uživatelské jméno</label>
                 <input id="username" type="text" required></input>
