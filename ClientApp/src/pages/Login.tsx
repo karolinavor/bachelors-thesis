@@ -39,18 +39,20 @@ export default function Login() {
     }
 
     return (
-        <section>
-            <h1>
-                Přihlášení
-            </h1>
-            <form onSubmit={event => handleLogin(event)} className="flex flex-column">
-                <div className="warning">{warning}</div>
-                <label htmlFor="username">Uživatelské jméno</label>
-                <input id="username" type="text" required></input>
-                <label htmlFor="password">Heslo</label>
-                <input id="password" type="password" required></input>
-                <button type="submit">Přihlásit se</button>
-            </form>
-        </section>
+        <div className="page">
+            <div>
+                <h1>
+                    Přihlášení
+                </h1>
+                <form onSubmit={event => handleLogin(event)} className="flex flex-column">
+                    <div className="warning">{warning}</div>
+                    <label htmlFor="username">Uživatelské jméno</label>
+                    <input id="username" type="text" required></input>
+                    <label htmlFor="password">Heslo</label>
+                    <input id="password" type="password" required></input>
+                    <button type="submit">Přihlásit se</button>
+                </form>
+            </div>
+        </div>
     )
 }

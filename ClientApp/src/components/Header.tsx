@@ -25,26 +25,20 @@ export default function Header(props) {
                 </NavLink>
             </div>
             <div className="flex align-center">
-                {user ?
-                    <>
-                        <NavLink className="Link" to={RoutesList.profile.url}>
-                            <img src={userIcon} alt="user" width="28" height="28" />
-                            {user}
-                        </NavLink>
-                        <NavLink className="Link" to={RoutesList.settings.url}>
-                            <img src={settingsIcon} alt="settings" width="28" height="28" />
-                            Settings
-                        </NavLink>
-                        <button className="Link" onClick={() => logOutUser()} >
-                            <img src={logoutIcon} alt="logout" width="28" height="28" />
-                            Logout
-                        </button>
-                    </>
-                    :
-                    <NavLink className="Link" to={RoutesList.login.url}>
-                        Login
+                <>
+                    <NavLink className="Link" to={RoutesList.profile.url}>
+                        <img src={userIcon} alt="user" width="28" height="28" />
+                        {user}
                     </NavLink>
-                }
+                    <NavLink className="Link" to={RoutesList.settings.url}>
+                        <img src={settingsIcon} alt="settings" width="28" height="28" />
+                        Settings
+                    </NavLink>
+                    <button className="Link" onClick={() => logOutUser()} >
+                        <img src={logoutIcon} alt="logout" width="28" height="28" />
+                        Logout
+                    </button>
+                </>
             </div>
         </header>
     )

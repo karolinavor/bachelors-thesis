@@ -1,56 +1,5 @@
 {
-  "name": "bachelor-thesis",
-  "version": "1.0.0",
-  "description": "",
-  "main": "",
-  "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "server": "nodemon server/index.js",
-    "client": "cd client && react-scripts start",
-    "build-dist": "./node_modules/typescript/bin/tsc"
-  },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/karolinavor/bachelor-thesis.git"
-  },
-  "author": "Karolina <vorlickovakarolina@gmail.com>",
-  "license": "ISC",
-  "bugs": {
-    "url": "https://github.com/karolinavor/bachelor-thesis/issues"
-  },
-  "homepage": "https://github.com/karolinavor/bachelor-thesis#readme",
-  "devDependencies": {
-    "@types/jest": "^27.4.1",
-    "@types/node": "^17.0.29",
-    "@types/react": "^18.0.8",
-    "@types/react-dom": "^18.0.0",
-    "eslint": "^8.14.0",
-    "nodemon": "^2.0.15",
-    "prettier": "^2.6.2",
-    "typescript": "^4.6.3"
-  },
   "dependencies": {
-    "@reduxjs/toolkit": "^1.8.1",
-    "@testing-library/jest-dom": "^5.16.4",
-    "@testing-library/react": "^13.1.1",
-    "@testing-library/user-event": "^14.1.1",
-    "bcrypt": "^5.0.1",
-    "body-parser": "^1.20.0",
-    "cors": "^2.8.5",
-    "dotenv": "^16.0.0",
-    "express": "^4.18.0",
-    "jsonwebtoken": "^9.0.0",
-    "mongoose": "^6.3.1",
-    "react": "^18.1.0",
-    "react-dom": "^18.1.0",
-    "react-redux": "^8.0.2",
-    "react-router-dom": "^6.9.0",
-    "react-scripts": "^5.0.1",
-    "react-validation": "^3.0.7",
-    "redux": "^4.2.0",
-    "redux-toolkit": "^1.1.2",
-    "sass": "^1.56.0",
-    "validator": "^13.7.0",
-    "web-vitals": "^2.1.4"
+    "react-router-dom": "^6.10.0"
   }
 }

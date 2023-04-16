@@ -30,7 +30,7 @@ export const RoutesList = {
     name: `Nastavení`
   },
   course: {
-    url: `course/test/`,
+    url: `course/:course/`,
     name: `Kurz`
   },
   editCourse: {
@@ -55,7 +55,12 @@ export const RoutesList = {
   },
 }
 
-const router = createBrowserRouter([{
+const router = createBrowserRouter([
+{
+  path: RoutesList.login.url,
+  element: <Login />,
+},
+{
   path: "/",
   element: <Layout />,
   errorElement: <Error />,
@@ -67,10 +72,6 @@ const router = createBrowserRouter([{
     {
       path: RoutesList.textpage.url,
       element: <Textpage />,
-    },
-    {
-      path: RoutesList.login.url,
-      element: <Login />,
     },
     {
       path: RoutesList.settings.url,
