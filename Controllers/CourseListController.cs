@@ -14,11 +14,11 @@ public class CourseListController : ControllerBase
     }
 
     [HttpGet]
-    public IEnumerable<CourseList> Get()
+    public IEnumerable<Course> Get()
     {
-        return Enumerable.Range(1, 5).Select(index => new CourseList
+        return Enumerable.Range(1, 5).Select(index => new Course
         {
-            Id = 1,
+            Id = index,
             Title = "Nahodny predmet",
             Short = "TEST"
         })

@@ -1,18 +1,12 @@
 import React, { useState, useEffect } from 'react';
 import { NavLink } from "react-router-dom";
+import { CourseType } from '../types/types';
 
 export default function Sidebar() {
-
-    type Course = {
-        title: string,
-        short: string
-        id: string
-    };
-
-    const [courses, setCourses] = useState<Array<Course>>([]);
+    const [courses, setCourses] = useState<Array<CourseType>>([]);
 
     async function getCourses() {
-        const response = await fetch('/courselist');
+        const response = await fetch('/api/courselist');
         const data = await response.json();
         setCourses(data)
     }
@@ -26,15 +20,13 @@ export default function Sidebar() {
             <h2>Courses</h2>
             <nav>
                 <ul>
-                    {
-                    courses.map(course =>
+                    {courses?.map(course =>
                         <li key={course.id}>
-                            <NavLink to={"course/" + course.short.toLowerCase()}>
+                            <NavLink to={"course/" + course.id}>
                                 {course.short} - {course.title}
                             </NavLink>
                         </li>
-                    )
-                    }
+                    )}
                 </ul>
             </nav>
         </aside>

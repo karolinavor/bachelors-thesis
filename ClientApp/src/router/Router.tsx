@@ -42,11 +42,11 @@ export const RoutesList = {
     name: `Přidat kurz`
   },
   file: {
-    url: `file/test/`,
+    url: `file/:file/`,
     name: `Soubor`
   },
   profile: {
-    url: `user/test/`,
+    url: `user/:user/`,
     name: `Uživatel`
   },
   error: {

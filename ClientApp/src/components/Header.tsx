@@ -28,6 +28,7 @@ export default function Header(props) {
                 <>
                     <NavLink className="Link" to={RoutesList.profile.url}>
                         <img src={userIcon} alt="user" width="28" height="28" />
+                        Profile
                         {user}
                     </NavLink>
                     <NavLink className="Link" to={RoutesList.settings.url}>

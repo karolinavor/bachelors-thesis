@@ -1,10 +1,23 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import News from '../components/News';
 import Comment from '../components/Comment';
 import { RoutesList } from '../router/Router';
+import { NewsType } from '../types/types';
 
 export default function Dashboard() {
+
+    const [news, setNews] = useState<Array<NewsType>>([]);
+
+    async function getNews() {
+        const response = await fetch('/api/news');
+        const data = await response.json();
+        setNews(data)
+    }
+
+    useEffect(() => {
+        getNews()
+    }, [])
 
     return (
         <section>
@@ -14,14 +27,12 @@ export default function Dashboard() {
             <div className="Homepage-grid">
                 <div>
                     <h2>News</h2>
-                    <News
-                        date="26.09.2022"
-                        content="Bylo zprovozněno přihlašování k portalu pomocí SSO (Single sign-on). Prosíme studenty, aby přednostně využívali tento typ přihlašování. Přihlašování na portal pomocí jména a hesla bude do budoucna zrušeno."
-                    />
-                    <News
-                        date="26.09.2022"
-                        content="Bylo zprovozněno přihlašování k portalu pomocí SSO (Single sign-on). Prosíme studenty, aby přednostně využívali tento typ přihlašování. Přihlašování na portal pomocí jména a hesla bude do budoucna zrušeno."
-                    />
+                    {news?.map((newsItem: NewsType) =>
+                        <News
+                            date={newsItem.date}
+                            content={newsItem.content}
+                        />
+                    )}
                 </div>
                 <div>
                     <h2>Latest comments</h2>
