@@ -11,6 +11,7 @@ import CourseEdit from '../components/Course/CourseEdit';
 import Settings from '../pages/Settings';
 import Error from '../pages/Error'
 import Textpage from '../pages/Textpage';
+import CourseAdd from '../components/Course/CourseAdd';
 
 export const RoutesList = {
   dashboard: {
@@ -33,19 +34,19 @@ export const RoutesList = {
     url: `course/:course/`,
     name: `Kurz`
   },
-  editCourse: {
-    url: `edit/`,
+  courseEdit: {
+    url: `/course/:course/edit/`,
     name: `Editovat kurz`
   },
-  addCourse: {
-    url: `add/`,
+  courseAdd: {
+    url: `/course/add/`,
     name: `Přidat kurz`
   },
   file: {
     url: `file/:file/`,
     name: `Soubor`
   },
-  profile: {
+  user: {
     url: `user/:user/`,
     name: `Uživatel`
   },
@@ -78,27 +79,27 @@ const router = createBrowserRouter([
       element: <Settings />,
     },
     {
-      path: RoutesList.profile.url, /* :userId */
+      path: RoutesList.user.url,
       element: <Profile />,
+    },
+    {
+      path: RoutesList.courseAdd.url,
+      element: <CourseAdd />,
+    },
+    {
+      path: RoutesList.courseEdit.url,
+      element: <CourseEdit />
     },
     {
       path: RoutesList.course.url,
       element: <Course />,
       children: [
         {
-          path: RoutesList.file.url, /* :fileId */
+          path: RoutesList.file.url,
           element: <File />,
-        },
+        }
       ]
-    },
-    {
-      path: RoutesList.course.url + RoutesList.editCourse.url,  /* :coursetId */
-      element: <CourseEdit />,
-    },
-    {
-      path: RoutesList.course.url + RoutesList.addCourse.url,
-      element: <CourseEdit />,
-    },
+    }
   ],
 }]);
 

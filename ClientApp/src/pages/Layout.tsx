@@ -31,7 +31,7 @@ export default function Layout() {
     
 
     return (
-        <div className="page">
+        <div className="Page">
             <Header username={username} />
             <Sidebar />
             <main>

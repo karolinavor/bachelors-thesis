@@ -2,12 +2,14 @@ import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import News from '../components/News';
 import Comment from '../components/Comment';
-import { RoutesList } from '../router/Router';
-import { NewsType } from '../types/types';
+import { CommentType, CourseType, FileType, NewsType } from '../types/types';
 
 export default function Dashboard() {
 
-    const [news, setNews] = useState<Array<NewsType>>([]);
+    const [news, setNews] = useState<NewsType[]>([]);
+    const [latestComments, setLatestComments] = useState<CommentType[]>([]);
+    const [latestCourses, setLatestCourses] = useState<CourseType[]>([]);
+    const [latestFiles, setLatestFiles] = useState<FileType[]>([]);
 
     async function getNews() {
         const response = await fetch('/api/news');
@@ -15,8 +17,29 @@ export default function Dashboard() {
         setNews(data)
     }
 
+    async function getLatestComments() {
+        const response = await fetch('/api/comment/latest');
+        const data = await response.json();
+        setLatestComments(data)
+    }
+
+    async function getLatestCourses() {
+        const response = await fetch('/api/course/latest');
+        const data = await response.json();
+        setLatestCourses(data)
+    }
+
+    async function getLatestFiles() {
+        const response = await fetch('/api/file/latest');
+        const data = await response.json();
+        setLatestFiles(data)
+    }
+
     useEffect(() => {
         getNews()
+        getLatestComments()
+        getLatestCourses()
+        getLatestFiles()
     }, [])
 
     return (
@@ -36,54 +59,33 @@ export default function Dashboard() {
                 </div>
                 <div>
                     <h2>Latest comments</h2>
-                    <Comment
-                        user="Joe Doe"
-                        content="Ahoj, nevite nekdo jak vypadal test?"
-                        course={{
-                            short: "KMI",
-                            url: "users/root"
-                        }}
-                    />
-                    <Comment
-                        user="Joe Doe"
-                        content="Ahoj, nevite nekdo jak vypadal test?"
-                        course={{
-                            short: "KMI",
-                            url: "users/root"
-                        }}
-                    />
-                    <Comment
-                        user="Joe Doe"
-                        content="Ahoj, nevite nekdo jak vypadal test?"
-                        course={{
-                            short: "KMI",
-                            url: "users/root"
-                        }}
-                    />
+                    {latestComments?.map((comment: CommentType) => 
+                        <Comment
+                            user={comment.author}
+                            content={comment.commentText}
+                            subject={{
+                                name: comment.typeName,
+                                type: comment.type,
+                                url: comment.id
+                            }}
+                        />
+                    )}
                 </div>
                 <div>
                     <h2>Latest courses</h2>
-                    <div>
-                        <Link className="Link" to={RoutesList.course.url}>XKMI - Matematicka informatika</Link>
-                    </div>
-                    <div>
-                        <Link className="Link" to={RoutesList.course.url}>XBP2 - Matematicka informatika</Link>
-                    </div>
-                    <div>
-                        <Link className="Link" to={RoutesList.course.url}>XBP1 - Matematicka informatika</Link>
-                    </div>
+                    {latestCourses?.map((course: CourseType) =>
+                        <div>
+                            <Link className="Link" to={"/course/" + course.id}>XKMI - Matematicka informatika</Link>
+                        </div>
+                    )}
                 </div>
                 <div>
                     <h2>Latest files</h2>
-                    <div>
-                        <Link className="Link" to={RoutesList.course.url + RoutesList.file.url}>XBP2 - Pololetni test</Link>
-                    </div>
-                    <div>
-                        <Link className="Link" to={RoutesList.course.url + RoutesList.file.url}>XBP2 - Pololetni test</Link>
-                    </div>
-                    <div>
-                        <Link className="Link" to={RoutesList.course.url + RoutesList.file.url}>XBP1 - Pololetni test</Link>
-                    </div>
+                    {latestFiles?.map((file: FileType) =>
+                        <div>
+                            <Link className="Link" to={"/course/1/file/" + file.id}>XBP2 - Pololetni test</Link>
+                        </div>
+                    )}
                 </div>
             </div>
         </section>

@@ -1,5 +1,21 @@
-header {
+.Header {
   display: flex;
   justify-content: space-between;
   align-items: center;
+
+  &-menu {
+    .Button-text {
+      display: none;
+
+      @include media(md) {
+        display: initial;
+      }
+    }
+
+    .Header-hamburger {
+      @include media(md) {
+        display: none;
+      }
+    }
+  }
 }

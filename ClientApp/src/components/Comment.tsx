@@ -1,24 +1,24 @@
 import React from "react";
 import { Link } from "react-router-dom";
-import { RoutesList } from "../router/Router";
 
 type CommentProps = {
   user: string,
-  course: {
-    short: string,
-    url: string
+  subject: {
+    type: "Course" | "File",
+    name: string,
+    url: number
   },
   content: string
 }
 
-export default function Comment({user, course, content}: CommentProps) {
+export default function Comment({user, subject, content}: CommentProps) {
     return (
       <div className="Comment">
         <span className="Comment-picture"></span>
         <div>
-          <Link className="Comment-heading" to={RoutesList.profile.url}>{user}</Link>
-          <span> v predmetu </span>
-          <Link to={RoutesList.course.url}>{course.short}</Link>
+          <Link className="Comment-heading" to={"/user/test"}>{user}</Link>
+          <span> in </span>
+          <Link to={(subject.type === "File" ? "file/" : "course/") + subject.url}>{subject.name}</Link>
         </div>
         <p className="Comment-content">{content}</p>
       </div>
