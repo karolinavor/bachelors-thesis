@@ -12,6 +12,7 @@ export default function Header(props) {
 
     const navigate = useNavigate();
     const [user, setUser] = useState<UserType>();
+    const [headerOpen, setHeaderOpen] = useState(false);
 
     async function getUser() {
         const response = await fetch('/api/user');
@@ -28,7 +29,7 @@ export default function Header(props) {
     }
 
     return (
-        <header className="Header">
+        <header className={"Header" + (headerOpen ? " Header-hamburger--open" : "")}>
             <div>
                 <NavLink className="Link" to={RoutesList.dashboard.url}>
                     <img src={homeIcon} alt="home" width="32" height="32" />
@@ -47,7 +48,7 @@ export default function Header(props) {
                     <img src={logoutIcon} alt="logout" width="28" height="28" />
                     <span className="Button-text">Logout</span>
                 </button>
-                <button className="Link Header-hamburger" onClick={() => {}} >
+                <button className="Link Header-hamburger" onClick={() => setHeaderOpen(!headerOpen)} >
                     <img src={menuIcon} alt="logout" width="28" height="28" />
                 </button>
             </div>

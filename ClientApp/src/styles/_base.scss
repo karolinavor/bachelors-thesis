@@ -12,9 +12,14 @@ body {
   color: $text;
 }
 
+* {
+  box-sizing: border-box;
+}
+
 aside {
   display: none;
   background-color: rgb(245, 241, 241);
+  overflow-y: auto;
 
   @include media(md) {
     display: initial;
