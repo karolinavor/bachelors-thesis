@@ -61,7 +61,7 @@ export default function Dashboard() {
                     <h2>Latest comments</h2>
                     {latestComments?.map((comment: CommentType) => 
                         <Comment
-                            user={comment.author}
+                            user={comment.user}
                             content={comment.commentText}
                             subject={{
                                 name: comment.typeName,

@@ -31,11 +31,11 @@ export const RoutesList = {
     name: `Nastavení`
   },
   course: {
-    url: `course/:course/`,
+    url: `course/:id/`,
     name: `Kurz`
   },
   courseEdit: {
-    url: `/course/:course/edit/`,
+    url: `/course/:id/edit/`,
     name: `Editovat kurz`
   },
   courseAdd: {
@@ -43,7 +43,7 @@ export const RoutesList = {
     name: `Přidat kurz`
   },
   file: {
-    url: `file/:file/`,
+    url: `file/:id/`,
     name: `Soubor`
   },
   user: {

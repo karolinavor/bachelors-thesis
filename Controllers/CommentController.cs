@@ -1,32 +1,36 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using bachelor_thesis.Models;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 
 namespace bachelor_thesis.Controllers;
 
-[ApiController]
-[Route("[controller]")]
-public class CommentController : ControllerBase
+public static class CommentController
 {
-    private readonly ILogger<CommentController> _logger;
-
-    public CommentController(ILogger<CommentController> logger)
+    public static void MapCommentControllerRoutes(this WebApplication app)
     {
-        _logger = logger;
-    }
-
-    [HttpGet("latest")]
-    public IEnumerable<Comment> GetLatest()
-    {
-        return Enumerable.Range(1, 4).Select(index => new Comment
+        app.MapGet("/comment/latest", () =>
         {
-            Id = index,
-            CommentText = "Test comment course",
-            Type = "Course",
-            TypeId = 1,
-            TypeName = "KMI",
-            Author = "Karolina Nova",
-            DatePublished = "1.1. 2023"
-        })
-        .ToArray();
+            return Enumerable.Range(1, 4).Select(index => new Comment
+            {
+                Id = index,
+                CommentText = "Test comment course",
+                Type = "Course",
+                TypeId = 1,
+                TypeName = "KMI",
+                DatePublished = "1.1. 2023",
+                User = new User
+                {
+                    Id = 1,
+                    Name = "Karolina Vorlickova",
+                    Username = "test",
+                    Email = "test@test.cz",
+                    ProfileImage = "url"
+                }
+            })
+            .ToArray();
+        });
     }
 }
+
+
 

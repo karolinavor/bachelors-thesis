@@ -75,7 +75,7 @@ export default function File() {
                 <h2>Comments</h2>
                 {file?.comments?.map((comment: CommentType) =>
                     <Comment
-                        user={comment.author}
+                        user={comment.user}
                         content={comment.commentText}
                         subject={{
                             name: comment.typeName,

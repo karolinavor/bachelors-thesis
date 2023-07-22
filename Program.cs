@@ -1,10 +1,25 @@
-﻿var builder = WebApplication.CreateBuilder(args);
+﻿using bachelor_thesis.Controllers;
+using bachelor_thesis.Models;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.AspNetCore.Builder;
+using Microsoft.OpenApi.Models;
 
-// Add services to the container.
+var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddControllersWithViews();
+builder.Services.AddEndpointsApiExplorer();
+builder.Services.AddDbContext<CourseDb>(options => options.UseInMemoryDatabase("items"));
+builder.Services.AddSwaggerGen(c =>
+{
+     c.SwaggerDoc("v1", new OpenApiInfo {
+         Title = "PizzaStore API",
+         Description = "Making the Pizzas you love",
+         Version = "v1" });
+});
 
 var app = builder.Build();
+app.UseSwagger();
+app.UseSwaggerUI();
 
 // Configure the HTTP request pipeline.
 if (!app.Environment.IsDevelopment())
@@ -18,12 +33,16 @@ app.UseStaticFiles();
 app.UsePathBase(new PathString("/api"));
 app.UseRouting();
 
-
 app.MapControllerRoute(
     name: "default",
     pattern: "{controller}/{action=Index}/{id?}");
 
 app.MapFallbackToFile("index.html");
 
-app.Run();
+app.MapCourseControllerRoutes();
+app.MapCommentControllerRoutes();
+app.MapCourseFileControllerRoutes();
+app.MapNewsControllerRoutes();
+app.MapUserControllerRoutes();
 
+app.Run();

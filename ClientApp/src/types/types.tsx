@@ -33,12 +33,14 @@ export type CommentType = {
   type: "File" | "Course",
   typeId: number,
   typeName: string,
-  author: string,
-  datePublished: string
+  datePublished: string,
+  user: UserType
 }
 
 export type UserType = {
   id: number,
   name: string,
-  email: string
+  username : string,
+  email: string,
+  profileImage: string
 }

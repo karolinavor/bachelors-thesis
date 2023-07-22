@@ -3,7 +3,7 @@
   justify-content: space-between;
   align-items: center;
 
-  &.Header-hamburger--open + aside{
+  &.Header-hamburger--open ~ aside{
     display: block;
     position: absolute;
     top: 55px;

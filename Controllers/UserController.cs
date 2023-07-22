@@ -1,27 +1,30 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using bachelor_thesis.Models;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 
 namespace bachelor_thesis.Controllers;
 
-[ApiController]
-[Route("[controller]")]
-public class UserController : ControllerBase
+public static class UserController
 {
-    private readonly ILogger<UserController> _logger;
-
-    public UserController(ILogger<UserController> logger)
+    public static void MapUserControllerRoutes(this WebApplication app)
     {
-        _logger = logger;
-    }
-
-    [HttpGet]
-    public User Get()
-    {
-         return new User
+        app.MapGet("/user", () =>
         {
-            Id = 1,
-            Name = "Karolina Vorlickova",
-            Email = "test@test.cz"
-        };
+            return new User
+            {
+                Id = 1,
+                Name = "Karolina Vorlickova",
+                Username = "test",
+                Email = "test@test.cz",
+                ProfileImage = "url"
+            };
+        });
     }
 }
+
+
+
+
+
+
 
