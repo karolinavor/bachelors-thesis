@@ -18,7 +18,7 @@ namespace bachelor_thesis.Models
         public IEnumerable<Comment> Comments { get; set; }
     }
 
-    class CourseFileDb : DbContext
+    public class CourseFileDb : DbContext
     {
         public CourseFileDb(DbContextOptions options) : base(options) { }
         public DbSet<CourseFile> CourseFiles { get; set; } = null!;

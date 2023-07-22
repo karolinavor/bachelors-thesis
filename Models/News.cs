@@ -11,7 +11,7 @@ namespace bachelor_thesis.Models
         public string Content { get; set; }
     }
 
-    class NewsDb : DbContext
+    public class NewsDb : DbContext
     {
         public NewsDb(DbContextOptions options) : base(options) { }
         public DbSet<News> News { get; set; } = null!;

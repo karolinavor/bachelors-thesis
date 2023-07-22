@@ -8,7 +8,7 @@ public static class NewsController
 {
     public static void MapNewsControllerRoutes(this WebApplication app)
     {
-        app.MapGet("/news", () =>
+        app.MapGet("api/news", () =>
         {
             return Enumerable.Range(1, 2).Select(index => new News
             {

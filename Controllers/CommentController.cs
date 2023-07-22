@@ -8,7 +8,7 @@ public static class CommentController
 {
     public static void MapCommentControllerRoutes(this WebApplication app)
     {
-        app.MapGet("/comment/latest", () =>
+        app.MapGet("api/comment/latest", () =>
         {
             return Enumerable.Range(1, 4).Select(index => new Comment
             {

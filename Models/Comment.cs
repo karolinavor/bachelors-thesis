@@ -13,7 +13,7 @@ namespace bachelor_thesis.Models
         public string DatePublished { get; set; }
     }
 
-    class CommentDb : DbContext
+    public class CommentDb : DbContext
     {
         public CommentDb(DbContextOptions options) : base(options) { }
         public DbSet<Comment> Comments { get; set; } = null!;

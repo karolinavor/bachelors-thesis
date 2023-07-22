@@ -8,7 +8,7 @@ public static class UserController
 {
     public static void MapUserControllerRoutes(this WebApplication app)
     {
-        app.MapGet("/user", () =>
+        app.MapGet("api/user", () =>
         {
             return new User
             {

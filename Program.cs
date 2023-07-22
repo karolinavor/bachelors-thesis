@@ -10,15 +10,16 @@ builder.Services.AddControllersWithViews();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddDbContext<CourseDb>(options => options.UseInMemoryDatabase("items"));
 builder.Services.AddSwaggerGen(c =>
-{
-     c.SwaggerDoc("v1", new OpenApiInfo {
-         Title = "PizzaStore API",
-         Description = "Making the Pizzas you love",
-         Version = "v1" });
-});
+    {
+        c.SwaggerDoc("v1", new OpenApiInfo
+        {
+            Title = "Bachelors thesis API",
+            Version = "v1"
+        });
+    }
+);
 
 var app = builder.Build();
-app.UseSwagger();
 app.UseSwaggerUI();
 
 // Configure the HTTP request pipeline.
@@ -30,7 +31,7 @@ if (!app.Environment.IsDevelopment())
 
 app.UseHttpsRedirection();
 app.UseStaticFiles();
-app.UsePathBase(new PathString("/api"));
+app.UseSwagger();
 app.UseRouting();
 
 app.MapControllerRoute(

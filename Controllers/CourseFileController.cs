@@ -8,7 +8,7 @@ public static class CourseFileController
 {
     public static void MapCourseFileControllerRoutes(this WebApplication app)
     {
-        app.MapGet("/file/{id}", (int id) =>
+        app.MapGet("api/file/{id}", (int id) =>
         {
             return new CourseFile
             {
@@ -43,7 +43,7 @@ public static class CourseFileController
             };
         });
 
-        app.MapGet("/file/latest", () =>
+        app.MapGet("api/file/latest", () =>
         {
             return Enumerable.Range(1, 5).Select(index => new CourseFile
             {

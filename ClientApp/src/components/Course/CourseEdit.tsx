@@ -1,29 +1,29 @@
 import React from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 
 export default function CourseEdit() {
 
     const navigate = useNavigate()
+    const { id } = useParams();
 
-    function addCourse(e:React.ChangeEvent<any>) {
+    async function addCourse(e:React.ChangeEvent<any>) {
         e.preventDefault();
 
         const form = e.target;
         const formData = {
+            id: id,
             name: form[0].value,
             short: form[1].value
         }
 
-        console.log(formData)
-
-        /*
-        axios.put(`http://localhost:3001/api/courses/add`, course)
-        .then(res => {
-            if (res.data.created) {
-                navigate('/courses');
-            }
-        })
-        */
+        await fetch(`/api/course/${id}`, {
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json'
+            },
+            method: "PUT",
+            body: JSON.stringify(formData)
+        });
     }
 
     function goToCourse() {

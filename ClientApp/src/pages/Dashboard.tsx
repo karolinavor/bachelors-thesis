@@ -50,17 +50,19 @@ export default function Dashboard() {
             <div className="Homepage-grid">
                 <div>
                     <h2>News</h2>
-                    {news?.map((newsItem: NewsType) =>
+                    {news?.map((newsItem: NewsType, index) =>
                         <News
                             date={newsItem.date}
                             content={newsItem.content}
+                            key={index}
                         />
                     )}
                 </div>
                 <div>
                     <h2>Latest comments</h2>
-                    {latestComments?.map((comment: CommentType) => 
+                    {latestComments?.map((comment: CommentType, index) => 
                         <Comment
+                            key={index}
                             user={comment.user}
                             content={comment.commentText}
                             subject={{
@@ -73,16 +75,16 @@ export default function Dashboard() {
                 </div>
                 <div>
                     <h2>Latest courses</h2>
-                    {latestCourses?.map((course: CourseType) =>
-                        <div>
+                    {latestCourses?.map((course: CourseType, index) =>
+                        <div key={index}>
                             <Link className="Link" to={"/course/" + course.id}>XKMI - Matematicka informatika</Link>
                         </div>
                     )}
                 </div>
                 <div>
                     <h2>Latest files</h2>
-                    {latestFiles?.map((file: FileType) =>
-                        <div>
+                    {latestFiles?.map((file: FileType, index) =>
+                        <div key={index}>
                             <Link className="Link" to={"/course/1/file/" + file.id}>XBP2 - Pololetni test</Link>
                         </div>
                     )}

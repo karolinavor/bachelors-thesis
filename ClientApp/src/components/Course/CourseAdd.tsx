@@ -2,25 +2,25 @@ import React from 'react';
 
 export default function CourseEdit() {
 
-    function addCourse(e:React.ChangeEvent<any>) {
+    async function addCourse(e:React.ChangeEvent<any>) {
         e.preventDefault();
 
         const form = e.target;
         const formData = {
-            name: form[0].value,
-            short: form[1].value
+            title: form[0].value,
+            short: form[1].value,
+            files: [],
+            comments: []
         }
 
-        console.log(formData)
-
-        /*
-        axios.put(`http://localhost:3001/api/courses/add`, course)
-        .then(res => {
-            if (res.data.created) {
-                navigate('/courses');
-            }
-        })
-        */
+        await fetch(`/api/course/add`, {
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json'
+            },
+            method: "POST",
+            body: JSON.stringify(formData)
+        });
     }
 
     return (

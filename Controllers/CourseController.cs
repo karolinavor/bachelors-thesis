@@ -8,65 +8,48 @@ public static class CourseController
 {
     public static void MapCourseControllerRoutes(this WebApplication app)
     {
-        app.MapGet("/course/{id}", (int id) =>
+        app.MapGet("api/course/{id}", async (CourseDb db, int id) =>
         {
-            return new Course
-            {
-                Id = 1,
-                Title = "Informacni technologie",
-                Short = "INFT",
-                Files = Enumerable.Range(1, 5).Select(index => new CourseFile
-                {
-                    Id = index,
-                    Name = "Soubor",
-                    Author = "Karolina Nova",
-                    DatePublished = "12.2.2023",
-                    Filetype = "pdf",
-                    Url = "",
-                    Thumbnail = "",
-                    Size = "32MB",
-                    Likes = 10,
-                    Dislikes = 2,
-                    NumberOfDownloads = 12
-                }),
-                Comments = Enumerable.Range(1, 3).Select(index => new Comment
-                {
-                    Id = index,
-                    CommentText = "Test comment course",
-                    Type = "Course",
-                    TypeId = 1,
-                    TypeName = "KMI",
-                    DatePublished = "1.1. 2023",
-                    User = new User
-                    {
-                        Id = 1,
-                        Name = "Karolina Vorlickova",
-                        Username = "test",
-                        Email = "test@test.cz",
-                        ProfileImage = "url"
-                    }
-                })
-            };
+            return await db.Courses.FindAsync(id);
         });
 
-        app.MapPost("/course/add", async (CourseDb db, Course course) =>
+        app.MapPost("api/course/add", async (CourseDb db, Course course) =>
         {   
             await db.Courses.AddAsync(course);
+            Random rnd = new Random();
+            course.Id = rnd.Next(100);
             await db.SaveChangesAsync();
             return Results.Created($"/course/{course.Id}", course);
         });
 
-        app.MapPut("/course/edit", async (Course course) =>
+        app.MapPut("api/course/{id}", async (CourseDb db, Course updatedCourse, int id) =>
         {
-    
+            var course = await db.Courses.FindAsync(id);
+            if (course is null) return Results.NotFound();
+            course.Title = updatedCourse.Title;
+            course.Short = updatedCourse.Short;
+            await db.SaveChangesAsync();
+            return Results.NoContent();
+        });
+        
+        app.MapDelete("/course/{id}", async (CourseDb db, int id) =>
+        {
+            var course = await db.Courses.FindAsync(id);
+            if (course is null)
+            {
+                return Results.NotFound();
+            }
+            db.Courses.Remove(course);
+            await db.SaveChangesAsync();
+            return Results.Ok();
         });
 
-        app.MapGet("/course/list", async (CourseDb db) =>
+        app.MapGet("api/course/list", async (CourseDb db) =>
         {
-            await db.Courses.ToListAsync();
+            return await db.Courses.ToListAsync();
         });
 
-        app.MapGet("/course/comments", () =>
+        app.MapGet("api/course/comments", () =>
         {
             return Enumerable.Range(1, 3).Select(index => new Comment
             {
@@ -88,7 +71,7 @@ public static class CourseController
             .ToArray();
         });
 
-        app.MapGet("/course/latest", () =>
+        app.MapGet("api/course/latest", () =>
         {
             return Enumerable.Range(1, 5).Select(index => new Course
             {

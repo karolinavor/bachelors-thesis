@@ -11,7 +11,7 @@ namespace bachelor_thesis.Models
         public string ProfileImage { get; set; }
     }
 
-    class UserDb : DbContext
+    public class UserDb : DbContext
     {
         public UserDb(DbContextOptions options) : base(options) { }
         public DbSet<User> Users { get; set; } = null!;
