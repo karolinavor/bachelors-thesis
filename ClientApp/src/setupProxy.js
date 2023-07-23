@@ -9,10 +9,10 @@ const context = [
   "/api/course",
   "/api/courses",
   "/api/course/comments",
-  "/api/course/latest",
-  "/api/comment/latest",
+  "/api/courses/latest",
+  "/api/comments/latest",
   "/api/file",
-  "/api/file/latest",
+  "/api/files/latest",
   "/api/news",
   "/api/user"
 ];

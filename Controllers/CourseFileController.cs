@@ -8,13 +8,8 @@ namespace BachelorThesis.Controllers;
 public static class CourseFileController
 {
     public static void MapCourseFileControllerRoutes(this WebApplication app)
-    {
-        app.MapGet("api/file/latest", async (StudyDb db) =>
-        {
-            return await db.CourseFiles.OrderByDescending(s => s.DateAdded).Take(5).ToListAsync();
-        });
-        
-        app.MapGet("api/file/{fileId}", async (StudyDb db, int fileId) =>
+    {    
+        app.MapGet("api/file/{fileId}/get", async (StudyDb db, int fileId) =>
         {
             var courseFile = await db.CourseFiles.FindAsync(fileId);
             if (courseFile is null) return Results.NotFound();
@@ -27,7 +22,9 @@ public static class CourseFileController
             if (courseFile is null) return Results.NotFound();
             if (File.Exists(Path.Combine(Directory.GetCurrentDirectory(),courseFile.Url)))
             {
-                var file = File.OpenRead(Path.Combine(Directory.GetCurrentDirectory(), courseFile.Url));
+                courseFile.NumberOfDownloads = courseFile.NumberOfDownloads + 1;
+                Console.Write(courseFile.NumberOfDownloads);
+                await db.SaveChangesAsync();
                 return Results.File(Path.Combine(Directory.GetCurrentDirectory(), courseFile.Url));
             }
             else
@@ -44,8 +41,6 @@ public static class CourseFileController
             if (File.Exists(Path.Combine(Directory.GetCurrentDirectory(),courseFile.Url))) {
                 File.Delete(Path.Combine(Directory.GetCurrentDirectory(),courseFile.Url));
             }
-
-            Console.Write(courseFile.Url);
             await db.SaveChangesAsync();
             return Results.Ok();
         });
@@ -83,9 +78,14 @@ public static class CourseFileController
 
         app.MapGet("api/course/{courseId}/files", async (StudyDb db, int courseId) =>
         {
-            var courseFiles = db.CourseFiles.Where(s => s.CourseId == courseId);
+            var courseFiles = db.CourseFiles.Where(s => s.CourseId == courseId).OrderByDescending(s => s.DateAdded);
             if (courseFiles is null) return Results.NotFound();
             return Results.Ok(courseFiles);
+        });
+
+        app.MapGet("api/files/latest", async (StudyDb db) =>
+        {
+            return await db.CourseFiles.OrderByDescending(s => s.DateAdded).Take(5).ToListAsync();
         });
     }
 }

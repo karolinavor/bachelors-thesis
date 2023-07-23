@@ -11,7 +11,7 @@ public static class NewsController
     {
         app.MapGet("api/news", async (StudyDb db) =>
         {
-            return await db.News.OrderBy(s => s.DateAdded).ToListAsync();
+            return await db.News.OrderByDescending(s => s.DateAdded).Take(3).ToListAsync();
         });
 
         app.MapPost("api/news/add", async (StudyDb db, News news) =>

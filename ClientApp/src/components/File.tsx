@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import { useNavigate, useParams } from 'react-router-dom'
 import { FileType } from '../types/types';
+import { getLocalDate, getLocalTime } from '../utils/getTime';
 
 export default function File() {
 
@@ -13,7 +14,7 @@ export default function File() {
     }, [])
 
     async function getFile() {
-        const response = await fetch(`/api/file/${fileId}`);
+        const response = await fetch(`/api/file/${fileId}/get`);
         const data = await response.json();
         setFile(data)
     }
@@ -54,13 +55,11 @@ export default function File() {
         navigate("/" + urlParts[urlParts.length-2] + "/" + urlParts[urlParts.length-1])
     }
 
-    let formattedDate = new Date(file?.dateAdded);
-
     return (
         <>
             <button className="Button" onClick={() => goToCourse()}>Back to course</button>
             <section>
-                <h1>File Detail</h1>
+                <h1>File Detail - {file?.name}</h1>
                 <div className='flex justify-between'>
                     <div className='flex flex-column'>
                         <div>
@@ -69,7 +68,7 @@ export default function File() {
                         </div>
                         <div>
                             <div><b>Date published</b></div>
-                            <div>{formattedDate.toLocaleDateString().replaceAll("/", ".")}</div>
+                            <div>{getLocalTime(file?.dateAdded)} {getLocalDate(file?.dateAdded)}</div>
                         </div>
                         <div>
                             <div><b>Filetype</b></div>
@@ -107,15 +106,10 @@ export default function File() {
             <section>
                 <h2>Comments</h2>
                 {/*
-                {file?.comments?.map((comment: CommentType) =>
+                {file?.comments?.map((comment: CommentType, index) =>
                     <Comment
-                        user={comment.user}
-                        content={comment.commentText}
-                        subject={{
-                            name: comment.typeName,
-                            type: comment.type,
-                            url: comment.id
-                        }}
+                        key={index}
+                        comment={comment}
                     />
                 )}
                 */}

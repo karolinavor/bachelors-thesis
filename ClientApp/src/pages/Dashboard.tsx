@@ -11,6 +11,13 @@ export default function Dashboard() {
     const [latestCourses, setLatestCourses] = useState<CourseType[]>([]);
     const [latestFiles, setLatestFiles] = useState<FileType[]>([]);
 
+    useEffect(() => {
+        getNews()
+        getLatestComments()
+        getLatestCourses()
+        getLatestFiles()
+    }, [])
+
     async function getNews() {
         const response = await fetch('/api/news');
         const data = await response.json();
@@ -18,29 +25,22 @@ export default function Dashboard() {
     }
 
     async function getLatestComments() {
-        const response = await fetch('/api/comment/latest');
+        const response = await fetch('/api/comments/latest');
         const data = await response.json();
         setLatestComments(data)
     }
 
     async function getLatestCourses() {
-        const response = await fetch('/api/course/latest');
+        const response = await fetch('/api/courses/latest');
         const data = await response.json();
         setLatestCourses(data)
     }
 
     async function getLatestFiles() {
-        const response = await fetch('/api/file/latest');
+        const response = await fetch('/api/files/latest');
         const data = await response.json();
         setLatestFiles(data)
     }
-
-    useEffect(() => {
-        getNews()
-        getLatestComments()
-        getLatestCourses()
-        getLatestFiles()
-    }, [])
 
     return (
         <section>
@@ -57,41 +57,41 @@ export default function Dashboard() {
                             key={index}
                         />
                     )}
-                    {news &&
+                    {news.length > 0 ?
                         <Link className="Link" to={"/news/"}>Show more</Link>
+                        : <div>No news. <Link className="Link" to={"/news/"}>Create some.</Link></div>
                     }
                 </div>
-                <div>
-                    <h2>Latest comments</h2>
-                    {latestComments?.map((comment: CommentType, index) => 
-                        <Comment
-                            key={index}
-                            user={comment.user}
-                            content={comment.commentText}
-                            subject={{
-                                name: comment.typeName,
-                                type: comment.type,
-                                url: comment.id
-                            }}
-                        />
-                    )}
-                </div>
-                <div>
-                    <h2>Latest courses</h2>
-                    {latestCourses?.map((course: CourseType, index) =>
-                        <div key={index}>
-                            <Link className="Link" to={"/course/" + course.id}>{course.short} - {course.title}</Link>
-                        </div>
-                    )}
-                </div>
-                <div>
-                    <h2>Latest files</h2>
-                    {latestFiles?.map((file: FileType, index) =>
-                        <div key={index}>
-                            <Link className="Link" to={`/course/${file.courseId}/file/` + file.id}>{file.name}.{file.filetype}</Link>
-                        </div>
-                    )}
-                </div>
+                {latestComments.length > 0 &&
+                    <div>
+                        <h2>Latest comments</h2>
+                        {latestComments?.map((comment: CommentType, index) =>
+                            <Comment
+                                comment={comment}
+                            />
+                        )}
+                    </div>
+                }
+                {latestCourses.length > 0 &&
+                    <div>
+                        <h2>Latest courses</h2>
+                        {latestCourses?.map((course: CourseType, index) =>
+                            <div key={index}>
+                                <Link className="Link" to={"/course/" + course.id}>{course.short} - {course.title}</Link>
+                            </div>
+                        )}
+                    </div>
+                }
+                {latestFiles.length > 0 &&
+                    <div>
+                        <h2>Latest files</h2>
+                        {latestFiles?.map((file: FileType, index) =>
+                            <div key={index}>
+                                <Link className="Link" to={`/course/${file.courseId}/file/` + file.id}>{file.name}.{file.filetype}</Link>
+                            </div>
+                        )}
+                    </div>
+                }
             </div>
         </section>
     )

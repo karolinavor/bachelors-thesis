@@ -30,11 +30,8 @@ export type NewsType = {
 export type CommentType = {
   id: number,
   commentText: string,
-  type: "File" | "Course",
-  typeId: number,
-  typeName: string,
   dateAdded: Date,
-  user: UserType
+  author: string,
   fileId: number,
   courseId: number
 }

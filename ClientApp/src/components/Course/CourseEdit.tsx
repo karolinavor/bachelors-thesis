@@ -1,22 +1,42 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
+import { CourseType } from '../../types/types';
 
 export default function CourseEdit() {
 
     const navigate = useNavigate()
-    const { id } = useParams();
+    const { courseId } = useParams();
+
+    const [course, setCourse] = useState<CourseType>();
+
+    useEffect(() => {
+        getCourse()
+    }, [])
+
+    useEffect(() => {
+        getCourse()
+    }, [courseId])
+
+    async function getCourse() {
+        const response = await fetch(`/api/course/${courseId}/get`);
+        const data = await response.json();
+        if (!data) {
+            navigate("/");
+        }
+        setCourse(data)
+    }
 
     async function addCourse(e:React.ChangeEvent<any>) {
         e.preventDefault();
 
         const form = e.target;
         const formData = {
-            id: id,
+            id: courseId,
             title: form[0].value,
             short: form[1].value
         }
 
-        await fetch(`/api/course/${id}`, {
+        const response = await fetch(`/api/course/${courseId}/edit`, {
             headers: {
                 'Accept': 'application/json',
                 'Content-Type': 'application/json'
@@ -24,6 +44,9 @@ export default function CourseEdit() {
             method: "PUT",
             body: JSON.stringify(formData)
         });
+        if (response.status === 200) {
+            navigate(`/course/${courseId}`);
+        }
     }
 
     function goToCourse() {
@@ -41,11 +64,11 @@ export default function CourseEdit() {
                 <form onSubmit={event => addCourse(event)} className="flex-column">
                     <div>
                         <label htmlFor="name">Course name</label>
-                        <input id="name" type="text" required></input>
+                        <input id="name" type="text" required defaultValue={course?.title}></input>
                     </div>
                     <div>
                         <label htmlFor="short">Course short</label>
-                        <input id="short" type="text" required></input>
+                        <input id="short" type="text" required defaultValue={course?.short}></input>
                     </div>
                     <button className="Button" type="submit">Submit</button>
                 </form>

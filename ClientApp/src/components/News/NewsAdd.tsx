@@ -5,7 +5,7 @@ export default function NewsAdd() {
 
   const navigate = useNavigate();
 
-  async function addNews(e) {
+  async function addNews(e:React.ChangeEvent<any>) {
     e.preventDefault()
 
     const form = e.target;

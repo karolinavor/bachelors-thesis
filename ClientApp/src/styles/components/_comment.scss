@@ -5,7 +5,12 @@
   grid-template-rows: 1fr auto;
   grid-template-areas: 
   'picture heading'
-  'picture content';
+  '. content';
+
+  padding: 1rem;
+  background: whitesmoke;
+  border-radius: 7px;
+  margin-bottom: 1rem;
 
   &-picture {
     display: inline-block;

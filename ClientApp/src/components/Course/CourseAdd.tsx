@@ -12,8 +12,6 @@ export default function CourseEdit() {
         const formData = {
             title: form[0].value,
             short: form[1].value,
-            files: [],
-            comments: []
         }
 
         const response = await fetch(`/api/course/add`, {

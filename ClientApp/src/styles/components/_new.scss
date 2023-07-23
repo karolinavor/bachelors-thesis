@@ -3,6 +3,11 @@
   flex-direction: column;
   gap: 1rem;
 
+  padding: 1rem;
+  background: whitesmoke;
+  border-radius: 7px;
+  margin-bottom: 1rem;
+
   & + & {
     margin-top: 3rem;
   }

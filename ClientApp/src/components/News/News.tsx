@@ -1,4 +1,5 @@
 import React from "react";
+import { getLocalDate, getLocalTime } from "../../utils/getTime";
 
 type NewProps = {
     date: Date,
@@ -6,13 +7,11 @@ type NewProps = {
 }
 
 export default function News({ date, content }: NewProps) {
-  
-    let formattedDate = new Date(date);
     
     return (
         <div className="New">
         <div className="New-date">
-            {formattedDate.toLocaleDateString().replaceAll("/", ".")}
+            {getLocalTime(date)} {getLocalDate(date)}
         </div>
         <p>
             {content}

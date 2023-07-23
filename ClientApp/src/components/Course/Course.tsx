@@ -18,8 +18,20 @@ export default function Course() {
     const [courseComments, setCourseComments] = useState<CommentType[]>();
     const [filesComments, setFilesComments] = useState<CommentType[]>();
 
+    useEffect(() => {
+        getCourse()
+        getCourseComments()
+        getFiles()
+    }, [])
+
+    useEffect(() => {
+        getCourse()
+        getCourseComments()
+        getFiles()
+    }, [courseId])
+
     async function getCourse() {
-        const response = await fetch(`/api/course/${courseId}`);
+        const response = await fetch(`/api/course/${courseId}/get`);
         const data = await response.json();
         if (!data) {
             navigate("/");
@@ -42,14 +54,8 @@ export default function Course() {
         setCourseComments(data)
     }
 
-    useEffect(() => {
-        getCourse()
-        getCourseComments()
-        getFiles()
-    }, [])
-
     async function deleteCourse() {
-        const response = await fetch(`/api/course/${courseId}`, {
+        const response = await fetch(`/api/course/${courseId}/delete`, {
             headers: {
                 'Accept': 'application/json',
                 'Content-Type': 'application/json'
@@ -68,6 +74,28 @@ export default function Course() {
                 courseId: parseInt(courseId)
             }
         }))
+    }
+
+    async function addNewComment(e:React.ChangeEvent<any>) {
+        e.preventDefault();
+
+        const form = e.target;
+    
+        const formData = {
+            commentText: form[0].value,
+            author: "Karolina TODO"
+        }
+
+        const response = await fetch(`/api/course/${courseId}/comments/add`, {
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json'
+            },
+            method: "POST",
+            body: JSON.stringify(formData)
+        });
+        //const data = await response.json();
+        //if (response.status === 201 && data) {}
     }
 
     return (
@@ -99,28 +127,23 @@ export default function Course() {
                                 {filesComments?.map((comment: CommentType, index) => 
                                     <Comment
                                         key={index}
-                                        user={comment.user}
-                                        content={comment.commentText}
-                                        subject={{
-                                            name: comment.typeName,
-                                            type: comment.type,
-                                            url: comment.id
-                                        }}
+                                        comment={comment}
                                     />
                                 )}
                             </section> 
                             <section>
                                 <h2 className='mt-0'>Latest course comments</h2>
+                                <form onSubmit={event => addNewComment(event)} className="flex-column">
+                                    <div>
+                                        <label htmlFor="content">Comment:</label>
+                                        <textarea id="content" required></textarea>
+                                    </div>
+                                    <button className="Button" type="submit">Send comment</button>
+                                </form>
                                 {courseComments?.map((comment: CommentType, index) => 
                                     <Comment
                                         key={index}
-                                        user={comment.user}
-                                        content={comment.commentText}
-                                        subject={{
-                                            name: comment.typeName,
-                                            type: comment.type,
-                                            url: comment.id
-                                        }}
+                                        comment={comment}
                                     />
                                 )}
                             </section>

@@ -21,6 +21,8 @@ export default function Sidebar() {
     useEffect(() => {
         getCourses()
     }, [])
+
+    // TODO get items when new added
     
     return (
         <aside>
