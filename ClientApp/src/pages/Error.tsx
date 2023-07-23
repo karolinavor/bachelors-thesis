@@ -1,10 +1,16 @@
 import React from 'react';
+import Header from '../components/Header';
+import Footer from '../components/Footer';
 
 export default function Error() {
     return (
-        <div>
-            <h1>REACT APP - ERROR 404</h1>
-            <h2>NOT FOUND</h2>
+        <div className="ErrorPage">
+            <Header />
+            <main>
+                <h1>Error</h1>
+                <h2>404 Not found</h2>
+            </main>
+            <Footer />
         </div>
-    )
+    );
 }

@@ -1,14 +1,17 @@
-﻿using bachelor_thesis.Controllers;
-using bachelor_thesis.Models;
+﻿using BachelorThesis.Controllers;
+using BachelorThesis.Models;
+using BachelorThesis.Database;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.OpenApi.Models;
 
 var builder = WebApplication.CreateBuilder(args);
 
+var connectionString = builder.Configuration.GetConnectionString("Study") ?? "Data Source=Study.db";
+
 builder.Services.AddControllersWithViews();
 builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddDbContext<CourseDb>(options => options.UseInMemoryDatabase("items"));
+builder.Services.AddSqlite<StudyDb>(connectionString);
 builder.Services.AddSwaggerGen(c =>
     {
         c.SwaggerDoc("v1", new OpenApiInfo
@@ -45,5 +48,9 @@ app.MapCommentControllerRoutes();
 app.MapCourseFileControllerRoutes();
 app.MapNewsControllerRoutes();
 app.MapUserControllerRoutes();
+
+if (!Directory.Exists("./FileSystem")) {
+    Directory.CreateDirectory(Path.Combine(Directory.GetCurrentDirectory(), "./","FileSystem"));
+}
 
 app.Run();

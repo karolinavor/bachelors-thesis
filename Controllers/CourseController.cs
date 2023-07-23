@@ -1,28 +1,30 @@
-﻿using bachelor_thesis.Models;
+﻿using BachelorThesis.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using BachelorThesis.Database;
 
-namespace bachelor_thesis.Controllers;
+namespace BachelorThesis.Controllers;
 
 public static class CourseController
 {
     public static void MapCourseControllerRoutes(this WebApplication app)
     {
-        app.MapGet("api/course/{id}", async (CourseDb db, int id) =>
+        app.MapGet("api/course/{id}", async (StudyDb db, int id) =>
         {
             return await db.Courses.FindAsync(id);
         });
 
-        app.MapPost("api/course/add", async (CourseDb db, Course course) =>
+        app.MapPost("api/course/add", async (StudyDb db, Course course) =>
         {   
             await db.Courses.AddAsync(course);
             Random rnd = new Random();
             course.Id = rnd.Next(100);
+            course.DateAdded = DateTime.Now;
             await db.SaveChangesAsync();
             return Results.Created($"/course/{course.Id}", course);
         });
 
-        app.MapPut("api/course/{id}", async (CourseDb db, Course updatedCourse, int id) =>
+        app.MapPut("api/course/{id}", async (StudyDb db, Course updatedCourse, int id) =>
         {
             var course = await db.Courses.FindAsync(id);
             if (course is null) return Results.NotFound();
@@ -32,7 +34,7 @@ public static class CourseController
             return Results.NoContent();
         });
         
-        app.MapDelete("/course/{id}", async (CourseDb db, int id) =>
+        app.MapDelete("api/course/{id}", async (StudyDb db, int id) =>
         {
             var course = await db.Courses.FindAsync(id);
             if (course is null)
@@ -44,42 +46,14 @@ public static class CourseController
             return Results.Ok();
         });
 
-        app.MapGet("api/course/list", async (CourseDb db) =>
+        app.MapGet("api/courses", async (StudyDb db) =>
         {
             return await db.Courses.ToListAsync();
         });
 
-        app.MapGet("api/course/comments", () =>
+        app.MapGet("api/course/latest", async (StudyDb db) =>
         {
-            return Enumerable.Range(1, 3).Select(index => new Comment
-            {
-                Id = index,
-                CommentText = "Test comment",
-                Type = "File",
-                TypeId = 1,
-                TypeName = "KMI",
-                DatePublished = "1.1. 2023",
-                User = new User
-                {
-                    Id = 1,
-                    Name = "Karolina Vorlickova",
-                    Username = "test",
-                    Email = "test@test.cz",
-                    ProfileImage = "url"
-                }
-            })
-            .ToArray();
-        });
-
-        app.MapGet("api/course/latest", () =>
-        {
-            return Enumerable.Range(1, 5).Select(index => new Course
-            {
-                Id = index,
-                Title = "Nahodny predmet",
-                Short = "TEST"
-            })
-            .ToArray();
+            return await db.Courses.OrderByDescending(s => s.DateAdded).Take(5).ToListAsync();
         });
     }
 }

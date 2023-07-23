@@ -12,7 +12,7 @@ export default function CourseEdit() {
         const form = e.target;
         const formData = {
             id: id,
-            name: form[0].value,
+            title: form[0].value,
             short: form[1].value
         }
 

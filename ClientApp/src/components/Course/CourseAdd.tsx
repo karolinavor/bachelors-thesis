@@ -1,6 +1,9 @@
 import React from 'react';
+import { useNavigate } from 'react-router-dom';
 
 export default function CourseEdit() {
+
+    const navigate = useNavigate();
 
     async function addCourse(e:React.ChangeEvent<any>) {
         e.preventDefault();
@@ -13,7 +16,7 @@ export default function CourseEdit() {
             comments: []
         }
 
-        await fetch(`/api/course/add`, {
+        const response = await fetch(`/api/course/add`, {
             headers: {
                 'Accept': 'application/json',
                 'Content-Type': 'application/json'
@@ -21,6 +24,10 @@ export default function CourseEdit() {
             method: "POST",
             body: JSON.stringify(formData)
         });
+        const data = await response.json();
+        if (response.status === 201 && data) {
+            navigate(`/course/${data.id}`);
+        }
     }
 
     return (

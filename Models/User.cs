@@ -1,6 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 
-namespace bachelor_thesis.Models 
+namespace BachelorThesis.Models 
 {
     public class User
     {
@@ -9,12 +9,6 @@ namespace bachelor_thesis.Models
         public string Name { get; set; }
         public string Email { get; set; }
         public string ProfileImage { get; set; }
-    }
-
-    public class UserDb : DbContext
-    {
-        public UserDb(DbContextOptions options) : base(options) { }
-        public DbSet<User> Users { get; set; } = null!;
     }
 }
 

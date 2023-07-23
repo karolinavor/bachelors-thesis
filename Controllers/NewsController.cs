@@ -1,22 +1,27 @@
-﻿using bachelor_thesis.Models;
+﻿using BachelorThesis.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using BachelorThesis.Database;
 
-namespace bachelor_thesis.Controllers;
+namespace BachelorThesis.Controllers;
 
 public static class NewsController
 {
     public static void MapNewsControllerRoutes(this WebApplication app)
     {
-        app.MapGet("api/news", () =>
+        app.MapGet("api/news", async (StudyDb db) =>
         {
-            return Enumerable.Range(1, 2).Select(index => new News
-            {
-                Id = index,
-                Date = "26.09.2022",
-                Content = "Bylo zprovozněno přihlašování k portalu pomocí SSO (Single sign-on). Prosíme studenty, aby přednostně využívali tento typ přihlašování. Přihlašování na portal pomocí jména a hesla bude do budoucna zrušeno."
-            })
-            .ToArray();
+            return await db.News.OrderBy(s => s.DateAdded).ToListAsync();
+        });
+
+        app.MapPost("api/news/add", async (StudyDb db, News news) =>
+        {
+            await db.News.AddAsync(news);
+            Random rnd = new Random();
+            news.Id = rnd.Next(100);
+            news.DateAdded = DateTime.Now;
+            await db.SaveChangesAsync();
+            return Results.Created("/", news);
         });
     }
 }

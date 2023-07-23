@@ -1,8 +1,9 @@
-﻿using bachelor_thesis.Models;
+﻿using BachelorThesis.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using BachelorThesis.Database;
 
-namespace bachelor_thesis.Controllers;
+namespace BachelorThesis.Controllers;
 
 public static class UserController
 {

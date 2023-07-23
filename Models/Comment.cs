@@ -1,6 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 
-namespace bachelor_thesis.Models 
+namespace BachelorThesis.Models 
 {
     public class Comment
     {
@@ -10,13 +10,9 @@ namespace bachelor_thesis.Models
         public int TypeId { get; set; }
         public string TypeName { get; set; }
         public User User { get; set; }
-        public string DatePublished { get; set; }
-    }
-
-    public class CommentDb : DbContext
-    {
-        public CommentDb(DbContextOptions options) : base(options) { }
-        public DbSet<Comment> Comments { get; set; } = null!;
+        public DateTime DateAdded { get; set; }
+        public int CourseId { get; set; }
+        public int FileId { get; set; }
     }
 }
 

@@ -1,29 +1,29 @@
 export type CourseType = {
   id: number,
+  dateAdded: Date,
   short: string
   title: string,
-  files: FileType[],
-  comments: CommentType[]
 };
 
 export type FileType = {
   id: number,
   name: string
   author: string,
-  datePublished: string,
+  dateAdded: Date,
   filetype: string,
   url: string,
-  thumbnail: string,
-  size: string,
+  size: number,
+  /*
   likes: number,
   dislikes: number,
+  */
   numberOfDownloads: number,
-  comments: CommentType[]
+  courseId: number
 }
 
 export type NewsType = {
   id: number,
-  date: string
+  dateAdded: Date,
   content: string
 }
 
@@ -33,8 +33,10 @@ export type CommentType = {
   type: "File" | "Course",
   typeId: number,
   typeName: string,
-  datePublished: string,
+  dateAdded: Date,
   user: UserType
+  fileId: number,
+  courseId: number
 }
 
 export type UserType = {

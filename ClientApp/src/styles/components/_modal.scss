@@ -1,0 +1,88 @@
+.Modal {
+    .Modal-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 5rem;
+
+        .Modal-h1 {
+            font-size: 2.4rem;
+            display: inline-block;
+        }
+
+        .icon-close {
+            cursor: pointer;
+            display: block;
+            background: none;
+            border: none;
+            padding: 0;
+            height: 28px;
+        }
+    }
+
+    .Modal-content {
+        .Modal-text {
+            margin-top: 1rem;
+            margin-bottom: 4rem;
+            font-weight: 700;
+        }
+
+        .Modal-radios {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .Modal-h2 {
+            font-size: 1.8rem;
+            margin-bottom: 1.4rem;
+        }
+
+        .Button[type="submit"] {
+            margin-top: 4rem;
+        }
+
+        textarea {
+            min-height: 5rem;
+        }
+    }
+}
+
+.ReactModal__Overlay {
+  position: fixed;
+  inset: 0px;
+  background: rgba(19, 36, 104, 0.15);
+  z-index: 2;
+}
+
+.ReactModal__Overlay {
+  .ReactModal__Content {
+
+    @include media(lg) {
+      inset: 50% auto auto 50%!important;
+      transform: translate(-50%, -50%);
+
+      width: 100%;
+      height: auto;
+
+      max-width: 600px;
+      max-height: 800px;
+    }
+
+    @include media(xxl) {
+      max-width: 800px;
+      max-height: 80%;
+    }
+  }
+
+  &.small .ReactModal__Content {
+    @include media(lg) {
+      max-width: 400px;
+      max-height: 600px;
+    }
+
+    @include media(xxl) {
+      max-width: 400px;
+      max-height: 60%;
+    }
+  }
+}

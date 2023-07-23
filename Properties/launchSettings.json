@@ -8,7 +8,7 @@
     }
   },
   "profiles": {
-    "bachelor_thesis": {
+    "BachelorThesis": {
       "commandName": "Project",
       "launchBrowser": true,
       "applicationUrl": "https://localhost:7109;http://localhost:5257",

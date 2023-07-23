@@ -1,3 +1,6 @@
+$header: 67.5px;
+$footer: 51px;
+
 .LoginPage {
   width: 100vw;
   height: 100vh;
@@ -23,14 +26,28 @@
   }
 }
 
-.Page {
+.Page,
+.ErrorPage {
   display: grid;
   grid-template-columns: 1fr;
   grid-template-rows: 55px auto 55px;
   min-height: 100vh;
+  width: 100%;
+}
 
+.Page {
   @include media(md) {
     grid-template-columns: minmax(100px, 300px) minmax(200px, 1fr);
+  }
+}
 
+.ErrorPage {
+  text-align: center;
+
+  main {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
   }
 }

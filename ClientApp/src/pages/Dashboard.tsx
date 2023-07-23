@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
-import News from '../components/News';
+import News from '../components/News/News';
 import Comment from '../components/Comment';
 import { CommentType, CourseType, FileType, NewsType } from '../types/types';
 
@@ -52,11 +52,14 @@ export default function Dashboard() {
                     <h2>News</h2>
                     {news?.map((newsItem: NewsType, index) =>
                         <News
-                            date={newsItem.date}
+                            date={newsItem.dateAdded}
                             content={newsItem.content}
                             key={index}
                         />
                     )}
+                    {news &&
+                        <Link className="Link" to={"/news/"}>Show more</Link>
+                    }
                 </div>
                 <div>
                     <h2>Latest comments</h2>
@@ -77,7 +80,7 @@ export default function Dashboard() {
                     <h2>Latest courses</h2>
                     {latestCourses?.map((course: CourseType, index) =>
                         <div key={index}>
-                            <Link className="Link" to={"/course/" + course.id}>XKMI - Matematicka informatika</Link>
+                            <Link className="Link" to={"/course/" + course.id}>{course.short} - {course.title}</Link>
                         </div>
                     )}
                 </div>
@@ -85,7 +88,7 @@ export default function Dashboard() {
                     <h2>Latest files</h2>
                     {latestFiles?.map((file: FileType, index) =>
                         <div key={index}>
-                            <Link className="Link" to={"/course/1/file/" + file.id}>XBP2 - Pololetni test</Link>
+                            <Link className="Link" to={"/course/1/file/" + file.id}>{file.name}.{file.filetype}</Link>
                         </div>
                     )}
                 </div>

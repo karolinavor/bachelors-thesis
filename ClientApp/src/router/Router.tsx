@@ -12,6 +12,8 @@ import Settings from '../pages/Settings';
 import Error from '../pages/Error'
 import Textpage from '../pages/Textpage';
 import CourseAdd from '../components/Course/CourseAdd';
+import NewsPage from '../pages/NewsPage';
+import NewsAdd from '../components/News/NewsAdd';
 
 export const RoutesList = {
   dashboard: {
@@ -24,35 +26,43 @@ export const RoutesList = {
   },
   login: {
     url: `login/`,
-    name: `Přihlášení`
+    name: `Login`
   },
   settings: {
     url: `settings/`,
-    name: `Nastavení`
+    name: `Settings`
   },
   course: {
-    url: `course/:id/`,
-    name: `Kurz`
+    url: `course/:courseId/`,
+    name: `Course`
   },
   courseEdit: {
-    url: `/course/:id/edit/`,
-    name: `Editovat kurz`
+    url: `/course/:courseId/edit/`,
+    name: `Edit course`
   },
   courseAdd: {
     url: `/course/add/`,
-    name: `Přidat kurz`
+    name: `Add course`
   },
   file: {
-    url: `file/:id/`,
-    name: `Soubor`
+    url: `file/:fileId/`,
+    name: `File`
   },
   user: {
     url: `user/:user/`,
-    name: `Uživatel`
+    name: `User`
   },
   error: {
     url: `*`,
     name: `Error`
+  },
+  news: {
+    url: `news`,
+    name: `News`
+  },
+  newsAdd: {
+    url: `news/add`,
+    name: `News Add`
   },
 }
 
@@ -81,6 +91,14 @@ const router = createBrowserRouter([
     {
       path: RoutesList.user.url,
       element: <Profile />,
+    },
+    {
+      path: RoutesList.news.url,
+      element: <NewsPage />,
+    },
+    {
+      path: RoutesList.newsAdd.url,
+      element: <NewsAdd />,
     },
     {
       path: RoutesList.courseAdd.url,

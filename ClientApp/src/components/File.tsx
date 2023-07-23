@@ -1,22 +1,40 @@
 import React, { useEffect, useState } from 'react'
-import { useNavigate } from 'react-router-dom'
-import Comment from "./Comment"
-import { CommentType, FileType } from '../types/types';
+import { useNavigate, useParams } from 'react-router-dom'
+import { FileType } from '../types/types';
 
 export default function File() {
 
     const navigate = useNavigate()
+    const { fileId } = useParams();
     const [file, setFile] = useState<FileType>(null);
-
-    async function getFile() {
-        const response = await fetch('/api/file');
-        const data = await response.json();
-        setFile(data)
-    }
 
     useEffect(() => {
         getFile()
     }, [])
+
+    async function getFile() {
+        const response = await fetch(`/api/file/${fileId}`);
+        const data = await response.json();
+        setFile(data)
+    }
+
+    async function deleteFile() {
+        const response = await fetch(`/api/file/${fileId}/delete`, {
+            method: "DELETE",
+        });
+        if (response.status === 200) {
+            goToCourse();
+        }
+    }
+
+    async function downloadFile() {
+        const response = await fetch(`/api/file/${fileId}/download`, {
+            method: "GET",
+        });
+        if (response.status === 200) {
+            console.log(response)
+        }
+    }
 
     function goToCourse() {
         let url = window.location.href
@@ -24,6 +42,8 @@ export default function File() {
         let urlParts = url.split("/")
         navigate("/" + urlParts[urlParts.length-2] + "/" + urlParts[urlParts.length-1])
     }
+
+    let formattedDate = new Date(file?.dateAdded);
 
     return (
         <>
@@ -38,7 +58,7 @@ export default function File() {
                         </div>
                         <div>
                             <div><b>Date published</b></div>
-                            <div>{file?.datePublished}</div>
+                            <div>{formattedDate.toLocaleDateString().replaceAll("/", ".")}</div>
                         </div>
                         <div>
                             <div><b>Filetype</b></div>
@@ -46,12 +66,13 @@ export default function File() {
                         </div>
                         <div>
                             <div><b>Size</b></div>
-                            <div>{file?.size}</div>
+                            <div>{file?.size} B</div>
                         </div>
                         <div>
                             <div><b>Number of downloads</b></div>
                             <div>{file?.numberOfDownloads}</div>
                         </div>
+                        {/*
                         <div className='flex'>
                             <div>
                                 <div><b>Likes</b></div>
@@ -62,17 +83,19 @@ export default function File() {
                                 <div>{file?.dislikes}</div>
                             </div>                        
                         </div>
-                        <a className="Button Button-large" href={file?.url} download>
+                        */}
+                        <button className="Button Button-large" onClick={() => downloadFile()}>
                             Download
-                        </a>
-                    </div>
-                    <div>
-                        <img src={file?.thumbnail} alt="File thumbnail" width="300" height="300" />
+                        </button>
+                        <button className="Button Button-large" onClick={() => deleteFile()}>
+                            Delete
+                        </button>
                     </div>
                 </div>
             </section>
             <section>
                 <h2>Comments</h2>
+                {/*
                 {file?.comments?.map((comment: CommentType) =>
                     <Comment
                         user={comment.user}
@@ -84,6 +107,7 @@ export default function File() {
                         }}
                     />
                 )}
+                */}
             </section>
         </>
     )

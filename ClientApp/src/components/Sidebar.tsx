@@ -7,7 +7,13 @@ export default function Sidebar() {
     const [courses, setCourses] = useState<CourseType[]>([]);
 
     async function getCourses() {
-        const response = await fetch('/api/course/list');
+        const response = await fetch('/api/courses', {
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json'
+            },
+            method: "GET"
+        });
         const data = await response.json();
         setCourses(data)
     }
@@ -15,7 +21,7 @@ export default function Sidebar() {
     useEffect(() => {
         getCourses()
     }, [])
-
+    
     return (
         <aside>
             <h2>Courses</h2>
