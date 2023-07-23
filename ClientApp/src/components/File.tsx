@@ -30,9 +30,20 @@ export default function File() {
     async function downloadFile() {
         const response = await fetch(`/api/file/${fileId}/download`, {
             method: "GET",
+        }).then((response) => {
+            if (response.status === 200) {
+                return response.blob();
+            } else {
+                return null
+            }
         });
-        if (response.status === 200) {
-            console.log(response)
+        if (response) {
+            const element = document.createElement("a");
+            const newFile = new Blob([response], {type: 'text/plain'});
+            element.href = URL.createObjectURL(newFile);
+            element.download = `${file.name}.${file.filetype}`;
+            document.body.appendChild(element);
+            element.click();
         }
     }
 

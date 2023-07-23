@@ -25,10 +25,15 @@ public static class CourseFileController
         {
             var courseFile = await db.CourseFiles.FindAsync(fileId);
             if (courseFile is null) return Results.NotFound();
-            if (File.Exists(Path.Combine(Directory.GetCurrentDirectory(),courseFile.Url))) {
-                
+            if (File.Exists(Path.Combine(Directory.GetCurrentDirectory(),courseFile.Url)))
+            {
+                var file = File.OpenRead(Path.Combine(Directory.GetCurrentDirectory(), courseFile.Url));
+                return Results.File(Path.Combine(Directory.GetCurrentDirectory(), courseFile.Url));
             }
-            return Results.Ok();
+            else
+            {
+                return Results.NotFound();
+            }
         });
 
         app.MapDelete("api/file/{fileId}/delete", async (StudyDb db, int fileId) =>

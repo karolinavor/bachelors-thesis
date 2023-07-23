@@ -88,7 +88,7 @@ export default function Dashboard() {
                     <h2>Latest files</h2>
                     {latestFiles?.map((file: FileType, index) =>
                         <div key={index}>
-                            <Link className="Link" to={"/course/1/file/" + file.id}>{file.name}.{file.filetype}</Link>
+                            <Link className="Link" to={`/course/${file.courseId}/file/` + file.id}>{file.name}.{file.filetype}</Link>
                         </div>
                     )}
                 </div>

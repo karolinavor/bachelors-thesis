@@ -232,6 +232,7 @@ _Pvt_Extensions
 .fake/
 
 Migrations
+FileSystem
 *.db
 *.db-*
 
