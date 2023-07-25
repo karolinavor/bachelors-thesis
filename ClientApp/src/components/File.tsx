@@ -1,31 +1,44 @@
 import React, { useEffect, useState } from 'react'
-import { useNavigate, useParams } from 'react-router-dom'
-import { FileType } from '../types/types';
+import { Link, useNavigate, useParams } from 'react-router-dom'
+import { CommentType, FileType } from '../types/types';
 import { getLocalDate, getLocalTime } from '../utils/getTime';
+import { modalOpen } from '../store/reducers/modalSlice';
+import { AppDispatch } from '../store/store';
+import { useDispatch } from 'react-redux';
+import Comment from './Comment';
 
 export default function File() {
 
-    const navigate = useNavigate()
     const { fileId } = useParams();
+    let dispatch: AppDispatch = useDispatch();
+    const navigate = useNavigate();
     const [file, setFile] = useState<FileType>(null);
+    const [fileComments, setFileComments] = useState<CommentType[]>();
+
 
     useEffect(() => {
         getFile()
+        getFileComments()
     }, [])
+
+    useEffect(() => {
+        getFile()
+        getFileComments()
+    }, [fileId])
 
     async function getFile() {
         const response = await fetch(`/api/file/${fileId}/get`);
+        if (!response.ok) {
+            navigate(window.location.href.split("file")[0].split(window.location.host)[1]);
+        }
         const data = await response.json();
         setFile(data)
     }
 
-    async function deleteFile() {
-        const response = await fetch(`/api/file/${fileId}/delete`, {
-            method: "DELETE",
-        });
-        if (response.status === 200) {
-            goToCourse();
-        }
+    async function getFileComments() {
+        const response = await fetch(`/api/file/${fileId}/comments`);
+        const data = await response.json();
+        setFileComments(data)
     }
 
     async function downloadFile() {
@@ -48,18 +61,51 @@ export default function File() {
         }
     }
 
-    function goToCourse() {
-        let url = window.location.href
-        url = url.replace(/\/file\/[0-9]/gi, '')
-        let urlParts = url.split("/")
-        navigate("/" + urlParts[urlParts.length-2] + "/" + urlParts[urlParts.length-1])
+    async function addNewComment(e:React.ChangeEvent<any>) {
+        e.preventDefault();
+
+        const form = e.target;
+    
+        const formData = {
+            commentText: form[0].value,
+            author: "Karolina TODO"
+        }
+
+        const response = await fetch(`/api/file/${fileId}/comments/add`, {
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json'
+            },
+            method: "POST",
+            body: JSON.stringify(formData)
+        });
+
+        const data = await response.json();
+        if (response.status === 201 && data) {
+            form.reset()
+        }
+    }
+
+    async function openDeleteFileModal() {
+        dispatch(modalOpen({
+            type: `deleteFile`,
+            data: {
+                courseId: parseInt(fileId)
+            }
+        }))
     }
 
     return (
         <>
-            <button className="Button" onClick={() => goToCourse()}>Back to course</button>
+            <Link className="Button" to={window.location.href.split("file")[0]}>Back to course</Link>
             <section>
                 <h1>File Detail - {file?.name}</h1>
+                <button className="Button" onClick={() => downloadFile()}>
+                    Download
+                </button>
+                <button className="Button" onClick={() => openDeleteFileModal()}>
+                    Delete
+                </button>
                 <div className='flex justify-between'>
                     <div className='flex flex-column'>
                         <div>
@@ -94,25 +140,24 @@ export default function File() {
                             </div>                        
                         </div>
                         */}
-                        <button className="Button Button-large" onClick={() => downloadFile()}>
-                            Download
-                        </button>
-                        <button className="Button Button-large" onClick={() => deleteFile()}>
-                            Delete
-                        </button>
                     </div>
                 </div>
             </section>
             <section>
                 <h2>Comments</h2>
-                {/*
-                {file?.comments?.map((comment: CommentType, index) =>
+                <form onSubmit={event => addNewComment(event)} className="flex-column">
+                    <div>
+                        <label htmlFor="content">Comment:</label>
+                        <textarea id="content" required></textarea>
+                    </div>
+                    <button className="Button" type="submit">Send comment</button>
+                </form>
+                {fileComments?.map((comment: CommentType, index) =>
                     <Comment
                         key={index}
                         comment={comment}
                     />
                 )}
-                */}
             </section>
         </>
     )

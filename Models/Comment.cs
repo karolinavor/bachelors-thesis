@@ -10,6 +10,7 @@ namespace BachelorThesis.Models
         public DateTime DateAdded { get; set; }
         public int CourseId { get; set; }
         public int FileId { get; set; }
+        public string CategoryName { get; set; }
     }
 }
 

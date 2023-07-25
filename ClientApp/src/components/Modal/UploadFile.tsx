@@ -3,10 +3,7 @@ import { useDispatch } from 'react-redux'
 
 import { modalClose } from '../../store/reducers/modalSlice'
 import { AppDispatch } from '../../store/store'
-
-export interface ModalInterface {
-  courseId: number
-}
+import { ModalInterface } from './Modal'
 
 export default function UploadFile(props: PropsWithChildren<ModalInterface>) {
   const dispatch: AppDispatch = useDispatch()
@@ -37,6 +34,7 @@ export default function UploadFile(props: PropsWithChildren<ModalInterface>) {
 
   return (
     <div>
+      <p className='mb-1'>Allowed file extensions are jpeg, docx, pdf, txt.</p>
       <form onSubmit={(e) => submitModal(e)}>
         <input name="file" id="file" type="file" />
         <button type='submit' className='Button Button--green'>Upload</button>

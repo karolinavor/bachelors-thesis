@@ -16,7 +16,6 @@ export default function Course() {
     const [course, setCourse] = useState<CourseType>();
     const [files, setFiles] = useState<FileType[]>();
     const [courseComments, setCourseComments] = useState<CommentType[]>();
-    const [filesComments, setFilesComments] = useState<CommentType[]>();
 
     useEffect(() => {
         getCourse()
@@ -32,19 +31,16 @@ export default function Course() {
 
     async function getCourse() {
         const response = await fetch(`/api/course/${courseId}/get`);
-        const data = await response.json();
-        if (!data) {
+        if (!response.ok) {
             navigate("/");
         }
+        const data = await response.json();
         setCourse(data)
     }
 
     async function getFiles() {
         const response = await fetch(`/api/course/${courseId}/files`);
         const data = await response.json();
-        if (!data) {
-            navigate("/");
-        }
         setFiles(data)
     }
 
@@ -72,8 +68,11 @@ export default function Course() {
             method: "POST",
             body: JSON.stringify(formData)
         });
-        //const data = await response.json();
-        //if (response.status === 201 && data) {}
+
+        const data = await response.json();
+        if (response.status === 201 && data) {
+            form.reset()
+        }
     }
 
     async function openEditCourseModal() {
@@ -108,36 +107,25 @@ export default function Course() {
             {!location.pathname.includes("/file/") &&
                 <>
                     <section>
-                        <h1>
-                            {course?.short} - {course?.title}
-                        </h1>
+                        <h1>{course?.short} - {course?.title}</h1>
                         <button className="Button" onClick={() => openEditCourseModal()}>Edit course</button>
                         <button className="Button" onClick={() => openDeleteCourseModal()}>Delete course</button>
-                        <button className="Button" onClick={() => openUploadFileModal()}>Upload file</button> {/* TODO modal */}
+                        <button className="Button" onClick={() => openUploadFileModal()}>Upload file</button>
                     </section>
                     <div className='Course-layout'>
                         <section>
                             <h2 className="mb-1 flex">
                                 File system
                             </h2>
-                            {files?.map((file: FileType, index) => 
-                                <div key={index}>
-                                    <Link className="Link" to={"file/" + file.id}>{file.name}.{file.filetype}</Link>
-                                </div>
-                            )}
+                            <div className="FileTable">
+                                {files?.map((file: FileType, index) => 
+                                    <Link className="FileTable-row" key={index} to={"file/" + file.id}>{file.name}.{file.filetype}</Link>
+                                )}
+                            </div>
                         </section>
                         <div>
                             <section>
-                                <h2 className='mt-0'>Latest file comments TODO</h2>
-                                {filesComments?.map((comment: CommentType, index) => 
-                                    <Comment
-                                        key={index}
-                                        comment={comment}
-                                    />
-                                )}
-                            </section> 
-                            <section>
-                                <h2 className='mt-0'>Latest course comments</h2>
+                                <h2 className='mt-0'>Course comments</h2>
                                 <form onSubmit={event => addNewComment(event)} className="flex-column">
                                     <div>
                                         <label htmlFor="content">Comment:</label>

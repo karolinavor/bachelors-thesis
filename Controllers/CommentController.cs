@@ -10,12 +10,15 @@ public static class CommentController
     public static void MapCommentControllerRoutes(this WebApplication app)
     {
         app.MapPost("api/course/{courseId}/comments/add", async (StudyDb db, Comment comment, int courseId) =>
-        {            
+        {        
+            var course = db.Courses.FindAsync(courseId);
             Random rnd = new Random();
             Console.Write(comment);
             comment.Id = rnd.Next(100);
             comment.DateAdded = DateTime.Now;
             comment.CourseId = courseId;
+            comment.CategoryName = course.Result.Short + " - " + course.Result.Title;
+            comment.FileId = 0;
             db.Comments.Add(comment);        
             await db.SaveChangesAsync();
             return Results.Created($"/course/{courseId}", comment);
@@ -28,6 +31,8 @@ public static class CommentController
             comment.Id = rnd.Next(100);
             comment.DateAdded = DateTime.Now;
             comment.FileId = fileId;
+            comment.CourseId = file.Result.CourseId;
+            comment.CategoryName = file.Result.Name;
             db.Comments.Add(comment);        
             await db.SaveChangesAsync();
             return Results.Created($"/course/{file.Result.CourseId}/file/{fileId}/", comment);
@@ -35,14 +40,14 @@ public static class CommentController
 
         app.MapGet("api/course/{courseId}/comments", async (StudyDb db, int courseId) =>
         {
-            var comments = db.Comments.Where(s => s.CourseId == courseId);
+            var comments = db.Comments.Where(s => s.CourseId == courseId).OrderByDescending(s => s.DateAdded);
             if (comments is null) return Results.NotFound();
             return Results.Ok(comments);
         });
 
-        app.MapGet("api/file/{fileId}/comments", async (StudyDb db, int courseId, int fileId) =>
+        app.MapGet("api/file/{fileId}/comments", async (StudyDb db, int fileId) =>
         {
-            var comments = db.Comments.Where(s => s.FileId == fileId);
+            var comments = db.Comments.Where(s => s.FileId == fileId).OrderByDescending(s => s.DateAdded);
             if (comments is null) return Results.NotFound();
             return Results.Ok(comments);
         });

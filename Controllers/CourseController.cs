@@ -11,7 +11,9 @@ public static class CourseController
     {
         app.MapGet("api/course/{id}/get", async (StudyDb db, int id) =>
         {
-            return await db.Courses.FindAsync(id);
+            var course = await db.Courses.FindAsync(id);
+            if (course is null) return Results.NotFound();
+            return Results.Ok(course);
         });
 
         app.MapPost("api/course/add", async (StudyDb db, Course course) =>
@@ -50,7 +52,7 @@ public static class CourseController
 
         app.MapGet("api/courses", async (StudyDb db) =>
         {
-            return await db.Courses.OrderByDescending(s => s.Short).ToListAsync();
+            return await db.Courses.OrderBy(s => s.Short).ToListAsync();
         });
 
         app.MapGet("api/courses/latest", async (StudyDb db) =>

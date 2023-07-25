@@ -2,4 +2,18 @@ textarea, input {
   display: block;
   width: 100%;
   max-width: 100%;
+  margin-bottom: 1rem;
+  padding: .5rem;
+
+  border: 1px solid rgb(232, 232, 232);
+  border-radius: 7px;
+}
+
+textarea {
+  min-height: 5rem;
+}
+
+label {
+  display: block;
+  margin-bottom: .25rem;
 }

@@ -4,17 +4,24 @@ import { CommentType } from "../types/types";
 import { getLocalDate, getLocalTime } from "../utils/getTime";
 
 type CommentTypeExtended = {
-  comment: CommentType
+  comment: CommentType,
+  showCommentCategory?: boolean
 }
 
-export default function Comment({ comment }: CommentTypeExtended) {
+
+export default function Comment({ comment, showCommentCategory }: CommentTypeExtended) {
   return (
     <div className="Comment">
       <span className="Comment-picture"></span>
       <div>
-        <Link className="Comment-heading" to={"/user/" + comment.author}>{comment.author}</Link>
+        <Link className="Link Comment-heading" to={"/user/" + comment.author}>{comment.author}</Link>
+        {showCommentCategory &&
+          <>
+          <span> in {comment.fileId > 0 ? "file " : "course "}</span>
+            <Link className="Link" to={"/" + (comment.fileId > 0 ? `course/${comment.courseId}/file/${comment.fileId}` : `course/${comment.courseId}`)}>{comment.categoryName}</Link>
+          </>
+        }
         <div>{getLocalTime(comment.dateAdded)} {getLocalDate(comment.dateAdded)}</div>
-        {/*<Link to={(subject.type === "File" ? "file/" : "course/") + subject.url}>{subject.name}</Link>*/}
       </div>
       <p className="Comment-content">{comment.commentText}</p>
     </div>

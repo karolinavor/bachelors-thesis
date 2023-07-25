@@ -4,7 +4,7 @@ import { useDispatch } from 'react-redux'
 import { modalClose } from '../../store/reducers/modalSlice'
 import { AppDispatch } from '../../store/store'
 import { CourseType } from '../../types/types'
-import { ModalInterface } from './UploadFile'
+import { ModalInterface } from './Modal'
 
 export default function EditCourse(props: PropsWithChildren<ModalInterface>) {
 	const dispatch: AppDispatch = useDispatch()

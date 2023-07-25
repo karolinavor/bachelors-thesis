@@ -33,7 +33,8 @@ export type CommentType = {
   dateAdded: Date,
   author: string,
   fileId: number,
-  courseId: number
+  courseId: number,
+  categoryName: string
 }
 
 export type UserType = {

@@ -79,6 +79,7 @@ export default function Dashboard() {
                         {latestComments?.map((comment: CommentType, index) =>
                             <Comment
                                 comment={comment}
+                                showCommentCategory={true}
                             />
                         )}
                     </div>

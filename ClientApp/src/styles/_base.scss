@@ -19,7 +19,7 @@ body {
 
 aside {
   display: none;
-  background-color: rgb(245, 241, 241);
+  background-color: whitesmoke;
   overflow-y: auto;
 
   @include media(md) {
@@ -43,10 +43,6 @@ ul {
 
 a, p {
   margin: 0;
-}
-
-p {
-  margin-bottom: 1rem;
 }
 
 img {

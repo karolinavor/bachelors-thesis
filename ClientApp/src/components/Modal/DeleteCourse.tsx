@@ -3,7 +3,7 @@ import { useDispatch } from 'react-redux'
 
 import { modalClose } from '../../store/reducers/modalSlice'
 import { AppDispatch } from '../../store/store'
-import { ModalInterface } from './UploadFile'
+import { ModalInterface } from './Modal'
 
 export default function EditCourse(props: PropsWithChildren<ModalInterface>) {
 	const dispatch: AppDispatch = useDispatch()
@@ -23,9 +23,9 @@ export default function EditCourse(props: PropsWithChildren<ModalInterface>) {
 
   return (
 	  <div>
-		<p>Do you really want to delete this course? This change is final.</p>
-		<button className="Button" onClick={() => deleteCourse()}>Delete course</button>
-		<button className="Button" onClick={() => dispatch(modalClose())}>Cancel</button>
-	</div>
+			<p className="mb-1">Do you really want to delete this course? This change is final.</p>
+			<button className="Button" onClick={() => deleteCourse()}>Delete course</button>
+			<button className="Button" onClick={() => dispatch(modalClose())}>Cancel</button>
+		</div>
   )
 }
