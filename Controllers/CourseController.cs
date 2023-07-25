@@ -50,7 +50,7 @@ public static class CourseController
 
         app.MapGet("api/courses", async (StudyDb db) =>
         {
-            return await db.Courses.ToListAsync();
+            return await db.Courses.OrderByDescending(s => s.Short).ToListAsync();
         });
 
         app.MapGet("api/courses/latest", async (StudyDb db) =>

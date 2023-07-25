@@ -1,10 +1,10 @@
 import React, { useEffect, useState } from 'react';
 import { useParams, Outlet, Link, useLocation, useNavigate } from 'react-router-dom';
-import { CommentType, CourseType, FileType } from "../../types/types"
-import Comment from '../Comment';
-import { modalOpen } from '../../store/reducers/modalSlice';
+import { CommentType, CourseType, FileType } from "../types/types"
+import Comment from './Comment';
+import { modalOpen } from '../store/reducers/modalSlice';
 import { useDispatch } from 'react-redux';
-import { AppDispatch } from '../../store/store';
+import { AppDispatch } from '../store/store';
 
 export default function Course() {
 
@@ -54,28 +54,6 @@ export default function Course() {
         setCourseComments(data)
     }
 
-    async function deleteCourse() {
-        const response = await fetch(`/api/course/${courseId}/delete`, {
-            headers: {
-                'Accept': 'application/json',
-                'Content-Type': 'application/json'
-            },
-            method: "DELETE"
-        });
-        if (response.status === 200) {
-            navigate("/");
-        }
-    }
-
-    function showUploadModal() {
-        dispatch(modalOpen({
-            type: `uploadFile`,
-            data: {
-                courseId: parseInt(courseId)
-            }
-        }))
-    }
-
     async function addNewComment(e:React.ChangeEvent<any>) {
         e.preventDefault();
 
@@ -98,6 +76,33 @@ export default function Course() {
         //if (response.status === 201 && data) {}
     }
 
+    async function openEditCourseModal() {
+        dispatch(modalOpen({
+            type: `editCourse`,
+            data: {
+                courseId: parseInt(courseId)
+            }
+        }))
+    }
+
+    async function openDeleteCourseModal() {
+        dispatch(modalOpen({
+            type: `deleteCourse`,
+            data: {
+                courseId: parseInt(courseId)
+            }
+        }))
+    }
+
+    function openUploadFileModal() {
+        dispatch(modalOpen({
+            type: `uploadFile`,
+            data: {
+                courseId: parseInt(courseId)
+            }
+        }))
+    }
+
     return (
         <>
             {!location.pathname.includes("/file/") &&
@@ -106,9 +111,9 @@ export default function Course() {
                         <h1>
                             {course?.short} - {course?.title}
                         </h1>
-                        <Link className="Button" to={"edit"}>Edit course</Link>
-                        <button className="Button" onClick={() => deleteCourse()}>Delete course</button>
-                        <button className="Button" onClick={() => showUploadModal()}>Upload file</button> {/* TODO modal */}
+                        <button className="Button" onClick={() => openEditCourseModal()}>Edit course</button>
+                        <button className="Button" onClick={() => openDeleteCourseModal()}>Delete course</button>
+                        <button className="Button" onClick={() => openUploadFileModal()}>Upload file</button> {/* TODO modal */}
                     </section>
                     <div className='Course-layout'>
                         <section>

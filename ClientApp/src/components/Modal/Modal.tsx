@@ -6,6 +6,10 @@ import { modalClose, ModalSliceState } from '../../store/reducers/modalSlice'
 import { AppDispatch } from '../../store/store'
 import UploadFile from './UploadFile'
 import closeIcon from "../../assets/close.svg"
+import AddCourse from './AddCourse'
+import AddNews from './AddNews'
+import EditCourse from './EditCourse'
+import DeleteCourse from './DeleteCourse'
 
 const customStyles = {
   content: {
@@ -27,6 +31,14 @@ export default function ModalContainer(props: PropsWithChildren<ModalSliceState>
     switch (props.type) {
       case `uploadFile`:
         return `Upload file`
+      case `addCourse`:
+        return `Add course`
+      case `editCourse`:
+        return `Edit course`
+      case `deleteCourse`:
+        return `Delete course`
+      case `addNews`:
+        return `Add news`
     }
   }
 
@@ -34,12 +46,24 @@ export default function ModalContainer(props: PropsWithChildren<ModalSliceState>
     switch (props.type) {
       case `uploadFile`:
         return <UploadFile courseId={props.data.courseId ?? 0} />
+      case `addCourse`:
+        return <AddCourse />
+      case `editCourse`:
+        return <EditCourse courseId={props.data.courseId ?? 0} />
+      case `deleteCourse`:
+        return <DeleteCourse courseId={props.data.courseId ?? 0} />
+      case `addNews`:
+        return <AddNews />
     }
   }
 
   function getSize() {
     switch (props.type) {
       case `uploadFile`:
+      case `addCourse`:
+      case `addNews`:
+      case `editCourse`:
+      case `deleteCourse`:
         return `small`
     }
 

@@ -1,5 +1,5 @@
 import React from "react";
-import { getLocalDate, getLocalTime } from "../../utils/getTime";
+import { getLocalDate, getLocalTime } from "../utils/getTime";
 
 type NewProps = {
     date: Date,

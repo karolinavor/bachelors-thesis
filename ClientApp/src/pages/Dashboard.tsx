@@ -1,11 +1,15 @@
 import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
-import News from '../components/News/News';
+import News from '../components/News';
 import Comment from '../components/Comment';
 import { CommentType, CourseType, FileType, NewsType } from '../types/types';
+import { useDispatch } from 'react-redux';
+import { modalOpen } from '../store/reducers/modalSlice';
+import { AppDispatch } from '../store/store';
 
 export default function Dashboard() {
 
+    const dispatch: AppDispatch = useDispatch()
     const [news, setNews] = useState<NewsType[]>([]);
     const [latestComments, setLatestComments] = useState<CommentType[]>([]);
     const [latestCourses, setLatestCourses] = useState<CourseType[]>([]);
@@ -42,6 +46,12 @@ export default function Dashboard() {
         setLatestFiles(data)
     }
 
+    function openAddNewsModal() {
+        dispatch(modalOpen({
+            type: `addNews`
+        }))
+    }
+
     return (
         <section>
             <h1>
@@ -50,6 +60,7 @@ export default function Dashboard() {
             <div className="Homepage-grid">
                 <div>
                     <h2>News</h2>
+                    <button className="Button" onClick={() => openAddNewsModal()}>Add news</button>
                     {news?.map((newsItem: NewsType, index) =>
                         <News
                             date={newsItem.dateAdded}

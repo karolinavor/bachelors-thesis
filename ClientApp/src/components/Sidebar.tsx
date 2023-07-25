@@ -1,10 +1,17 @@
 import React, { useState, useEffect } from 'react';
-import { Link, NavLink, Router } from "react-router-dom";
+import { NavLink } from "react-router-dom";
 import { CourseType } from '../types/types';
-import { RoutesList } from '../router/Router';
+import { AppDispatch } from '../store/store';
+import { useDispatch } from 'react-redux';
+import { modalOpen } from '../store/reducers/modalSlice';
 
 export default function Sidebar() {
     const [courses, setCourses] = useState<CourseType[]>([]);
+    const dispatch: AppDispatch = useDispatch()
+
+    useEffect(() => {
+        getCourses()
+    }, [])
 
     async function getCourses() {
         const response = await fetch('/api/courses', {
@@ -17,17 +24,19 @@ export default function Sidebar() {
         const data = await response.json();
         setCourses(data)
     }
-
-    useEffect(() => {
-        getCourses()
-    }, [])
+    
+    function openAddNewCourseModal() {
+        dispatch(modalOpen({
+            type: `addCourse`
+        }))
+    }
 
     // TODO get items when new added
     
     return (
         <aside>
             <h2>Courses</h2>
-            <Link className="Button" to={RoutesList.courseAdd.url}>Add course</Link>
+            <button className="Button" onClick={() => openAddNewCourseModal()}>Add course</button>
             <nav>
                 <ul>
                     {courses?.map(course =>

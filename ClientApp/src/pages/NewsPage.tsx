@@ -1,8 +1,6 @@
 import React, { useEffect, useState } from 'react'
-import { Link, useNavigate } from 'react-router-dom';
 import { NewsType } from '../types/types';
-import { RoutesList } from '../router/Router';
-import News from '../components/News/News';
+import News from '../components/News';
 
 export default function NewsPage() {
 
@@ -22,7 +20,6 @@ export default function NewsPage() {
         <>
             <section>
                 <h1>News</h1>
-                <Link className="Button" to={`/`+RoutesList.newsAdd.url}>Add news</Link>
                 {news?.map((newsItem: NewsType, index) =>
                     <News
                         date={newsItem.dateAdded}
