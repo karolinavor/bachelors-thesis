@@ -1,12 +1,12 @@
 export type CourseType = {
-  id: number,
+  courseId: number,
   dateAdded: Date,
   short: string
   title: string,
 };
 
 export type FileType = {
-  id: number,
+  courseFileId: number,
   name: string
   author: string,
   dateAdded: Date,
@@ -22,13 +22,13 @@ export type FileType = {
 }
 
 export type NewsType = {
-  id: number,
+  newsId: number,
   dateAdded: Date,
   content: string
 }
 
 export type CommentType = {
-  id: number,
+  commentId: number,
   commentText: string,
   dateAdded: Date,
   author: string,
@@ -38,9 +38,16 @@ export type CommentType = {
 }
 
 export type UserType = {
-  id: number,
+  userId: number,
   name: string,
   username : string,
   email: string,
   profileImage: string
+}
+
+export type NotificationType = {
+  notificationId: number,
+  userId: number,
+  courseId: number,
+  courseFileId: number
 }

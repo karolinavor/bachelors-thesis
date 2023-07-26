@@ -5,6 +5,7 @@ import Comment from './Comment';
 import { modalOpen } from '../store/reducers/modalSlice';
 import { useDispatch } from 'react-redux';
 import { AppDispatch } from '../store/store';
+import bellWhiteIcon from "../assets/bell-white.svg"
 
 export default function Course() {
 
@@ -102,15 +103,41 @@ export default function Course() {
         }))
     }
 
+    async function toggleNotifications() {
+        const formData = {
+            userId: 0,
+            courseId: courseId
+        }
+
+        const response = await fetch(`/api/notifications/add`, {
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json'
+            },
+            method: "POST",
+            body: JSON.stringify(formData)
+        });
+
+        const data = await response.json();
+        if (response.status === 201 && data) {
+            // TODO toast notification 
+        }
+    }
+
     return (
         <>
             {!location.pathname.includes("/file/") &&
                 <>
                     <section>
-                        <h1>{course?.short} - {course?.title}</h1>
-                        <button className="Button" onClick={() => openEditCourseModal()}>Edit course</button>
-                        <button className="Button" onClick={() => openDeleteCourseModal()}>Delete course</button>
-                        <button className="Button" onClick={() => openUploadFileModal()}>Upload file</button>
+                    <h1>{course?.short} - {course?.title}</h1>
+                        <div className="flex">
+                            <button className="Button" onClick={() => openEditCourseModal()}>Edit course</button>
+                            <button className="Button" onClick={() => openDeleteCourseModal()}>Delete course</button>
+                            <button className="Button" onClick={() => openUploadFileModal()}>Upload file</button>
+                            <button className="Button" onClick={() => toggleNotifications()}>
+                                <img alt="bell icon" src={bellWhiteIcon} />
+                            </button>
+                        </div>
                     </section>
                     <div className='Course-layout'>
                         <section>
@@ -119,7 +146,7 @@ export default function Course() {
                             </h2>
                             <div className="FileTable">
                                 {files?.map((file: FileType, index) => 
-                                    <Link className="FileTable-row" key={index} to={"file/" + file.id}>{file.name}.{file.filetype}</Link>
+                                    <Link className="FileTable-row" key={index} to={"file/" + file.courseFileId}>{file.name}.{file.filetype}</Link>
                                 )}
                             </div>
                         </section>

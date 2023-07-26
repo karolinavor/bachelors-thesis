@@ -7,6 +7,9 @@ namespace BachelorThesis.Controllers;
 
 public static class CourseFileController
 {
+
+    public static int globalCourseFileID;
+
     public static void MapCourseFileControllerRoutes(this WebApplication app)
     {    
         app.MapGet("api/file/{fileId}/get", async (StudyDb db, int fileId) =>
@@ -23,7 +26,6 @@ public static class CourseFileController
             if (File.Exists(Path.Combine(Directory.GetCurrentDirectory(),courseFile.Url)))
             {
                 courseFile.NumberOfDownloads = courseFile.NumberOfDownloads + 1;
-                Console.Write(courseFile.NumberOfDownloads);
                 await db.SaveChangesAsync();
                 return Results.File(Path.Combine(Directory.GetCurrentDirectory(), courseFile.Url));
             }
@@ -47,17 +49,15 @@ public static class CourseFileController
 
         app.MapPost("api/course/{courseId}/file/add", async (StudyDb db, int courseId, HttpContext httpContext, HttpRequest request) =>
         {
-            Random rnd = new Random();
-
             var courseFile = new CourseFile();
-            courseFile.Id = rnd.Next(100);
+            courseFile.CourseFileId = Interlocked.Increment(ref globalCourseFileID);
             courseFile.DateAdded = DateTime.Now;
             courseFile.CourseId = courseId;
             courseFile.Name = httpContext.Request.Form["name"];
             courseFile.Author = httpContext.Request.Form["author"];
             courseFile.Size = Int32.Parse(httpContext.Request.Form["size"]);
             courseFile.Filetype = httpContext.Request.Form["filetype"];
-            courseFile.Url = $"FileSystem/course_{courseId}/file_{courseFile.Id}.{courseFile.Filetype}";
+            courseFile.Url = $"FileSystem/course_{courseId}/file_{courseFile.CourseId}.{courseFile.Filetype}";
             courseFile.NumberOfDownloads = 0;
             db.CourseFiles.Add(courseFile);
             
@@ -67,13 +67,13 @@ public static class CourseFileController
 
             var courseFolder = $"FileSystem/course_{courseId}/";
             var folder = Path.Combine(Directory.GetCurrentDirectory(), courseFolder);
-            var postedFileName = $"file_{courseFile.Id}.{courseFile.Filetype}";
+            var postedFileName = $"file_{courseFile.CourseId}.{courseFile.Filetype}";
             var finalPath = Path.Combine(folder, postedFileName);
             using var fs = File.OpenWrite(finalPath);
             await request.Form.Files[0].CopyToAsync(fs);
             
             await db.SaveChangesAsync();
-            return Results.Created($"/course/{courseId}/file/{courseFile.Id}", courseFile);
+            return Results.Created($"/course/{courseId}/file/{courseFile.CourseId}", courseFile);
         });
 
         app.MapGet("api/course/{courseId}/files", async (StudyDb db, int courseId) =>

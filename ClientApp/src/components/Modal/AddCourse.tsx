@@ -3,6 +3,7 @@ import { useDispatch } from 'react-redux'
 
 import { modalClose } from '../../store/reducers/modalSlice'
 import { AppDispatch } from '../../store/store'
+import { fetchCourses } from '../../store/reducers/coursesSlice'
 
 export default function AddCourse() {
   const dispatch: AppDispatch = useDispatch()
@@ -26,7 +27,8 @@ export default function AddCourse() {
     });
     const data = await response.json();
     if (response.status === 201 && data) {
-      	dispatch(modalClose())
+      dispatch(modalClose())
+      dispatch(fetchCourses())
     }  
   }
 

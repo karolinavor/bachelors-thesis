@@ -14,7 +14,10 @@ const context = [
   "/api/file",
   "/api/files/latest",
   "/api/news",
-  "/api/user"
+  "/api/news/all",
+  "/api/user",
+  "/api/notifications/add",
+  "/api/notifications/get"
 ];
 
 const onError = (err, req, resp, target) => {

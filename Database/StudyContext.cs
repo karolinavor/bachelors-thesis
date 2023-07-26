@@ -12,6 +12,7 @@ namespace BachelorThesis.Database
     public DbSet<CourseFile> CourseFiles { get; set; }
     public DbSet<News> News { get; set; }
     public DbSet<User> Users { get; set; }
+    public DbSet<Notification> Notifications { get; set; }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
@@ -20,6 +21,7 @@ namespace BachelorThesis.Database
       modelBuilder.Entity<CourseFile>().ToTable("CourseFile");
       modelBuilder.Entity<News>().ToTable("News");
       modelBuilder.Entity<User>().ToTable("User");
+      modelBuilder.Entity<Notification>().ToTable("Notification");
     }
   }
 }

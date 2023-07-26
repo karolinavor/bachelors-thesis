@@ -1,12 +1,14 @@
 import React, { useEffect, useState } from 'react';
-import { Outlet, useNavigate } from 'react-router-dom';
+import { Outlet } from 'react-router-dom';
 import Header from '../components/Header';
 import Footer from '../components/Footer';
 import Sidebar from '../components/Sidebar';
+import { useDispatch, useSelector } from 'react-redux';
+import { fetchCourses } from '../store/reducers/coursesSlice';
+import { AnyAction } from 'redux';
+import { AppDispatch } from '../store/store';
 
 export default function Layout() {
-
-    const navigate = useNavigate();
 
     const [username, setUsername] = useState<String>(null);
 

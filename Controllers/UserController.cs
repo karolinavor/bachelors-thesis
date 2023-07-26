@@ -7,13 +7,15 @@ namespace BachelorThesis.Controllers;
 
 public static class UserController
 {
+    public static int globalUserID;
+
     public static void MapUserControllerRoutes(this WebApplication app)
     {
         app.MapGet("api/user", () =>
         {
             return new User
             {
-                Id = 1,
+                UserId = 1,
                 Name = "Karolina Vorlickova",
                 Username = "test",
                 Email = "test@test.cz",

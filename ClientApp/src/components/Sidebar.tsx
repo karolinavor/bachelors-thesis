@@ -1,37 +1,23 @@
-import React, { useState, useEffect } from 'react';
+import React, { useEffect } from 'react';
 import { NavLink } from "react-router-dom";
-import { CourseType } from '../types/types';
-import { AppDispatch } from '../store/store';
-import { useDispatch } from 'react-redux';
+import { AppDispatch, RootState } from '../store/store';
+import { useDispatch, useSelector } from 'react-redux';
 import { modalOpen } from '../store/reducers/modalSlice';
+import { fetchCourses } from '../store/reducers/coursesSlice';
 
-export default function Sidebar() {
-    const [courses, setCourses] = useState<CourseType[]>([]);
+export default function Sidebar() {    
     const dispatch: AppDispatch = useDispatch()
+    const coursesState = useSelector((state: RootState) => state.courses)
 
     useEffect(() => {
-        getCourses()
+        dispatch(fetchCourses())
     }, [])
-
-    async function getCourses() {
-        const response = await fetch('/api/courses', {
-            headers: {
-                'Accept': 'application/json',
-                'Content-Type': 'application/json'
-            },
-            method: "GET"
-        });
-        const data = await response.json();
-        setCourses(data)
-    }
     
     function openAddNewCourseModal() {
         dispatch(modalOpen({
             type: `addCourse`
         }))
     }
-
-    // TODO get items when new added
     
     return (
         <aside>
@@ -39,9 +25,9 @@ export default function Sidebar() {
             <button className="Button" onClick={() => openAddNewCourseModal()}>Add course</button>
             <nav>
                 <ul>
-                    {courses?.map(course =>
-                        <li key={course.id}>
-                            <NavLink className="Link" to={"/course/" + course.id}>
+                    {coursesState?.courses?.map(course =>
+                        <li key={course.courseId}>
+                            <NavLink className="Link" to={"/course/" + course.courseId}>
                                 {course.short} - {course.title}
                             </NavLink>
                         </li>

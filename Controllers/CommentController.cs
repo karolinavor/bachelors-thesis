@@ -7,14 +7,14 @@ namespace BachelorThesis.Controllers;
 
 public static class CommentController
 {
+    public static int globalCommentID;
+
     public static void MapCommentControllerRoutes(this WebApplication app)
     {
         app.MapPost("api/course/{courseId}/comments/add", async (StudyDb db, Comment comment, int courseId) =>
         {        
             var course = db.Courses.FindAsync(courseId);
-            Random rnd = new Random();
-            Console.Write(comment);
-            comment.Id = rnd.Next(100);
+            comment.CommentId = Interlocked.Increment(ref globalCommentID);
             comment.DateAdded = DateTime.Now;
             comment.CourseId = courseId;
             comment.CategoryName = course.Result.Short + " - " + course.Result.Title;
@@ -27,8 +27,7 @@ public static class CommentController
         app.MapPost("api/file/{fileId}/comments/add", async (StudyDb db, Comment comment, int fileId) =>
         {
             var file = db.CourseFiles.FindAsync(fileId);
-            Random rnd = new Random();
-            comment.Id = rnd.Next(100);
+            comment.CommentId = Interlocked.Increment(ref globalCommentID);
             comment.DateAdded = DateTime.Now;
             comment.FileId = fileId;
             comment.CourseId = file.Result.CourseId;
@@ -51,13 +50,6 @@ public static class CommentController
             if (comments is null) return Results.NotFound();
             return Results.Ok(comments);
         });
-
-        /* TODO
-        app.MapGet("api/course/{courseId}/file/comments/latest", async (StudyDb db) =>
-        {
-            return await db.Comments.OrderByDescending(s => s.DateAdded).Take(5).ToListAsync();
-        });
-        */
 
         app.MapGet("api/comments/latest", async (StudyDb db) =>
         {

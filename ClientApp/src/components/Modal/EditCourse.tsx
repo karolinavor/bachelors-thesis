@@ -5,6 +5,7 @@ import { modalClose } from '../../store/reducers/modalSlice'
 import { AppDispatch } from '../../store/store'
 import { CourseType } from '../../types/types'
 import { ModalInterface } from './Modal'
+import { fetchCourses } from '../../store/reducers/coursesSlice'
 
 export default function EditCourse(props: PropsWithChildren<ModalInterface>) {
 	const dispatch: AppDispatch = useDispatch()
@@ -44,7 +45,8 @@ export default function EditCourse(props: PropsWithChildren<ModalInterface>) {
         body: JSON.stringify(formData)
     });
     if (response.status === 200) {
-      	dispatch(modalClose())
+      dispatch(modalClose())
+      dispatch(fetchCourses())
     }
   }
 

@@ -7,7 +7,7 @@ export default function NewsPage() {
     const [news, setNews] = useState<NewsType[]>([]);
     
     async function getNews() {
-        const response = await fetch('/api/news');
+        const response = await fetch('/api/news/all');
         const data = await response.json();
         setNews(data)
     }

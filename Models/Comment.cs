@@ -4,7 +4,7 @@ namespace BachelorThesis.Models
 {
     public class Comment
     {
-        public int Id { get; set; }
+        public int CommentId { get; set; }
         public string CommentText { get; set; }
         public string Author { get; set; }
         public DateTime DateAdded { get; set; }

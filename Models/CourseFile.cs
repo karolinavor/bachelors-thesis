@@ -4,7 +4,7 @@ namespace BachelorThesis.Models
 {
     public class CourseFile
     {
-        public int Id { get; set; }
+        public int CourseFileId { get; set; }
         public string Name { get; set; }
         public string Author { get; set; }
         public DateTime DateAdded { get; set; }

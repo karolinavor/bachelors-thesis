@@ -7,7 +7,6 @@ import Login from "../pages/Login";
 import Profile from "../pages/Profile";
 import File from '../components/File';
 import Course from '../components/Course';
-import Settings from '../pages/Settings';
 import Error from '../pages/Error'
 import Textpage from '../pages/Textpage';
 import NewsPage from '../pages/NewsPage';
@@ -68,10 +67,6 @@ const router = createBrowserRouter([
     {
       path: RoutesList.textpage.url,
       element: <Textpage />,
-    },
-    {
-      path: RoutesList.settings.url,
-      element: <Settings />,
     },
     {
       path: RoutesList.user.url,

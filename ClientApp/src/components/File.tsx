@@ -6,6 +6,7 @@ import { modalOpen } from '../store/reducers/modalSlice';
 import { AppDispatch } from '../store/store';
 import { useDispatch } from 'react-redux';
 import Comment from './Comment';
+import bellWhiteIcon from "../assets/bell-white.svg"
 
 export default function File() {
 
@@ -95,17 +96,43 @@ export default function File() {
         }))
     }
 
+    async function toggleNotifications() {
+        const formData = {
+            userId: 0,
+            fileId: fileId
+        }
+
+        const response = await fetch(`/api/notifications/add`, {
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json'
+            },
+            method: "POST",
+            body: JSON.stringify(formData)
+        });
+
+        const data = await response.json();
+        if (response.status === 201 && data) {
+            // TODO toast notification 
+        }
+    }
+
     return (
         <>
             <Link className="Button" to={window.location.href.split("file")[0]}>Back to course</Link>
             <section>
                 <h1>File Detail - {file?.name}</h1>
-                <button className="Button" onClick={() => downloadFile()}>
-                    Download
-                </button>
-                <button className="Button" onClick={() => openDeleteFileModal()}>
-                    Delete
-                </button>
+                <div className="flex">
+                    <button className="Button" onClick={() => downloadFile()}>
+                        Download
+                    </button>
+                    <button className="Button" onClick={() => openDeleteFileModal()}>
+                        Delete
+                    </button>
+                    <button className="Button" onClick={() => toggleNotifications()}>
+                        <img alt="bell icon" src={bellWhiteIcon} />
+                    </button>
+                </div>
                 <div className='flex justify-between'>
                     <div className='flex flex-column'>
                         <div>

@@ -1,18 +1,27 @@
 import React, { useEffect, useState } from "react";
-import { NavLink, useNavigate } from "react-router-dom";
-import homeIcon from "../assets/home.svg"
+import { Link, NavLink, useNavigate } from "react-router-dom";
 import userIcon from "../assets/user.svg"
-import settingsIcon from "../assets/settings.svg"
 import logoutIcon from "../assets/logout.svg"
 import menuIcon from "../assets/menu.svg"
+import bellIcon from "../assets/bell.svg"
 import { RoutesList } from "../router/Router";
 import { UserType } from "../types/types";
+import { useDispatch, useSelector } from "react-redux";
+import { AppDispatch, RootState } from "../store/store";
+import { fetchNotifications } from "../store/reducers/notificationsSlice";
 
 export default function Header(props) {
 
     const navigate = useNavigate();
+    const dispatch: AppDispatch = useDispatch()
     const [user, setUser] = useState<UserType>();
     const [headerOpen, setHeaderOpen] = useState(false);
+
+    const notificationsState = useSelector((state: RootState) => state.notifications)
+
+    useEffect(() => {
+        dispatch(fetchNotifications())
+    }, [])
 
     async function getUser() {
         const response = await fetch('/api/user');
@@ -31,19 +40,18 @@ export default function Header(props) {
     return (
         <header className={"Header" + (headerOpen ? " Header-hamburger--open" : "")}>
             <div>
-                <NavLink className="Link" to={RoutesList.dashboard.url}>
-                    <img src={homeIcon} alt="home" width="32" height="32" />
-                </NavLink>
+                <Link className="Link" to={RoutesList.dashboard.url}>
+                    UPFILE
+                </Link>
             </div>
             <div className="Header-menu flex align-center">
                 <NavLink className="Link" to="/user/test">
                     <img src={userIcon} alt="user" width="28" height="28" />
                     <span className="Button-text">{user?.name}</span>
                 </NavLink>
-                <NavLink className="Link" to={RoutesList.settings.url}>
-                    <img src={settingsIcon} alt="settings" width="28" height="28" />
-                    <span className="Button-text">Settings</span>
-                </NavLink>
+                <button className="">
+                    <img src={bellIcon} alt="bell icon"/>
+                </button>
                 <button className="Link" onClick={() => logOutUser()} >
                     <img src={logoutIcon} alt="logout" width="28" height="28" />
                     <span className="Button-text">Logout</span>

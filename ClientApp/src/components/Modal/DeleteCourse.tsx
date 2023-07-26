@@ -4,6 +4,7 @@ import { useDispatch } from 'react-redux'
 import { modalClose } from '../../store/reducers/modalSlice'
 import { AppDispatch } from '../../store/store'
 import { ModalInterface } from './Modal'
+import { fetchCourses } from '../../store/reducers/coursesSlice'
 
 export default function EditCourse(props: PropsWithChildren<ModalInterface>) {
 	const dispatch: AppDispatch = useDispatch()
@@ -18,6 +19,7 @@ export default function EditCourse(props: PropsWithChildren<ModalInterface>) {
 		});
 		if (response.status === 200) {
 			dispatch(modalClose())
+			dispatch(fetchCourses())
 		}
 	}
 
