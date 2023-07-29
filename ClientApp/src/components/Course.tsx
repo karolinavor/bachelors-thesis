@@ -10,6 +10,7 @@ import bellTicked from "../assets/bell-ticked.svg"
 import deleteIcon from "../assets/delete.svg"
 import editIcon from "../assets/edit.svg"
 import uploadIcon from "../assets/upload.svg"
+import { toastNotificationAdd } from '../store/reducers/toastNotificationsSlice';
 
 export default function Course() {
 
@@ -26,14 +27,7 @@ export default function Course() {
         getCourse()
         getCourseComments()
         getFiles()
-        test()
     }, [])
-
-    async function test() {
-        await fetch(`/api/notifications/get`, {
-            method: `GET`,
-        })
-    }
 
     useEffect(() => {
         getCourse()
@@ -43,7 +37,7 @@ export default function Course() {
 
     async function getCourse() {
         const response = await fetch(`/api/course/${courseId}/get`);
-        if (!response.ok) {
+        if (response.status !== 200) {
             navigate("/");
         }
         const data = await response.json();
@@ -80,9 +74,23 @@ export default function Course() {
             body: JSON.stringify(formData)
         });
 
-        const data = await response.json();
-        if (response.status === 201 && data) {
+        if (response.status === 201) {
             form.reset()
+            dispatch(
+                toastNotificationAdd({
+                  notificationId: Date.now(),
+                  title: "New comment added.",
+                  customDuration: 5000,
+                })
+            );
+        } else {
+            dispatch(
+                toastNotificationAdd({
+                  notificationId: Date.now(),
+                  title: "Cannot send comment.",
+                  customDuration: 5000,
+                })
+            );
         }
     }
 
@@ -118,7 +126,7 @@ export default function Course() {
             courseId: courseId
         }
 
-        await fetch(`/api/notifications/set`, {
+        const response = await fetch(`/api/notifications/set`, {
             headers: {
                 'Accept': 'application/json',
                 'Content-Type': 'application/json'
@@ -126,13 +134,39 @@ export default function Course() {
             method: "POST",
             body: JSON.stringify(formData)
         });
+
+        if (response.status === 200) {
+            dispatch(
+				toastNotificationAdd({
+					notificationId: Date.now(),
+					title: "Course notifications turned off.",
+					customDuration: 5000,
+				})
+			);
+        } else if (response.status === 201) {
+            dispatch(
+				toastNotificationAdd({
+					notificationId: Date.now(),
+					title: "Course notifications turned on.",
+					customDuration: 5000,
+				})
+			);
+        } else {
+            dispatch(
+				toastNotificationAdd({
+					notificationId: Date.now(),
+					title: "Error occured.",
+					customDuration: 5000,
+				})
+			);
+        }
     }
 
     return (
         <>
             {!location.pathname.includes("/file/") &&
                 <>
-                    <section>
+                <section>
                     <h1>{course?.short} - {course?.title}</h1>
                         <div className="Button-row">
                             <button className="Button" onClick={() => openEditCourseModal()}>

@@ -36,7 +36,6 @@ app.UseHttpsRedirection();
 app.UseStaticFiles();
 app.UseSwagger();
 app.UseRouting();
-app.UseAuthorization();
 
 app.MapControllerRoute(
     name: "default",
@@ -51,6 +50,7 @@ app.MapNewsControllerRoutes();
 app.MapUserControllerRoutes();
 app.MapNotificationControllerRoutes();
 app.MapLogControllerRoutes();
+app.MapReactionControllerRoutes();
 
 if (!Directory.Exists("./FileSystem")) {
     Directory.CreateDirectory(Path.Combine(Directory.GetCurrentDirectory(), "./","FileSystem"));

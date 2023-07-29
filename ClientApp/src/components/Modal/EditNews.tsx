@@ -5,6 +5,7 @@ import { modalClose } from '../../store/reducers/modalSlice'
 import { AppDispatch } from '../../store/store'
 import { NewsType } from '../../types/types'
 import { ModalInterface } from './Modal'
+import { toastNotificationAdd } from '../../store/reducers/toastNotificationsSlice'
 
 export default function EditNews(props: PropsWithChildren<ModalInterface>) {
 	const dispatch: AppDispatch = useDispatch()
@@ -40,6 +41,21 @@ export default function EditNews(props: PropsWithChildren<ModalInterface>) {
     });
     if (response.status === 200) {
       dispatch(modalClose())
+      dispatch(
+				toastNotificationAdd({
+					notificationId: Date.now(),
+					title: "News edited.",
+					customDuration: 5000,
+				})
+			);
+    } else {
+      dispatch(
+				toastNotificationAdd({
+					notificationId: Date.now(),
+					title: "Error occured.",
+					customDuration: 5000,
+				})
+			);
     }
   }
 

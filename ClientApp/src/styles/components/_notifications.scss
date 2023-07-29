@@ -1,0 +1,95 @@
+.ToastNotificationsWrapper {
+  position: absolute;
+  top: calc(55px + 1rem);
+  right: 1rem;
+  height: calc(100% - 110px - 2rem);
+
+  pointer-events: none;
+}
+
+.ToastNotifications {
+  position: sticky;
+  top: 1rem;
+  z-index: 100;
+
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+
+  pointer-events: all;
+
+  @include media(md) {
+    width: auto;
+    top: 3rem;
+  }
+}
+
+@keyframes animateToastNotificationBorder {
+  from {
+    width: 0;
+  }
+
+  to {
+    width: 100%;
+  }
+}
+
+.ToastNotification {
+  position: relative;
+  overflow: hidden;
+
+  padding: 1rem;
+  margin-bottom: .5rem;
+  width: 100%;
+  min-width: 15rem;
+  max-width: 15rem;
+  border-radius: 5px;
+
+  background-color: $grey;
+
+  .ToastNotification-title {
+    color: $light_blue;
+  }
+
+  .ToastNotification-animation {
+    background-color: $light_blue;
+  }
+
+  &-animation {
+    position: absolute;
+    left: 0;
+    top: 0;
+    z-index: 1;
+    height: 1px;
+    width: 100%;
+  }
+
+  &-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  &-title {
+    font-size: 1rem;
+    font-weight: 700;
+  }
+
+  &-close {
+    cursor: pointer;
+    color: $dark-blue;
+    margin-left: 1.5rem;
+
+    &::before {
+      font-size: 1.5rem;
+    }
+
+    &:hover {
+      scale: 1.1;
+    }
+  }
+
+  &-message {
+    margin-top: 1rem;
+  }
+}

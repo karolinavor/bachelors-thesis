@@ -1,14 +1,14 @@
 import { configureStore } from '@reduxjs/toolkit'
 import modalReducer from './reducers/modalSlice'
 import coursesReducer from './reducers/coursesSlice'
-import notificationsReducer from './reducers/notificationsSlice'
+import toastNotificationsReducer from './reducers/toastNotificationsSlice'
 import { useDispatch, TypedUseSelectorHook, useSelector } from 'react-redux'
 
 export const store = configureStore({
   reducer: {
     modal: modalReducer,
     courses: coursesReducer,
-    notifications: notificationsReducer,
+    notifications: toastNotificationsReducer,
   },
 })
 

@@ -6,6 +6,7 @@ import { AppDispatch } from '../../store/store'
 import { CourseType } from '../../types/types'
 import { ModalInterface } from './Modal'
 import { fetchCourses } from '../../store/reducers/coursesSlice'
+import { toastNotificationAdd } from '../../store/reducers/toastNotificationsSlice'
 
 export default function EditCourse(props: PropsWithChildren<ModalInterface>) {
 	const dispatch: AppDispatch = useDispatch()
@@ -42,7 +43,22 @@ export default function EditCourse(props: PropsWithChildren<ModalInterface>) {
     });
     if (response.status === 200) {
       dispatch(modalClose())
+      dispatch(
+				toastNotificationAdd({
+					notificationId: Date.now(),
+					title: "Course edited.",
+					customDuration: 5000,
+				})
+			);
       dispatch(fetchCourses())
+    } else {
+      dispatch(
+				toastNotificationAdd({
+					notificationId: Date.now(),
+					title: "Error occured.",
+					customDuration: 5000,
+				})
+			);
     }
   }
 

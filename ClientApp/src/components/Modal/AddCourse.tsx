@@ -4,6 +4,7 @@ import { useDispatch } from 'react-redux'
 import { modalClose } from '../../store/reducers/modalSlice'
 import { AppDispatch } from '../../store/store'
 import { fetchCourses } from '../../store/reducers/coursesSlice'
+import { toastNotificationAdd } from '../../store/reducers/toastNotificationsSlice'
 
 export default function AddCourse() {
   const dispatch: AppDispatch = useDispatch()
@@ -25,11 +26,25 @@ export default function AddCourse() {
         method: "POST",
         body: JSON.stringify(formData)
     });
-    const data = await response.json();
-    if (response.status === 201 && data) {
+    if (response.status === 201) {
       dispatch(modalClose())
-      dispatch(fetchCourses())
-    }  
+      dispatch(
+        toastNotificationAdd({
+          notificationId: Date.now(),
+          title: "New course added.",
+          customDuration: 5000,
+        })
+      );
+      //dispatch(fetchCourses())
+    } else {
+			dispatch(
+        toastNotificationAdd({
+          notificationId: Date.now(),
+          title: "Error occured.",
+          customDuration: 5000,
+        })
+      );
+		}
   }
 
   return (

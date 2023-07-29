@@ -1,6 +1,6 @@
 .Homepage-grid {
   display: grid;
-  gap: 3rem;
+  gap: 2rem;
   grid-template-columns: 1fr;
 
   @include media(lg) {

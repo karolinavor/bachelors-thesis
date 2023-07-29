@@ -7,6 +7,7 @@ import { useDispatch } from 'react-redux';
 import { modalOpen } from '../store/reducers/modalSlice';
 import { AppDispatch } from '../store/store';
 import addIcon from "../assets/add.svg"
+import { toastNotificationAdd } from '../store/reducers/toastNotificationsSlice';
 
 export default function Dashboard() {
 
@@ -25,26 +26,34 @@ export default function Dashboard() {
 
     async function getNews() {
         const response = await fetch('/api/news');
-        const data = await response.json();
-        setNews(data)
+        if (response.status === 200) {
+            const data = await response.json();
+            setNews(data)
+        }
     }
 
     async function getLatestComments() {
         const response = await fetch('/api/comments/latest');
-        const data = await response.json();
-        setLatestComments(data)
+        if (response.status === 200) {
+            const data = await response.json();
+            setLatestComments(data)
+        }
     }
 
     async function getLatestCourses() {
         const response = await fetch('/api/courses/latest');
-        const data = await response.json();
-        setLatestCourses(data)
+        if (response.status === 200) {
+            const data = await response.json();
+            setLatestCourses(data)
+        }
     }
 
     async function getLatestFiles() {
         const response = await fetch('/api/files/latest');
-        const data = await response.json();
-        setLatestFiles(data)
+        if (response.status === 200) {
+            const data = await response.json();
+            setLatestFiles(data)
+        }
     }
 
     function openAddNewsModal() {

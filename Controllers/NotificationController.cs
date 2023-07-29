@@ -28,12 +28,14 @@ public static class NotificationController
                 notification.NotificationId = Interlocked.Increment(ref globalNotificationID);
                 notification.UserId = 0;
                 await db.Notifications.AddAsync(notification);
+                await db.SaveChangesAsync();
+                return Results.Created($"/", notification);
             } else {
                 var notificationToDelete = await db.Notifications.FindAsync(foundNotifications.NotificationId);
                 db.Notifications.Remove(notificationToDelete);
-            };
-            await db.SaveChangesAsync();
+                await db.SaveChangesAsync();
                 return Results.Ok();
+            };
         });
     }
 }

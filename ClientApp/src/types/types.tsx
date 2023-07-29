@@ -36,7 +36,9 @@ export type CommentType = {
   userId: number,
   fileId: number,
   courseId: number,
-  categoryName: string
+  categoryName: string,
+  likes: number,
+  dislikes: number
 }
 
 export type UserType = {

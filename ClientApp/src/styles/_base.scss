@@ -20,7 +20,7 @@ body {
 
 aside {
   display: none;
-  background-color: whitesmoke;
+  background-color: $grey;
   overflow-y: auto;
 
   @include media(md) {
@@ -35,12 +35,12 @@ header, footer {
 
   .Link {
     &:hover {
-      color: white;
+      color: $white;
     }
     
     &.active {
       font-weight: 700;
-      color: white;
+      color: $white;
     }
   }
 }

@@ -5,6 +5,7 @@ import { modalClose } from '../../store/reducers/modalSlice'
 import { AppDispatch } from '../../store/store'
 import { ModalInterface } from './Modal'
 import { fetchCourses } from '../../store/reducers/coursesSlice'
+import { toastNotificationAdd } from '../../store/reducers/toastNotificationsSlice'
 
 export default function EditCourse(props: PropsWithChildren<ModalInterface>) {
 	const dispatch: AppDispatch = useDispatch()
@@ -18,8 +19,23 @@ export default function EditCourse(props: PropsWithChildren<ModalInterface>) {
 			method: "DELETE"
 		});
 		if (response.status === 200) {
-			dispatch(modalClose())
+			window.location.href = "/";
+			dispatch(
+				toastNotificationAdd({
+					notificationId: Date.now(),
+					title: "Course deleted.",
+					customDuration: 5000,
+				})
+			);
 			dispatch(fetchCourses())
+		} else {
+			dispatch(
+        toastNotificationAdd({
+          notificationId: Date.now(),
+          title: "Error occured.",
+          customDuration: 5000,
+        })
+      );
 		}
 	}
 

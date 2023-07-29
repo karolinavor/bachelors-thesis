@@ -7,6 +7,7 @@ import { modalOpen } from "../store/reducers/modalSlice";
 import { useDispatch } from "react-redux";
 import { AppDispatch } from "../store/store";
 import deleteIcon from "../assets/delete.svg"
+import { toastNotificationAdd } from "../store/reducers/toastNotificationsSlice";
 
 type CommentTypeExtended = {
   comment: CommentType,
@@ -26,6 +27,40 @@ export default function Comment({ comment, showCommentCategory }: CommentTypeExt
     }))
   }
 
+  async function addReaction(reaction) {
+    const formData = {
+      commentId: comment.commentId
+    }
+    
+    const url = (reaction === "Like" ? `/api/like/add` : `/api/dislike/add`)
+    const response = await fetch(url, {
+      headers: {
+        'Accept': 'application/json',
+        'Content-Type': 'application/json'
+      },
+      method: "POST",
+      body: JSON.stringify(formData)
+    });
+
+    if (response.status === 201) {
+      dispatch(
+        toastNotificationAdd({
+          notificationId: Date.now(),
+          title: "Like added.",
+          customDuration: 5000,
+        })
+      );
+    } else {
+      dispatch(
+        toastNotificationAdd({
+          notificationId: Date.now(),
+          title: "Error occured.",
+          customDuration: 5000,
+        })
+      );
+    }
+  }
+
   return (
     <div className="Comment">
       <span className="Comment-picture">
@@ -41,13 +76,19 @@ export default function Comment({ comment, showCommentCategory }: CommentTypeExt
         }
         <div>{getLocalTime(comment.dateAdded)} {getLocalDate(comment.dateAdded)}</div>
       </div>
-      <div className="Button-row mb-0">
+      <div className="Comment-content">
+        <p>{comment.commentText}</p>
+      </div>
+      <div className="Button-row mb-0 mt-1">
         <button className="Button" onClick={() => openDeleteCommentModal()}>
           <img src={deleteIcon} alt="Delete icon" width="16" height="16" />
         </button>
-      </div>
-      <div className="Comment-content">
-        <p>{comment.commentText}</p>
+        <button className="Button" onClick={() => addReaction("Like")}>
+          Like
+        </button>
+        <button className="Button" onClick={() => addReaction("Dislike")}>
+          Dislike
+        </button>
       </div>
     </div>
   )

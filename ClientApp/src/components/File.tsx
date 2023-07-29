@@ -10,6 +10,8 @@ import bellIcon from "../assets/bell.svg"
 import downloadIcon from "../assets/download.svg"
 import deleteIcon from "../assets/delete.svg"
 import bellTicked from "../assets/bell-ticked.svg"
+import leftIcon from "../assets/left.svg"
+import { toastNotificationAdd } from '../store/reducers/toastNotificationsSlice';
 
 export default function File() {
 
@@ -83,9 +85,23 @@ export default function File() {
             body: JSON.stringify(formData)
         });
 
-        const data = await response.json();
-        if (response.status === 201 && data) {
+        if (response.status === 201) {
             form.reset()
+            dispatch(
+				toastNotificationAdd({
+					notificationId: Date.now(),
+					title: "New comment added.",
+					customDuration: 5000,
+				})
+			);
+        } else {
+            dispatch(
+				toastNotificationAdd({
+					notificationId: Date.now(),
+					title: "Error occured.",
+					customDuration: 5000,
+				})
+			);
         }
     }
 
@@ -93,7 +109,7 @@ export default function File() {
         dispatch(modalOpen({
             type: `deleteFile`,
             data: {
-                courseId: parseInt(fileId)
+                fileId: parseInt(fileId)
             }
         }))
     }
@@ -103,7 +119,7 @@ export default function File() {
             fileId: fileId
         }
 
-        await fetch(`/api/notifications/set`, {
+        const response = await fetch(`/api/notifications/set`, {
             headers: {
                 'Accept': 'application/json',
                 'Content-Type': 'application/json'
@@ -111,12 +127,41 @@ export default function File() {
             method: "POST",
             body: JSON.stringify(formData)
         });
+
+        if (response.status === 200) {
+            dispatch(
+				toastNotificationAdd({
+					notificationId: Date.now(),
+					title: "File notifications turned off.",
+					customDuration: 5000,
+				})
+			);
+        } else if (response.status === 201) {
+            dispatch(
+				toastNotificationAdd({
+					notificationId: Date.now(),
+					title: "File notifications turned on.",
+					customDuration: 5000,
+				})
+			);
+        } else {
+            dispatch(
+				toastNotificationAdd({
+					notificationId: Date.now(),
+					title: "Error occured.",
+					customDuration: 5000,
+				})
+			);
+        }
     }
 
     return (
         <>
             <div className="Button-row">
-                <Link className="Button" to={window.location.href.split("file")[0]}>Back to course</Link>
+                <Link className="Button" to={window.location.href.split("file")[0]}>
+                    <img src={leftIcon} alt="Left icon" />
+                    Back to course
+                </Link>
             </div>
             <section>
                 <h1>{file?.name}.{file?.filetype}</h1>

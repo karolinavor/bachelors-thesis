@@ -15,9 +15,12 @@ export default function HeaderNotifications() {
         getNotifications()
     }, [])
 
+    // TODO
+
     return (
         <div className="Header-notifications-wrapper">
             <div className="Header-notifications-list">
+                TODO
                 {notifications?.map((notif, index) => {
                     return <div key={index}>{notif.notificationId}</div>
                 })}

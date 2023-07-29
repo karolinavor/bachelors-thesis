@@ -7,22 +7,14 @@ import bellIcon from "../../assets/bell.svg"
 import logoIcon from "../../assets/logo.svg"
 import { RoutesList } from "../../router/Router";
 import { UserType } from "../../types/types";
-import { useDispatch } from "react-redux";
-import { AppDispatch } from "../../store/store";
-import { fetchNotifications } from "../../store/reducers/notificationsSlice";
 import HeaderNotifications from "./HeaderNotifications";
 
 export default function Header() {
 
     const navigate = useNavigate();
-    const dispatch: AppDispatch = useDispatch()
     const [user, setUser] = useState<UserType>();
     const [hamburgerOpen, setHamburgerOpen] = useState(false);
     const [notificationsOpen, setNotificationsOpen] = useState(false);
-
-    useEffect(() => {
-        dispatch(fetchNotifications())
-    }, [])
 
     async function getUser() {
         const response = await fetch('/api/user');

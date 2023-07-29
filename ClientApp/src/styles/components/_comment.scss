@@ -10,7 +10,8 @@
     grid-template-rows: 1fr auto;
     grid-template-areas: 
     'picture heading'
-    '. content';
+    '. content'
+    '. buttons';
   
     padding: 1rem;
     background: whitesmoke;
@@ -36,7 +37,7 @@
     }
 
     .Button-row {
-      align-items: flex-start;
+      grid-area: buttons;
     }
   }
 }

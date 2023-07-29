@@ -3,6 +3,7 @@ import { useDispatch } from 'react-redux'
 
 import { modalClose } from '../../store/reducers/modalSlice'
 import { AppDispatch } from '../../store/store'
+import { toastNotificationAdd } from '../../store/reducers/toastNotificationsSlice'
 
 export default function AddNews() {
   const dispatch: AppDispatch = useDispatch()
@@ -23,10 +24,24 @@ export default function AddNews() {
         method: "POST",
         body: JSON.stringify(formData)
     });
-    const data = await response.json();
-    if (response.status === 201 && data) {
+    if (response.status === 201) {
       dispatch(modalClose());
-    }
+      dispatch(
+        toastNotificationAdd({
+          notificationId: Date.now(),
+          title: "News added.",
+          customDuration: 5000,
+        })
+      );
+    } else {
+			dispatch(
+        toastNotificationAdd({
+          notificationId: Date.now(),
+          title: "Error occured.",
+          customDuration: 5000,
+        })
+      );
+		}
   }
 
   return (

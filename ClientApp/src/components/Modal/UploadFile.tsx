@@ -4,6 +4,7 @@ import { useDispatch } from 'react-redux'
 import { modalClose } from '../../store/reducers/modalSlice'
 import { AppDispatch } from '../../store/store'
 import { ModalInterface } from './Modal'
+import { toastNotificationAdd } from '../../store/reducers/toastNotificationsSlice'
 
 export default function UploadFile(props: PropsWithChildren<ModalInterface>) {
   const dispatch: AppDispatch = useDispatch()
@@ -23,13 +24,30 @@ export default function UploadFile(props: PropsWithChildren<ModalInterface>) {
       formData.append("filetype", file.name.split('.')[1]);
       formData.append("size", file.size);
 
-      await fetch(`/api/course/${props.courseId}/file/add`, {
+      const response = await fetch(`/api/course/${props.courseId}/file/add`, {
         method: "POST",
         body: formData
       });
+
+      if (response.status === 201) {
+        dispatch(modalClose())
+        dispatch(
+          toastNotificationAdd({
+            notificationId: Date.now(),
+            title: "New file uploaded.",
+            customDuration: 5000,
+          })
+        );
+      } else {
+        dispatch(
+          toastNotificationAdd({
+            notificationId: Date.now(),
+            title: "Error occured.",
+            customDuration: 5000,
+          })
+        );
+      }
     }
-  
-    dispatch(modalClose())
   }
 
   return (
