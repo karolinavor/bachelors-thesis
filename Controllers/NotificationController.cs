@@ -14,16 +14,27 @@ public static class NotificationController
     {
         app.MapGet("api/notifications/get", async (StudyDb db) =>
         {
-            return await db.Notifications.OrderByDescending(s => s.NotificationId).ToListAsync();
+            var notifications = await db.Notifications.Where(s => s.UserId == 0).ToListAsync();
+            await db.Logs.OrderByDescending(s => s.LogId).ToListAsync();
+             
         });
 
-        app.MapPost("api/notifications/add", async (StudyDb db, Notification notification) =>
+        app.MapPost("api/notifications/set", async (StudyDb db, Notification notification) =>
         {
-            await db.Notifications.AddAsync(notification);
-            notification.NotificationId = Interlocked.Increment(ref globalNotificationID);
+            var foundNotifications = (notification.CourseId > 0 ? 
+                db.Notifications.SingleOrDefault(s => s.CourseId == notification.CourseId) : 
+                db.Notifications.SingleOrDefault(s => s.CourseFileId == notification.CourseFileId));
+            if (foundNotifications is null) {
+                notification.NotificationId = Interlocked.Increment(ref globalNotificationID);
+                notification.UserId = 0;
+                await db.Notifications.AddAsync(notification);
+            } else {
+                var notificationToDelete = await db.Notifications.FindAsync(foundNotifications.NotificationId);
+                db.Notifications.Remove(notificationToDelete);
+            };
             await db.SaveChangesAsync();
-            return Results.Created("/", notification);
-        }); // TODO toggle notifications
+                return Results.Ok();
+        });
     }
 }
 

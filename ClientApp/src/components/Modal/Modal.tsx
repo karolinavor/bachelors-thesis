@@ -13,13 +13,15 @@ import DeleteCourse from './DeleteCourse'
 import DeleteFile from './DeleteFile'
 import DeleteNews from './DeleteNews'
 import EditNews from './EditNews'
+import DeleteComment from './DeleteComment'
 
 const customStyles = {
   content: {
     'background': `white`,
-    'borderRadius': `5px`,
+    'borderRadius': `7px`,
     'border': `none`,
-    'padding': `3rem`,
+    'padding': `1rem`,
+    'inset': `1rem`
   },
   overlay: {
     'background': `rgba(19, 36, 104, 0.15)`
@@ -29,7 +31,8 @@ const customStyles = {
 export interface ModalInterface {
   courseId?: number,
   fileId?: number,
-  newsId?: number
+  newsId?: number,
+  commentId?: number
 }
 
 export default function ModalContainer(props: PropsWithChildren<ModalSliceState>) {
@@ -54,6 +57,8 @@ export default function ModalContainer(props: PropsWithChildren<ModalSliceState>
         return `Delete news`
       case `addNews`:
         return `Add news`
+      case `deleteComment`:
+        return `Delete comment`
     }
   }
 
@@ -71,6 +76,8 @@ export default function ModalContainer(props: PropsWithChildren<ModalSliceState>
         return <DeleteCourse courseId={props.data.courseId ?? 0} />
       case `deleteFile`:
         return <DeleteFile fileId={props.data.fileId ?? 0} />
+      case `deleteComment`:
+        return <DeleteComment commentId={props.data.commentId ?? 0} />
       case `deleteNews`:
         return <DeleteNews newsId={props.data.newsId ?? 0} />
       case `addNews`:
@@ -88,6 +95,7 @@ export default function ModalContainer(props: PropsWithChildren<ModalSliceState>
       case `deleteNews`:
       case `deleteCourse`:
       case `deleteFile`:
+      case `deleteComment`:
         return `small`
     }
 

@@ -5,7 +5,11 @@ import Comment from './Comment';
 import { modalOpen } from '../store/reducers/modalSlice';
 import { useDispatch } from 'react-redux';
 import { AppDispatch } from '../store/store';
-import bellWhiteIcon from "../assets/bell-white.svg"
+import bellIcon from "../assets/bell.svg"
+import bellTicked from "../assets/bell-ticked.svg"
+import deleteIcon from "../assets/delete.svg"
+import editIcon from "../assets/edit.svg"
+import uploadIcon from "../assets/upload.svg"
 
 export default function Course() {
 
@@ -22,7 +26,14 @@ export default function Course() {
         getCourse()
         getCourseComments()
         getFiles()
+        test()
     }, [])
+
+    async function test() {
+        await fetch(`/api/notifications/get`, {
+            method: `GET`,
+        })
+    }
 
     useEffect(() => {
         getCourse()
@@ -58,7 +69,6 @@ export default function Course() {
     
         const formData = {
             commentText: form[0].value,
-            author: "Karolina TODO"
         }
 
         const response = await fetch(`/api/course/${courseId}/comments/add`, {
@@ -105,11 +115,10 @@ export default function Course() {
 
     async function toggleNotifications() {
         const formData = {
-            userId: 0,
             courseId: courseId
         }
 
-        const response = await fetch(`/api/notifications/add`, {
+        await fetch(`/api/notifications/set`, {
             headers: {
                 'Accept': 'application/json',
                 'Content-Type': 'application/json'
@@ -117,11 +126,6 @@ export default function Course() {
             method: "POST",
             body: JSON.stringify(formData)
         });
-
-        const data = await response.json();
-        if (response.status === 201 && data) {
-            // TODO toast notification 
-        }
     }
 
     return (
@@ -130,12 +134,24 @@ export default function Course() {
                 <>
                     <section>
                     <h1>{course?.short} - {course?.title}</h1>
-                        <div className="flex">
-                            <button className="Button" onClick={() => openEditCourseModal()}>Edit course</button>
-                            <button className="Button" onClick={() => openDeleteCourseModal()}>Delete course</button>
-                            <button className="Button" onClick={() => openUploadFileModal()}>Upload file</button>
+                        <div className="Button-row">
+                            <button className="Button" onClick={() => openEditCourseModal()}>
+                                <img src={editIcon} alt="Edit icon" />
+                                Edit
+                            </button>
+                            <button className="Button" onClick={() => openDeleteCourseModal()}>
+                                <img src={deleteIcon} alt="Delete icon" />
+                                Delete
+                            </button>
+                            <button className="Button" onClick={() => openUploadFileModal()}>
+                                <img src={uploadIcon} alt="Upload icon" />
+                                Upload file
+                            </button>
                             <button className="Button" onClick={() => toggleNotifications()}>
-                                <img alt="bell icon" src={bellWhiteIcon} />
+                                {course?.notificationSet ?
+                                    <img alt="bell icon" src={bellTicked} />
+                                    :<img alt="bell icon" src={bellIcon} />
+                                }
                             </button>
                         </div>
                     </section>
@@ -144,9 +160,9 @@ export default function Course() {
                             <h2 className="mb-1 flex">
                                 File system
                             </h2>
-                            <div className="FileTable">
+                            <div className="Table">
                                 {files?.map((file: FileType, index) => 
-                                    <Link className="FileTable-row" key={index} to={"file/" + file.courseFileId}>{file.name}.{file.filetype}</Link>
+                                    <Link className="Table-row" key={index} to={"file/" + file.courseFileId}>{file.name}.{file.filetype}</Link>
                                 )}
                             </div>
                         </section>
@@ -158,14 +174,18 @@ export default function Course() {
                                         <label htmlFor="content">Comment:</label>
                                         <textarea id="content" required></textarea>
                                     </div>
-                                    <button className="Button" type="submit">Send comment</button>
+                                    <div className="Button-row">
+                                        <button className="Button" type="submit">Send comment</button>
+                                    </div>
                                 </form>
-                                {courseComments?.map((comment: CommentType, index) => 
-                                    <Comment
-                                        key={index}
-                                        comment={comment}
-                                    />
-                                )}
+                                <div className="Comments">
+                                    {courseComments?.map((comment: CommentType, index) => 
+                                        <Comment
+                                            key={index}
+                                            comment={comment}
+                                        />
+                                    )}
+                                </div>
                             </section>
                         </div>
                     </div>

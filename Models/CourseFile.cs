@@ -6,7 +6,7 @@ namespace BachelorThesis.Models
     {
         public int CourseFileId { get; set; }
         public string Name { get; set; }
-        public string Author { get; set; }
+        public int UserId { get; set; }
         public DateTime DateAdded { get; set; }
         public string Filetype { get; set; }
         public int Size { get; set; }
@@ -17,5 +17,6 @@ namespace BachelorThesis.Models
         */
         public int NumberOfDownloads { get; set; }
         public int CourseId { get; set; }
+        public bool NotificationSet { get; set; }
     }
 }

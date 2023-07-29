@@ -33,11 +33,11 @@ export default function News({ news }: NewProps) {
     
     return (
         <div className="New">
-            <div>
-                <button className="Button Button-small" onClick={() => openEditNewsModal()}>
+            <div className="Button-row mb-0">
+                <button className="Button mb-0" onClick={() => openEditNewsModal()}>
                     Edit news
                 </button>
-                <button className="Button Button-small" onClick={() => openDeleteNewsModal()}>
+                <button className="Button mb-0" onClick={() => openDeleteNewsModal()}>
                     Delete news
                 </button>
             </div>
@@ -47,7 +47,6 @@ export default function News({ news }: NewProps) {
             <p>
                 {news.content}
             </p>
-            
         </div>
     )
 }

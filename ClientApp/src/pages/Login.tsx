@@ -12,7 +12,7 @@ export default function Login() {
     return (
         <div className="LoginPage">
             <section>
-                <h1 className='mw-30'>
+                <h1 className='Login-heading'>
                     Web application for advanced file sharing in a university environment
                 </h1>
                 <button onClick={() => loginUser()} className="Button">Login</button>

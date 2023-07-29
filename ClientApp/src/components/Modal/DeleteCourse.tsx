@@ -26,8 +26,10 @@ export default function EditCourse(props: PropsWithChildren<ModalInterface>) {
   return (
 	  <div>
 			<p className="mb-1">Do you really want to delete this course? This change is final.</p>
-			<button className="Button" onClick={() => deleteCourse()}>Delete course</button>
-			<button className="Button" onClick={() => dispatch(modalClose())}>Cancel</button>
+			<div className="Button-row mb-0">
+				<button className="Button" onClick={() => deleteCourse()}>Delete course</button>
+				<button className="Button" onClick={() => dispatch(modalClose())}>Cancel</button>
+			</div>
 		</div>
   )
 }

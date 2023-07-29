@@ -4,6 +4,7 @@ import { AppDispatch, RootState } from '../store/store';
 import { useDispatch, useSelector } from 'react-redux';
 import { modalOpen } from '../store/reducers/modalSlice';
 import { fetchCourses } from '../store/reducers/coursesSlice';
+import addIcon from "../assets/add.svg"
 
 export default function Sidebar() {    
     const dispatch: AppDispatch = useDispatch()
@@ -22,7 +23,9 @@ export default function Sidebar() {
     return (
         <aside>
             <h2>Courses</h2>
-            <button className="Button" onClick={() => openAddNewCourseModal()}>Add course</button>
+            <button className="Button" onClick={() => openAddNewCourseModal()}>
+                <img src={addIcon} alt="Add icon" />
+                Add course</button>
             <nav>
                 <ul>
                     {coursesState?.courses?.map(course =>

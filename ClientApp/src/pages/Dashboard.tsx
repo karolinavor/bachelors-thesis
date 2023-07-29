@@ -6,6 +6,7 @@ import { CommentType, CourseType, FileType, NewsType } from '../types/types';
 import { useDispatch } from 'react-redux';
 import { modalOpen } from '../store/reducers/modalSlice';
 import { AppDispatch } from '../store/store';
+import addIcon from "../assets/add.svg"
 
 export default function Dashboard() {
 
@@ -60,7 +61,12 @@ export default function Dashboard() {
             <div className="Homepage-grid">
                 <div>
                     <h2>News</h2>
-                    <button className="Button" onClick={() => openAddNewsModal()}>Add news</button>
+                    <div className="Button-row">
+                        <button className="Button" onClick={() => openAddNewsModal()}>
+                            <img src={addIcon} alt="Add icon" />
+                            Add news
+                        </button>
+                    </div>
                     {news?.map((newsItem: NewsType, index) =>
                         <News
                             news={newsItem}
@@ -68,19 +74,22 @@ export default function Dashboard() {
                         />
                     )}
                     {news.length > 0 ?
-                        <Link className="Link" to={"/news/"}>Show more</Link>
+                        <Link className="Button" to={"/news/"}>Show more</Link>
                         : <div>No news.</div>
                     }
                 </div>
                 {latestComments.length > 0 &&
                     <div>
                         <h2>Latest comments</h2>
-                        {latestComments?.map((comment: CommentType, index) =>
-                            <Comment
-                                comment={comment}
-                                showCommentCategory={true}
-                            />
-                        )}
+                        <div className="Comments">
+                            {latestComments?.map((comment: CommentType, index) =>
+                                <Comment
+                                    key={index}
+                                    comment={comment}
+                                    showCommentCategory={true}
+                                />
+                            )}
+                        </div>
                     </div>
                 }
                 {latestCourses.length > 0 &&

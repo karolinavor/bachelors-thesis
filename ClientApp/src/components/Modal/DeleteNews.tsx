@@ -20,8 +20,10 @@ export default function DeleteNews(props: PropsWithChildren<ModalInterface>) {
   return (
 	  <div>
 			<p className="mb-1">Do you really want to delete this news? This change is final.</p>
-			<button className="Button" onClick={() => deleteNews()}>Delete news</button>
-			<button className="Button" onClick={() => dispatch(modalClose())}>Cancel</button>
+			<div className="Button-row mb-0">
+				<button className="Button" onClick={() => deleteNews()}>Delete news</button>
+				<button className="Button" onClick={() => dispatch(modalClose())}>Cancel</button>
+			</div>
 		</div>
   )
 }

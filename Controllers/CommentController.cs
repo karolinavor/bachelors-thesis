@@ -17,9 +17,19 @@ public static class CommentController
             comment.CommentId = Interlocked.Increment(ref globalCommentID);
             comment.DateAdded = DateTime.Now;
             comment.CourseId = courseId;
+            comment.UserId = 0;
             comment.CategoryName = course.Result.Short + " - " + course.Result.Title;
             comment.FileId = 0;
-            db.Comments.Add(comment);        
+            db.Comments.Add(comment);
+
+            var log = new Log();
+            log.LogId = Interlocked.Increment(ref LogController.globalLogID);
+            log.UserId = 0;
+            log.Event = LogEvent.CommentAdded;
+            log.DateAdded = DateTime.Now;
+            log.CommentId = comment.CommentId;
+            await db.Logs.AddAsync(log);
+
             await db.SaveChangesAsync();
             return Results.Created($"/course/{courseId}", comment);
         });
@@ -30,11 +40,39 @@ public static class CommentController
             comment.CommentId = Interlocked.Increment(ref globalCommentID);
             comment.DateAdded = DateTime.Now;
             comment.FileId = fileId;
+            comment.UserId = 0;
             comment.CourseId = file.Result.CourseId;
             comment.CategoryName = file.Result.Name;
-            db.Comments.Add(comment);        
+            db.Comments.Add(comment);
+
+            var log = new Log();
+            log.LogId = Interlocked.Increment(ref LogController.globalLogID);
+            log.UserId = 0;
+            log.Event = LogEvent.CommentAdded;
+            log.DateAdded = DateTime.Now;
+            log.CommentId = comment.CommentId;
+            await db.Logs.AddAsync(log);
+
             await db.SaveChangesAsync();
             return Results.Created($"/course/{file.Result.CourseId}/file/{fileId}/", comment);
+        });
+
+        app.MapDelete("api/comment/{commentId}/delete", async (StudyDb db, int commentId) =>
+        {
+            var comment = await db.Comments.FindAsync(commentId);
+            if (comment is null) return Results.NotFound();
+            db.Comments.Remove(comment);
+
+            var log = new Log();
+            log.LogId = Interlocked.Increment(ref LogController.globalLogID);
+            log.UserId = 0;
+            log.Event = LogEvent.CommentDeleted;
+            log.DateAdded = DateTime.Now;
+            log.CommentId = comment.CommentId;
+            await db.Logs.AddAsync(log);
+
+            await db.SaveChangesAsync();
+            return Results.Ok();
         });
 
         app.MapGet("api/course/{courseId}/comments", async (StudyDb db, int courseId) =>

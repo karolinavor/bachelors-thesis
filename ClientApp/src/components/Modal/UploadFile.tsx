@@ -18,7 +18,7 @@ export default function UploadFile(props: PropsWithChildren<ModalInterface>) {
     for (const file of files) {
       const formData = new FormData();
       formData.append("file", file);
-      formData.append("author", "Karolina TODO");
+      formData.append("userId", "0");
       formData.append("name", file.name.split('.')[0]);
       formData.append("filetype", file.name.split('.')[1]);
       formData.append("size", file.size);

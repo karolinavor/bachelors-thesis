@@ -16,10 +16,10 @@ const context = [
   "/api/news",
   "/api/news/all",
   "/api/user",
-  "/api/notifications/add",
+  "/api/notifications/set",
   "/api/notifications/get",
   "/api/log",
-  "/api/log/add"
+  "/api/comment"
 ];
 
 const onError = (err, req, resp, target) => {

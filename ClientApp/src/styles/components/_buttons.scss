@@ -8,14 +8,8 @@ a, button {
   align-items: center;  
 }
 
-.Button + .Button,
-.Link + .Link {
-  margin-left: 1rem;
-}
-
 .Button {
-  padding: 1rem;
-  margin-bottom: 1rem;
+  padding: 0.5rem 0.75rem;
 
   background-color: #006FAD;
   color: white;
@@ -28,15 +22,6 @@ a, button {
 
   &:hover {
     background-color: #00568C;
-  }
-
-  &-large {
-    padding: 1rem 2.5rem;
-    font-size: 1.25rem;
-  }
-
-  &-small {
-    padding: 0.5rem 0.75rem;
   }
 }
 
@@ -52,6 +37,18 @@ a, button {
 
   &.active,
   &:hover {
-    text-decoration: underline;
+    color: #00568C;
+    text-decoration: none;
   }
+
+  &.active {
+    font-weight: 700;
+  }
+}
+
+.Button-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: .5rem;
+  margin-bottom: 1rem;
 }

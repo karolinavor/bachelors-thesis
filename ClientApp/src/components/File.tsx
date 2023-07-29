@@ -6,7 +6,10 @@ import { modalOpen } from '../store/reducers/modalSlice';
 import { AppDispatch } from '../store/store';
 import { useDispatch } from 'react-redux';
 import Comment from './Comment';
-import bellWhiteIcon from "../assets/bell-white.svg"
+import bellIcon from "../assets/bell.svg"
+import downloadIcon from "../assets/download.svg"
+import deleteIcon from "../assets/delete.svg"
+import bellTicked from "../assets/bell-ticked.svg"
 
 export default function File() {
 
@@ -69,7 +72,6 @@ export default function File() {
     
         const formData = {
             commentText: form[0].value,
-            author: "Karolina TODO"
         }
 
         const response = await fetch(`/api/file/${fileId}/comments/add`, {
@@ -98,11 +100,10 @@ export default function File() {
 
     async function toggleNotifications() {
         const formData = {
-            userId: 0,
             fileId: fileId
         }
 
-        const response = await fetch(`/api/notifications/add`, {
+        await fetch(`/api/notifications/set`, {
             headers: {
                 'Accept': 'application/json',
                 'Content-Type': 'application/json'
@@ -110,64 +111,64 @@ export default function File() {
             method: "POST",
             body: JSON.stringify(formData)
         });
-
-        const data = await response.json();
-        if (response.status === 201 && data) {
-            // TODO toast notification 
-        }
     }
 
     return (
         <>
-            <Link className="Button" to={window.location.href.split("file")[0]}>Back to course</Link>
+            <div className="Button-row">
+                <Link className="Button" to={window.location.href.split("file")[0]}>Back to course</Link>
+            </div>
             <section>
-                <h1>File Detail - {file?.name}</h1>
-                <div className="flex">
+                <h1>{file?.name}.{file?.filetype}</h1>
+                <div className="Button-row">
                     <button className="Button" onClick={() => downloadFile()}>
+                        <img src={downloadIcon} alt="Download icon" />
                         Download
                     </button>
                     <button className="Button" onClick={() => openDeleteFileModal()}>
+                        <img src={deleteIcon} alt="Delete icon" />
                         Delete
                     </button>
                     <button className="Button" onClick={() => toggleNotifications()}>
-                        <img alt="bell icon" src={bellWhiteIcon} />
+                        {file?.notificationSet ?
+                            <img alt="bell icon" src={bellTicked} />
+                            :<img alt="bell icon" src={bellIcon} />
+                        }
                     </button>
                 </div>
-                <div className='flex justify-between'>
-                    <div className='flex flex-column'>
-                        <div>
-                            <div><b>Author</b></div>
-                            <div>{file?.author}</div>
-                        </div>
-                        <div>
-                            <div><b>Date published</b></div>
-                            <div>{getLocalTime(file?.dateAdded)} {getLocalDate(file?.dateAdded)}</div>
-                        </div>
-                        <div>
-                            <div><b>Filetype</b></div>
-                            <div>{file?.filetype}</div>
-                        </div>
-                        <div>
-                            <div><b>Size</b></div>
-                            <div>{file?.size} B</div>
-                        </div>
-                        <div>
-                            <div><b>Number of downloads</b></div>
-                            <div>{file?.numberOfDownloads}</div>
-                        </div>
-                        {/*
-                        <div className='flex'>
-                            <div>
-                                <div><b>Likes</b></div>
-                                <div>{file?.likes}</div>
-                            </div>
-                            <div>
-                                <div><b>Dislikes</b></div>
-                                <div>{file?.dislikes}</div>
-                            </div>                        
-                        </div>
-                        */}
+                <div className='File-metadata'>
+                    <div>
+                        <div><b>User</b></div>
+                        <div>{file?.userId}</div>
                     </div>
+                    <div>
+                        <div><b>Date published</b></div>
+                        <div>{getLocalTime(file?.dateAdded)} {getLocalDate(file?.dateAdded)}</div>
+                    </div>
+                    <div>
+                        <div><b>Filetype</b></div>
+                        <div>{file?.filetype}</div>
+                    </div>
+                    <div>
+                        <div><b>Size</b></div>
+                        <div>{file?.size} B</div>
+                    </div>
+                    <div>
+                        <div><b>Number of downloads</b></div>
+                        <div>{file?.numberOfDownloads}</div>
+                    </div>
+                    {/*
+                    <div className='flex'>
+                        <div>
+                            <div><b>Likes</b></div>
+                            <div>{file?.likes}</div>
+                        </div>
+                        <div>
+                            <div><b>Dislikes</b></div>
+                            <div>{file?.dislikes}</div>
+                        </div>                        
+                    </div>
+                    */}
                 </div>
             </section>
             <section>
@@ -177,14 +178,18 @@ export default function File() {
                         <label htmlFor="content">Comment:</label>
                         <textarea id="content" required></textarea>
                     </div>
-                    <button className="Button" type="submit">Send comment</button>
+                    <div className="Button-row">
+                        <button className="Button" type="submit">Send comment</button>
+                    </div>
                 </form>
-                {fileComments?.map((comment: CommentType, index) =>
-                    <Comment
-                        key={index}
-                        comment={comment}
-                    />
-                )}
+                <div className="Comments">
+                    {fileComments?.map((comment: CommentType, index) =>
+                        <Comment
+                            key={index}
+                            comment={comment}
+                        />
+                    )}
+                </div>
             </section>
         </>
     )

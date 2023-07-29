@@ -1,18 +1,18 @@
-.FileTable {
+.Table {
   &:not(:empty) {
     border: 1px solid whitesmoke;
   }
 
-  .FileTable-row:nth-child(odd) {
+  .Table-row:nth-child(odd) {
     background-color: whitesmoke;
   }
 
-  .FileTable-row {
+  .Table-row {
     display: block;
     padding: .5rem;
-
-    &:hover {
-      background-color: rgb(232, 232, 232);
-    }
+  }
+  
+  a.Table-row:hover {
+    background-color: rgb(232, 232, 232);
   }
 }

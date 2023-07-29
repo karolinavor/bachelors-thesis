@@ -1,5 +1,6 @@
 html {
   font-size: $font-size;
+  background-color: $light_blue;
 }
 
 body {
@@ -29,7 +30,23 @@ aside {
 
 header, footer {
   grid-column: span 2;
-  background-color: $grey;
+  background-color: $light_blue;
+  color: $white;
+
+  .Link {
+    &:hover {
+      color: white;
+    }
+    
+    &.active {
+      font-weight: 700;
+      color: white;
+    }
+  }
+}
+
+main {
+  background-color: $white;
 }
 
 header, footer, main, aside {

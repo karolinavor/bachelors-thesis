@@ -3,12 +3,13 @@ export type CourseType = {
   dateAdded: Date,
   short: string
   title: string,
+  notificationSet: boolean
 };
 
 export type FileType = {
   courseFileId: number,
   name: string
-  author: string,
+  userId: number,
   dateAdded: Date,
   filetype: string,
   url: string,
@@ -18,7 +19,8 @@ export type FileType = {
   dislikes: number,
   */
   numberOfDownloads: number,
-  courseId: number
+  courseId: number,
+  notificationSet: boolean
 }
 
 export type NewsType = {
@@ -31,7 +33,7 @@ export type CommentType = {
   commentId: number,
   commentText: string,
   dateAdded: Date,
-  author: string,
+  userId: number,
   fileId: number,
   courseId: number,
   categoryName: string
@@ -50,4 +52,15 @@ export type NotificationType = {
   userId: number,
   courseId: number,
   courseFileId: number
+}
+
+export type LogType = {
+  logId: number,
+  userId: number,
+  dateAdded: Date,
+  commentId: number,
+  newsId: number,
+  courseId: number,
+  courseFileId: number
+  event: number
 }

@@ -1,37 +1,50 @@
 import React, { useEffect, useState } from 'react'
-import { UserType } from '../types/types';
+import { getLocalTimeWithSeconds, getLocalDate } from '../utils/getTime';
+import { LogType } from '../types/types';
 
 export default function Log() {
 
-    const [user, setUser] = useState<UserType>();
+    const [logs, setLogs] = useState<LogType[]>();
 
-    async function getUser() {
-        const response = await fetch('/api/user');
+    async function getlog() {
+        const response = await fetch('/api/log');
         const data = await response.json();
-        setUser(data)
+        setLogs(data)
     }
 
     useEffect(() => {
-        getUser()
+        getlog()
     }, [])
+
+    function getEventType(event) {
+        switch (event) {
+            case 0: return "New course was added";
+            case 1: return "Course was edited";
+            case 2: return "Course was deleted";
+            case 3: return "New file was added";
+            case 4: return "File was deleted";
+            case 5: return "News was added";
+            case 6: return "News was edited";
+            case 7: return "News was deleted";
+            case 8: return "New comment was added";
+            case 9: return "Comment was deleted";
+        }
+    }
 
     return (
         <>
             <section>
-                <h1>Profile TODO</h1>
-                <h2>Profile Information</h2>
-                <div>
-                    <div>Username</div>
-                    <div>{user?.name}</div>
-                    <div>Email</div>
-                    <div>{user?.email}</div>
+                <h1>Log</h1>
+                <div className="Table">
+                    {logs?.map((log, index) => {
+                        return (
+                            <div className="Table-row" key={index}>
+                                <div>{getLocalTimeWithSeconds(log.dateAdded)} {getLocalDate(log.dateAdded)}</div>
+                                <div>{getEventType(log.event)} by user {log.userId}</div>
+                            </div>
+                        )
+                    })}
                 </div>
-            </section>
-            <section>
-                <h2>My files</h2>
-                <div>xxx</div>
-                <div>xxx</div>
-                <div>xxx</div>
             </section>
         </>
     )

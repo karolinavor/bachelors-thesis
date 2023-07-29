@@ -36,6 +36,7 @@ app.UseHttpsRedirection();
 app.UseStaticFiles();
 app.UseSwagger();
 app.UseRouting();
+app.UseAuthorization();
 
 app.MapControllerRoute(
     name: "default",

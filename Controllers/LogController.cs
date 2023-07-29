@@ -16,13 +16,5 @@ public static class LogController
         {
             return await db.Logs.OrderByDescending(s => s.LogId).ToListAsync();
         });
-
-        app.MapPost("api/log/add", async (StudyDb db, Log log) =>
-        {
-            log.LogId = Interlocked.Increment(ref globalLogID);
-            await db.Logs.AddAsync(log);
-            await db.SaveChangesAsync();
-            return Results.Created("/log", log);
-        });
     }
 }

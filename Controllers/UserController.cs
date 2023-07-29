@@ -15,11 +15,10 @@ public static class UserController
         {
             return new User
             {
-                UserId = 1,
+                UserId = 0,
                 Name = "Karolina Vorlickova",
                 Username = "test",
-                Email = "test@test.cz",
-                ProfileImage = "url"
+                Email = "test@test.cz"
             };
         });
     }

@@ -26,7 +26,17 @@ public static class NewsController
         {
             news.NewsId = Interlocked.Increment(ref globalNewsID);
             news.DateAdded = DateTime.Now;
+            news.UserId = 0;
             await db.News.AddAsync(news);
+
+            var log = new Log();
+            log.LogId = Interlocked.Increment(ref LogController.globalLogID);
+            log.UserId = 0;
+            log.Event = LogEvent.NewsAdded;
+            log.DateAdded = DateTime.Now;
+            log.NewsId = news.NewsId;
+            await db.Logs.AddAsync(log);
+
             await db.SaveChangesAsync();
             return Results.Created("/", news);
         });
@@ -43,6 +53,15 @@ public static class NewsController
             var news = await db.News.FindAsync(newsId);
             if (news is null) return Results.NotFound();
             news.Content = updatedNews.Content;
+
+            var log = new Log();
+            log.LogId = Interlocked.Increment(ref LogController.globalLogID);
+            log.UserId = 0;
+            log.Event = LogEvent.NewsEdited;
+            log.DateAdded = DateTime.Now;
+            log.NewsId = news.NewsId;
+            await db.Logs.AddAsync(log);
+
             await db.SaveChangesAsync();
             return Results.Ok();
         });
@@ -52,6 +71,15 @@ public static class NewsController
             var news = await db.News.FindAsync(newsId);
             if (news is null) return Results.NotFound();
             db.News.Remove(news);
+
+            var log = new Log();
+            log.LogId = Interlocked.Increment(ref LogController.globalLogID);
+            log.UserId = 0;
+            log.Event = LogEvent.NewsDeleted;
+            log.DateAdded = DateTime.Now;
+            log.NewsId = news.NewsId;
+            await db.Logs.AddAsync(log);
+
             await db.SaveChangesAsync();
             return Results.Ok();
         });
