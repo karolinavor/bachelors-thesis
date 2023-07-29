@@ -80,7 +80,7 @@ export default function Course() {
         dispatch(modalOpen({
             type: `editCourse`,
             data: {
-                courseId: parseInt(courseId)
+                courseId: course.courseId
             }
         }))
     }
@@ -89,7 +89,7 @@ export default function Course() {
         dispatch(modalOpen({
             type: `deleteCourse`,
             data: {
-                courseId: parseInt(courseId)
+                courseId: course.courseId
             }
         }))
     }
@@ -98,7 +98,7 @@ export default function Course() {
         dispatch(modalOpen({
             type: `uploadFile`,
             data: {
-                courseId: parseInt(courseId)
+                courseId: course.courseId
             }
         }))
     }

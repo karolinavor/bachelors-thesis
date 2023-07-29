@@ -4,14 +4,18 @@ export interface ModalSliceState {
   isOpen: boolean,
   type: null | string
   data?: {
-    courseId?: number
+    courseId?: number,
+    newsId?: number,
+    fileId?: number
   } | null
 }
 
 export interface ModalSliceOpenState {
   type: null | string
   data?: {
-    courseId?: number
+    courseId?: number,
+    newsId?: number,
+    fileId?: number
   } | null
 }
 

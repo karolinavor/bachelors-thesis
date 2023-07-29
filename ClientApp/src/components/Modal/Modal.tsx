@@ -11,6 +11,8 @@ import AddNews from './AddNews'
 import EditCourse from './EditCourse'
 import DeleteCourse from './DeleteCourse'
 import DeleteFile from './DeleteFile'
+import DeleteNews from './DeleteNews'
+import EditNews from './EditNews'
 
 const customStyles = {
   content: {
@@ -26,7 +28,8 @@ const customStyles = {
 
 export interface ModalInterface {
   courseId?: number,
-  fileId?: number
+  fileId?: number,
+  newsId?: number
 }
 
 export default function ModalContainer(props: PropsWithChildren<ModalSliceState>) {
@@ -41,10 +44,14 @@ export default function ModalContainer(props: PropsWithChildren<ModalSliceState>
         return `Add course`
       case `editCourse`:
         return `Edit course`
+      case `editNews`:
+        return `Edit news`
       case `deleteCourse`:
         return `Delete course`
       case `deleteFile`:
         return `Delete file`
+      case `deleteNews`:
+        return `Delete news`
       case `addNews`:
         return `Add news`
     }
@@ -58,10 +65,14 @@ export default function ModalContainer(props: PropsWithChildren<ModalSliceState>
         return <AddCourse />
       case `editCourse`:
         return <EditCourse courseId={props.data.courseId ?? 0} />
+      case `editNews`:
+        return <EditNews newsId={props.data.newsId ?? 0} />
       case `deleteCourse`:
         return <DeleteCourse courseId={props.data.courseId ?? 0} />
       case `deleteFile`:
-        return <DeleteFile fileId={props.data.courseId ?? 0} />
+        return <DeleteFile fileId={props.data.fileId ?? 0} />
+      case `deleteNews`:
+        return <DeleteNews newsId={props.data.newsId ?? 0} />
       case `addNews`:
         return <AddNews />
     }
@@ -73,6 +84,8 @@ export default function ModalContainer(props: PropsWithChildren<ModalSliceState>
       case `addCourse`:
       case `addNews`:
       case `editCourse`:
+      case `editNews`:
+      case `deleteNews`:
       case `deleteCourse`:
       case `deleteFile`:
         return `small`

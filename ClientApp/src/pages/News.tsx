@@ -22,8 +22,7 @@ export default function NewsPage() {
                 <h1>News</h1>
                 {news?.map((newsItem: NewsType, index) =>
                     <News
-                        date={newsItem.dateAdded}
-                        content={newsItem.content}
+                        news={newsItem}
                         key={index}
                     />
                 )}

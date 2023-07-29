@@ -2,22 +2,35 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
+  gap: 1rem;
 
-  &.Header-hamburger--open ~ aside{
-    display: block;
-    position: absolute;
-    top: 55px;
-    bottom: 0;
-    left: 0;
-    right: 0;
+  @include media(xxs, sm) {
+    &.Header-hamburger--open ~ aside {
+      display: block;
+      position: absolute;
+      top: 55px;
+      bottom: 0;
+      left: 0;
+      right: 0;
+    }
+  
+    &.Header-hamburger--open ~ main {
+      max-height: calc(100vh - 110px);
+      overflow: hidden;
+    }
   }
 
-  &.Header-hamburger--open ~ main {
-    max-height: calc(100vh - 110px);
-    overflow: hidden;
+  &.Header-notifications--open {
+    .Header-notifications-wrapper {
+      display: block;
+    }
   }
 
   &-menu {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+
     .Button-text {
       display: none;
 
@@ -30,6 +43,48 @@
       @include media(md) {
         display: none;
       }
+    }
+  }
+
+  &-notifications {
+
+    .Header-bell {
+      position: relative;
+  
+      &::before {
+        content: "";
+        position: absolute;
+        top: 1px;
+        right: -1px;
+        display: block;
+        width: 10px;
+        height: 10px;
+        border-radius: 50%;
+        background-color: rgb(214, 21, 21);
+      }
+    }
+
+    .Header-notifications-wrapper {
+      display: none;
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+
+      cursor: default;
+    }
+
+    .Header-notifications-list {
+      position: relative;
+      top: calc(1rem + 55px);
+      max-width: 300px;
+      width: -webkit-fill-available;
+      margin-left: auto;
+      margin-right: 1rem;
+      padding: 1rem;
+      background: whitesmoke;
+      border-radius: 7px;
     }
   }
 }

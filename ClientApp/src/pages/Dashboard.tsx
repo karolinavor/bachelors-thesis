@@ -63,8 +63,7 @@ export default function Dashboard() {
                     <button className="Button" onClick={() => openAddNewsModal()}>Add news</button>
                     {news?.map((newsItem: NewsType, index) =>
                         <News
-                            date={newsItem.dateAdded}
-                            content={newsItem.content}
+                            news={newsItem}
                             key={index}
                         />
                     )}

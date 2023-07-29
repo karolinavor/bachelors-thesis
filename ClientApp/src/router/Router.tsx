@@ -8,25 +8,29 @@ import Profile from "../pages/Profile";
 import File from '../components/File';
 import Course from '../components/Course';
 import Error from '../pages/Error'
-import Textpage from '../pages/Textpage';
-import NewsPage from '../pages/NewsPage';
+import News from '../pages/News';
+import Log from '../pages/Log';
 
 export const RoutesList = {
   dashboard: {
     url: `/`,
     name: `Dashboard`
   },
-  textpage: {
-    url: `textpage/`,
-    name: `Textpage`
-  },
   login: {
     url: `login/`,
     name: `Login`
   },
+  user: {
+    url: `user/:user/`,
+    name: `User`
+  },
   settings: {
     url: `settings/`,
     name: `Settings`
+  },
+  news: {
+    url: `news`,
+    name: `News`
   },
   course: {
     url: `course/:courseId/`,
@@ -36,18 +40,14 @@ export const RoutesList = {
     url: `file/:fileId/`,
     name: `File`
   },
-  user: {
-    url: `user/:user/`,
-    name: `User`
-  },
   error: {
     url: `*`,
     name: `Error`
   },
-  news: {
-    url: `news`,
-    name: `News`
-  },
+  log: {
+    url: `log`,
+    name: `Log`
+  }
 }
 
 const router = createBrowserRouter([
@@ -65,16 +65,16 @@ const router = createBrowserRouter([
       element: <Dashboard />
     },
     {
-      path: RoutesList.textpage.url,
-      element: <Textpage />,
-    },
-    {
       path: RoutesList.user.url,
       element: <Profile />,
     },
     {
       path: RoutesList.news.url,
-      element: <NewsPage />,
+      element: <News />,
+    },
+    {
+      path: RoutesList.log.url,
+      element: <Log />,
     },
     {
       path: RoutesList.course.url,

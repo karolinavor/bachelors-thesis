@@ -3,23 +3,22 @@ import { useDispatch } from 'react-redux'
 
 import { modalClose } from '../../store/reducers/modalSlice'
 import { AppDispatch } from '../../store/store'
-import { CourseType } from '../../types/types'
+import { NewsType } from '../../types/types'
 import { ModalInterface } from './Modal'
-import { fetchCourses } from '../../store/reducers/coursesSlice'
 
-export default function EditCourse(props: PropsWithChildren<ModalInterface>) {
+export default function EditNews(props: PropsWithChildren<ModalInterface>) {
 	const dispatch: AppDispatch = useDispatch()
 
-	const [course, setCourse] = useState<CourseType>();
+	const [news, setNews] = useState<NewsType>();
 
 	useEffect(() => {
-		getCourse()
+		getNews()
 	}, [])
 
-	async function getCourse() {
-		const response = await fetch(`/api/course/${props.courseId}/get`);
+	async function getNews() {
+		const response = await fetch(`/api/news/${props.newsId}/get`);
 		const data = await response.json();
-		setCourse(data)
+		setNews(data)
 	}
 
   async function submitModal(e:React.ChangeEvent<any>) {
@@ -27,12 +26,11 @@ export default function EditCourse(props: PropsWithChildren<ModalInterface>) {
 
     const form = e.target;
     const formData = {
-        id: props.courseId,
-        title: form[0].value,
-        short: form[1].value
+      id: props.newsId,
+      content: form[0].value
     }
 
-    const response = await fetch(`/api/course/${props.courseId}/edit`, {
+    const response = await fetch(`/api/news/${props.newsId}/edit`, {
         headers: {
             'Accept': 'application/json',
             'Content-Type': 'application/json'
@@ -42,7 +40,6 @@ export default function EditCourse(props: PropsWithChildren<ModalInterface>) {
     });
     if (response.status === 200) {
       dispatch(modalClose())
-      dispatch(fetchCourses())
     }
   }
 
@@ -50,12 +47,8 @@ export default function EditCourse(props: PropsWithChildren<ModalInterface>) {
     <div>
       <form onSubmit={event => submitModal(event)} className="flex-column">
           <div>
-              <label htmlFor="name">Course name</label>
-              <input id="name" type="text" required defaultValue={course?.title}></input>
-          </div>
-          <div>
-              <label htmlFor="short">Course short</label>
-              <input id="short" type="text" required defaultValue={course?.short}></input>
+              <label htmlFor="content">News content</label>
+              <textarea id="content" required defaultValue={news?.content} />
           </div>
           <button className="Button" type="submit">Submit</button>
       </form>

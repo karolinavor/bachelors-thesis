@@ -36,7 +36,7 @@ export default function UploadFile(props: PropsWithChildren<ModalInterface>) {
     <div>
       <p className='mb-1'>Allowed file extensions are jpeg, docx, pdf, txt.</p>
       <form onSubmit={(e) => submitModal(e)}>
-        <input name="file" id="file" type="file" />
+        <input name="file" id="file" type="file" required />
         <button type='submit' className='Button Button--green'>Upload</button>
       </form>
     </div>

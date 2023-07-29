@@ -20,11 +20,10 @@ public static class NotificationController
         app.MapPost("api/notifications/add", async (StudyDb db, Notification notification) =>
         {
             await db.Notifications.AddAsync(notification);
-            Random rnd = new Random();
             notification.NotificationId = Interlocked.Increment(ref globalNotificationID);
             await db.SaveChangesAsync();
             return Results.Created("/", notification);
-        });
+        }); // TODO toggle notifications
     }
 }
 

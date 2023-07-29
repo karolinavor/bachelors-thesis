@@ -49,6 +49,7 @@ app.MapCourseFileControllerRoutes();
 app.MapNewsControllerRoutes();
 app.MapUserControllerRoutes();
 app.MapNotificationControllerRoutes();
+app.MapLogControllerRoutes();
 
 if (!Directory.Exists("./FileSystem")) {
     Directory.CreateDirectory(Path.Combine(Directory.GetCurrentDirectory(), "./","FileSystem"));
