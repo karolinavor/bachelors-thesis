@@ -17,7 +17,7 @@ export default function News({ news }: NewProps) {
         dispatch(modalOpen({
             type: `editNews`,
             data: {
-                newsId: news.newsId
+                newsID: news.newsID
             }
         }))
     }
@@ -26,7 +26,7 @@ export default function News({ news }: NewProps) {
         dispatch(modalOpen({
             type: `deleteNews`,
             data: {
-                newsId: news.newsId
+                newsID: news.newsID
             }
         }))
     }

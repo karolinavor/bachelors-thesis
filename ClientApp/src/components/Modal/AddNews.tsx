@@ -29,7 +29,7 @@ export default function AddNews() {
       dispatch(modalClose());
       dispatch(
         toastNotificationAdd({
-          notificationId: Date.now(),
+          notificationID: Date.now(),
           title: "News added.",
           customDuration: 5000,
         })
@@ -38,7 +38,7 @@ export default function AddNews() {
     } else {
 			dispatch(
         toastNotificationAdd({
-          notificationId: Date.now(),
+          notificationID: Date.now(),
           title: "Error occured.",
           customDuration: 5000,
         })

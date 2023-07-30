@@ -29,8 +29,8 @@ export default function Sidebar() {
             <nav>
                 <ul>
                     {coursesState?.courses?.map(course =>
-                        <li key={course.courseId}>
-                            <NavLink className="Link" to={"/course/" + course.courseId}>
+                        <li key={course.courseID}>
+                            <NavLink className="Link" to={"/course/" + course.courseID}>
                                 {course.short} - {course.title}
                             </NavLink>
                         </li>

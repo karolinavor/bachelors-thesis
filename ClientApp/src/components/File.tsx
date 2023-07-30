@@ -18,7 +18,7 @@ import { fetchFile, fetchFileComments } from '../store/reducers/fileSlice';
 
 export default function File() {
 
-    const { fileId } = useParams();
+    const { fileID } = useParams();
     let dispatch: AppDispatch = useDispatch();
 
     const fileState = useSelector((state: RootState) => state.file)
@@ -31,26 +31,26 @@ export default function File() {
 
     useEffect(() => {
         getFileData()
-    }, [fileId])
+    }, [fileID])
 
     useEffect(() => {
         if (error) throw new Error();
     }, [error])
 
     async function getFileData() {
-        let responseFile = await dispatch(fetchFile(parseInt(fileId)))
+        let responseFile = await dispatch(fetchFile(parseInt(fileID)))
         if (responseFile.meta.requestStatus === "rejected") {
             setError(true)
         }
 
-        let responseComments = await dispatch(fetchFileComments(parseInt(fileId)))
+        let responseComments = await dispatch(fetchFileComments(parseInt(fileID)))
         if (responseComments.meta.requestStatus === "rejected") {
             setError(true)
         }
     }
 
     async function downloadFile() {
-        const response = await fetch(`/api/file/${fileId}/download`, {
+        const response = await fetch(`/api/file/${fileID}/download`, {
             method: "GET",
         }).then((response) => {
             if (response.status === 200) {
@@ -66,7 +66,7 @@ export default function File() {
             element.download = `${fileState.name}.${fileState.filetype}`;
             document.body.appendChild(element);
             element.click();
-            dispatch(fetchFile(parseInt(fileId)))
+            dispatch(fetchFile(parseInt(fileID)))
         }
     }
 
@@ -79,7 +79,7 @@ export default function File() {
             commentText: form[0].value,
         }
 
-        const response = await fetch(`/api/file/${fileId}/comments/add`, {
+        const response = await fetch(`/api/file/${fileID}/comments/add`, {
             headers: {
                 'Accept': 'application/json',
                 'Content-Type': 'application/json'
@@ -92,16 +92,16 @@ export default function File() {
             form.reset()
             dispatch(
 				toastNotificationAdd({
-					notificationId: Date.now(),
+					notificationID: Date.now(),
 					title: "New comment added.",
 					customDuration: 5000,
 				})
             );
-            dispatch(fetchFileComments(parseInt(fileId)))
+            dispatch(fetchFileComments(parseInt(fileID)))
         } else {
             dispatch(
 				toastNotificationAdd({
-					notificationId: Date.now(),
+					notificationID: Date.now(),
 					title: "Error occured.",
 					customDuration: 5000,
 				})
@@ -113,15 +113,15 @@ export default function File() {
         dispatch(modalOpen({
             type: `deleteFile`,
             data: {
-                fileId: parseInt(fileId),
-                courseId: fileState.courseId
+                fileID: parseInt(fileID),
+                courseID: fileState.courseID
             }
         }))
     }
 
     async function toggleNotifications() {
         const formData = {
-            fileId: fileId
+            fileID: fileID
         }
 
         const response = await fetch(`/api/notifications/set`, {
@@ -136,25 +136,25 @@ export default function File() {
         if (response.status === 200) {
             dispatch(
 				toastNotificationAdd({
-					notificationId: Date.now(),
+					notificationID: Date.now(),
 					title: "File notifications turned off.",
 					customDuration: 5000,
 				})
             );
-            dispatch(fetchFile(parseInt(fileId)))
+            dispatch(fetchFile(parseInt(fileID)))
         } else if (response.status === 201) {
             dispatch(
 				toastNotificationAdd({
-					notificationId: Date.now(),
+					notificationID: Date.now(),
 					title: "File notifications turned on.",
 					customDuration: 5000,
 				})
             );
-            dispatch(fetchFile(parseInt(fileId)))
+            dispatch(fetchFile(parseInt(fileID)))
         } else {
             dispatch(
 				toastNotificationAdd({
-					notificationId: Date.now(),
+					notificationID: Date.now(),
 					title: "Error occured.",
 					customDuration: 5000,
 				})
@@ -164,7 +164,7 @@ export default function File() {
 
     async function addReaction(reaction) {
         const formData = {
-          fileId: parseInt(fileId)
+          fileID: parseInt(fileID)
         }
         
         const url = (reaction === "Like" ? `/api/like/add` : `/api/dislike/add`)
@@ -180,16 +180,16 @@ export default function File() {
         if (response.status === 201) {
           dispatch(
             toastNotificationAdd({
-              notificationId: Date.now(),
+              notificationID: Date.now(),
               title: reaction === "Like" ? "Like added." : "Dislike added.",
               customDuration: 5000,
             })
           );
-          dispatch(fetchFile(parseInt(fileId)))
+          dispatch(fetchFile(parseInt(fileID)))
         } else {
           dispatch(
             toastNotificationAdd({
-              notificationId: Date.now(),
+              notificationID: Date.now(),
               title: "Error occured.",
               customDuration: 5000,
             })
@@ -232,7 +232,7 @@ export default function File() {
                 <div className='File-metadata'>
                     <div>
                         <div><b>User</b></div>
-                        <div>{fileState?.userId}</div>
+                        <div>{fileState?.userID}</div>
                     </div>
                     <div>
                         <div><b>Date published</b></div>

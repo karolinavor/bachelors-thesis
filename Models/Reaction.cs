@@ -10,11 +10,11 @@ namespace BachelorThesis.Models
 
     public class Reaction
     {
-        public int ReactionId { get; set; }
-        public int UserId { get; set; }
+        public int ReactionID { get; set; }
+        public int UserID { get; set; }
         public DateTime DateAdded { get; set; }
-        public int CourseFileId { get; set; }
-        public int CommentId { get; set; }
+        public int CourseFileID { get; set; }
+        public int CommentID { get; set; }
         public ReactionType ReactionType { get; set; }
     }
 }

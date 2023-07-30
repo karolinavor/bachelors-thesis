@@ -40,7 +40,7 @@ export default function Log() {
                         return (
                             <div className="Table-row" key={index}>
                                 <div>{getLocalTimeWithSeconds(log.dateAdded)} {getLocalDate(log.dateAdded)}</div>
-                                <div>{getEventType(log.event)} by user {log.userId}</div>
+                                <div>{getEventType(log.event)} by user {log.userID}</div>
                             </div>
                         )
                     })}

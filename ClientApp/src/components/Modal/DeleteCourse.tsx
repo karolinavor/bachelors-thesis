@@ -12,7 +12,7 @@ export default function EditCourse(props: PropsWithChildren<ModalInterface>) {
 	const dispatch: AppDispatch = useDispatch()
 
  	async function deleteCourse() {
-		const response = await fetch(`/api/course/${props.courseId}/delete`, {
+		const response = await fetch(`/api/course/${props.courseID}/delete`, {
 			headers: {
 				'Accept': 'application/json',
 				'Content-Type': 'application/json'
@@ -24,7 +24,7 @@ export default function EditCourse(props: PropsWithChildren<ModalInterface>) {
 			dispatch(fetchCourses())
 			dispatch(
 				toastNotificationAdd({
-					notificationId: Date.now(),
+					notificationID: Date.now(),
 					title: "Course deleted.",
 					customDuration: 5000,
 				})
@@ -32,7 +32,7 @@ export default function EditCourse(props: PropsWithChildren<ModalInterface>) {
 		} else {
 			dispatch(
         toastNotificationAdd({
-          notificationId: Date.now(),
+          notificationID: Date.now(),
           title: "Error occured.",
           customDuration: 5000,
         })

@@ -11,7 +11,7 @@ export interface CourseSliceState extends CourseType {
 
 export const initialCourseState: CourseSliceState = {
   loading: `idle`,
-  courseId: 0,
+  courseID: 0,
   dateAdded: undefined,
   short: "",
   title: "",
@@ -22,14 +22,14 @@ export const initialCourseState: CourseSliceState = {
 
 export const fetchCourse = createAsyncThunk(
   `course/fetch`,
-  async (courseId: number, thunkAPI) => {
-    const response = await fetchCourseFromAPI(courseId)
+  async (courseID: number, thunkAPI) => {
+    const response = await fetchCourseFromAPI(courseID)
     return response
   }
 )
 
-export const fetchCourseFromAPI = async (courseId) => {
-  return await fetch(`/api/course/${courseId}/get`, {
+export const fetchCourseFromAPI = async (courseID) => {
+  return await fetch(`/api/course/${courseID}/get`, {
     method: `GET`,
   })
   .then(
@@ -42,14 +42,14 @@ export const fetchCourseFromAPI = async (courseId) => {
 
 export const fetchCourseFiles = createAsyncThunk(
   `courseFiles/fetch`,
-  async (courseId: number, thunkAPI) => {
-    const response = await fetchCourseFilesFromAPI(courseId)
+  async (courseID: number, thunkAPI) => {
+    const response = await fetchCourseFilesFromAPI(courseID)
     return response
   }
 )
 
-export const fetchCourseFilesFromAPI = async (courseId) => {
-  return await fetch(`/api/course/${courseId}/files`, {
+export const fetchCourseFilesFromAPI = async (courseID) => {
+  return await fetch(`/api/course/${courseID}/files`, {
     method: `GET`,
   })
   .then(
@@ -62,14 +62,14 @@ export const fetchCourseFilesFromAPI = async (courseId) => {
 
 export const fetchCourseComments = createAsyncThunk(
   `courseComments/fetch`,
-  async (courseId: number, thunkAPI) => {
-    const response = await fetchCourseCommentsFromAPI(courseId)
+  async (courseID: number, thunkAPI) => {
+    const response = await fetchCourseCommentsFromAPI(courseID)
     return response
   }
 )
 
-export const fetchCourseCommentsFromAPI = async (courseId) => {
-  return await fetch(`/api/course/${courseId}/comments`, {
+export const fetchCourseCommentsFromAPI = async (courseID) => {
+  return await fetch(`/api/course/${courseID}/comments`, {
     method: `GET`,
   })
   .then(
@@ -88,7 +88,7 @@ export const courseSlice = createSlice({
     builder.addCase(fetchCourse.fulfilled, (state, action) => {
       return {
         ...state, loading: `idle`,
-        courseId: action.payload.courseId,
+        courseID: action.payload.courseID,
         dateAdded: action.payload.dateAdded,
         short: action.payload.short,
         title: action.payload.title,

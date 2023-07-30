@@ -29,10 +29,10 @@ const customStyles = {
 }
 
 export interface ModalInterface {
-  courseId?: number,
-  fileId?: number,
-  newsId?: number,
-  commentId?: number
+  courseID?: number,
+  fileID?: number,
+  newsID?: number,
+  commentID?: number
 }
 
 export default function ModalContainer(props: PropsWithChildren<ModalSliceState>) {
@@ -65,21 +65,21 @@ export default function ModalContainer(props: PropsWithChildren<ModalSliceState>
   function getContent() {
     switch (props.type) {
       case `uploadFile`:
-        return <UploadFile courseId={props.data.courseId ?? 0} />
+        return <UploadFile courseID={props.data.courseID ?? 0} />
       case `addCourse`:
         return <AddCourse />
       case `editCourse`:
-        return <EditCourse courseId={props.data.courseId ?? 0} />
+        return <EditCourse courseID={props.data.courseID ?? 0} />
       case `editNews`:
-        return <EditNews newsId={props.data.newsId ?? 0} />
+        return <EditNews newsID={props.data.newsID ?? 0} />
       case `deleteCourse`:
-        return <DeleteCourse courseId={props.data.courseId ?? 0} />
+        return <DeleteCourse courseID={props.data.courseID ?? 0} />
       case `deleteFile`:
-        return <DeleteFile fileId={props.data.fileId ?? 0} courseId={props.data.courseId ?? 0}/>
+        return <DeleteFile fileID={props.data.fileID ?? 0} courseID={props.data.courseID ?? 0}/>
       case `deleteComment`:
-        return <DeleteComment commentId={props.data.commentId ?? 0} fileId={props.data.fileId ?? 0} courseId={props.data.courseId ?? 0} />
+        return <DeleteComment commentID={props.data.commentID ?? 0} fileID={props.data.fileID ?? 0} courseID={props.data.courseID ?? 0} />
       case `deleteNews`:
-        return <DeleteNews newsId={props.data.newsId ?? 0} />
+        return <DeleteNews newsID={props.data.newsID ?? 0} />
       case `addNews`:
         return <AddNews />
     }

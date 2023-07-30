@@ -33,11 +33,11 @@ export const RoutesList = {
     name: `News`
   },
   course: {
-    url: `course/:courseId/`,
+    url: `course/:courseID/`,
     name: `Course`
   },
   file: {
-    url: `file/:fileId/`,
+    url: `file/:fileID/`,
     name: `File`
   },
   error: {

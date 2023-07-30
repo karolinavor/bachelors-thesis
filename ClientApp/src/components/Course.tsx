@@ -17,7 +17,7 @@ import { fetchCourse, fetchCourseComments, fetchCourseFiles } from '../store/red
 
 export default function Course() {
 
-    const { courseId } = useParams();
+    const { courseID } = useParams();
     const location = useLocation();
     let dispatch: AppDispatch = useDispatch();
 
@@ -31,24 +31,24 @@ export default function Course() {
 
     useEffect(() => {
         getCourseData()
-    }, [courseId])
+    }, [courseID])
 
     useEffect(() => {
         if (error) throw new Error();
     }, [error])
 
     async function getCourseData() {
-        let responseCourse = await dispatch(fetchCourse(parseInt(courseId)))
+        let responseCourse = await dispatch(fetchCourse(parseInt(courseID)))
         if (responseCourse.meta.requestStatus === "rejected") {
             setError(true)
         }
 
-        let responseFiles = await dispatch(fetchCourseFiles(parseInt(courseId)))
+        let responseFiles = await dispatch(fetchCourseFiles(parseInt(courseID)))
         if (responseFiles.meta.requestStatus === "rejected") {
             setError(true)
         }
 
-        let responseComments = await dispatch(fetchCourseComments(parseInt(courseId)))
+        let responseComments = await dispatch(fetchCourseComments(parseInt(courseID)))
         if (responseComments.meta.requestStatus === "rejected") {
             setError(true)
         }
@@ -58,7 +58,7 @@ export default function Course() {
         dispatch(modalOpen({
             type: `editCourse`,
             data: {
-                courseId: courseState.courseId
+                courseID: courseState.courseID
             }
         }))
     }
@@ -67,7 +67,7 @@ export default function Course() {
         dispatch(modalOpen({
             type: `deleteCourse`,
             data: {
-                courseId: courseState.courseId
+                courseID: courseState.courseID
             }
         }))
     }
@@ -76,14 +76,14 @@ export default function Course() {
         dispatch(modalOpen({
             type: `uploadFile`,
             data: {
-                courseId: courseState.courseId
+                courseID: courseState.courseID
             }
         }))
     }
 
     async function toggleNotifications() {
         const formData = {
-            courseId: courseId
+            courseID: courseID
         }
 
         const response = await fetch(`/api/notifications/set`, {
@@ -98,25 +98,25 @@ export default function Course() {
         if (response.status === 200) {
             dispatch(
 				toastNotificationAdd({
-					notificationId: Date.now(),
+					notificationID: Date.now(),
 					title: "Course notifications turned off.",
 					customDuration: 5000,
 				})
             );
-            dispatch(fetchCourse(parseInt(courseId)))
+            dispatch(fetchCourse(parseInt(courseID)))
         } else if (response.status === 201) {
             dispatch(
 				toastNotificationAdd({
-					notificationId: Date.now(),
+					notificationID: Date.now(),
 					title: "Course notifications turned on.",
 					customDuration: 5000,
 				})
             );
-            dispatch(fetchCourse(parseInt(courseId)))
+            dispatch(fetchCourse(parseInt(courseID)))
         } else {
             dispatch(
 				toastNotificationAdd({
-					notificationId: Date.now(),
+					notificationID: Date.now(),
 					title: "Error occured.",
 					customDuration: 5000,
 				})
@@ -133,7 +133,7 @@ export default function Course() {
             commentText: form[0].value,
         }
 
-        const response = await fetch(`/api/course/${courseId}/comments/add`, {
+        const response = await fetch(`/api/course/${courseID}/comments/add`, {
             headers: {
                 'Accept': 'application/json',
                 'Content-Type': 'application/json'
@@ -146,16 +146,16 @@ export default function Course() {
             form.reset()
             dispatch(
                 toastNotificationAdd({
-                  notificationId: Date.now(),
+                  notificationID: Date.now(),
                   title: "New comment added.",
                   customDuration: 5000,
                 })
             );
-            dispatch(fetchCourseComments(parseInt(courseId)))
+            dispatch(fetchCourseComments(parseInt(courseID)))
         } else {
             dispatch(
                 toastNotificationAdd({
-                  notificationId: Date.now(),
+                  notificationID: Date.now(),
                   title: "Cannot send comment.",
                   customDuration: 5000,
                 })
@@ -197,7 +197,7 @@ export default function Course() {
                             </h2>
                             <div className="Table">
                                 {courseState?.files?.length > 0 ? courseState?.files?.map((file: FileType, index) => 
-                                    <Link className="Table-row" key={index} to={"file/" + file.courseFileId}>
+                                    <Link className="Table-row" key={index} to={"file/" + file.courseFileID}>
                                         <div>{file.name}.{file.filetype}</div>
                                         <div className="flex gap-5">
                                             <div className="flex align-center gap-25">

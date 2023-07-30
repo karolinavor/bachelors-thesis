@@ -22,7 +22,7 @@ export default function HeaderNotifications() {
             <div className="Header-notifications-list">
                 TODO
                 {notifications?.map((notif, index) => {
-                    return <div key={index}>{notif.notificationId}</div>
+                    return <div key={index}>{notif.notificationID}</div>
                 })}
                 {/*
                 <div>New file in <a className="Link" href="/">KMI - Informatika</a> course.</div>

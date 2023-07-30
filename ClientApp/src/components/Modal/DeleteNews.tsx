@@ -11,14 +11,14 @@ export default function DeleteNews(props: PropsWithChildren<ModalInterface>) {
 	const dispatch: AppDispatch = useDispatch()
 
 	async function deleteNews() {
-		const response = await fetch(`/api/news/${props.newsId}/delete`, {
+		const response = await fetch(`/api/news/${props.newsID}/delete`, {
 			method: "DELETE",
 		});
 		if (response.status === 200) {
 			dispatch(modalClose());
 			dispatch(
 				toastNotificationAdd({
-					notificationId: Date.now(),
+					notificationID: Date.now(),
 					title: "News deleted.",
 					customDuration: 5000,
 				})
@@ -27,7 +27,7 @@ export default function DeleteNews(props: PropsWithChildren<ModalInterface>) {
 		} else {
 			dispatch(
 				toastNotificationAdd({
-					notificationId: Date.now(),
+					notificationID: Date.now(),
 					title: "Error occured.",
 					customDuration: 5000,
 				})

@@ -10,15 +10,15 @@ export interface FileSliceState extends FileType {
 
 export const initialFileState: FileSliceState = {
   loading: `idle`,
-  courseFileId: 0,
+  courseFileID: 0,
   dateAdded: undefined,
   filetype: "",
   size: 0,
   numberOfDownloads: 0,
   notificationSet: false,
-  courseId: 0,
+  courseID: 0,
   name: "",
-  userId: 0,
+  userID: 0,
   url: "",
   likes: 0,
   dislikes: 0,
@@ -28,14 +28,14 @@ export const initialFileState: FileSliceState = {
 
 export const fetchFile = createAsyncThunk(
   `file/fetch`,
-  async (fileId: number, thunkAPI) => {
-    const response = await fetchFileFromAPI(fileId)
+  async (fileID: number, thunkAPI) => {
+    const response = await fetchFileFromAPI(fileID)
     return response
   }
 )
 
-export const fetchFileFromAPI = async (fileId) => {
-  return await fetch(`/api/file/${fileId}/get`, {
+export const fetchFileFromAPI = async (fileID) => {
+  return await fetch(`/api/file/${fileID}/get`, {
     method: `GET`,
   })
   .then(
@@ -48,14 +48,14 @@ export const fetchFileFromAPI = async (fileId) => {
 
 export const fetchFileComments = createAsyncThunk(
   `fileComments/fetch`,
-  async (fileId: number, thunkAPI) => {
-    const response = await fetchFileCommentsFromAPI(fileId)
+  async (fileID: number, thunkAPI) => {
+    const response = await fetchFileCommentsFromAPI(fileID)
     return response
   }
 )
 
-export const fetchFileCommentsFromAPI = async (fileId) => {
-  return await fetch(`/api/file/${fileId}/comments`, {
+export const fetchFileCommentsFromAPI = async (fileID) => {
+  return await fetch(`/api/file/${fileID}/comments`, {
     method: `GET`,
   })
   .then(
@@ -74,15 +74,15 @@ export const fileSlice = createSlice({
     builder.addCase(fetchFile.fulfilled, (state, action) => {
       return {
         ...state, loading: `idle`,
-        courseFileId: action.payload.courseFileId,
+        courseFileID: action.payload.courseFileID,
         dateAdded: action.payload.dateAdded,
         filetype: action.payload.filetype,
         size: action.payload.size,
         numberOfDownloads: action.payload.numberOfDownloads,
         notificationSet: action.payload.notificationSet,
-        courseId: action.payload.courseId,
+        courseID: action.payload.courseID,
         name: action.payload.name,
-        userId: action.payload.userId,
+        userID: action.payload.userID,
         url: action.payload.url,
       }
     })

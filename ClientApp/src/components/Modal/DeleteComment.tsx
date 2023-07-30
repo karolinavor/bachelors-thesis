@@ -12,23 +12,23 @@ export default function DeleteComment(props: PropsWithChildren<ModalInterface>) 
 	const dispatch: AppDispatch = useDispatch()
 
 	async function deleteComment() {
-		const response = await fetch(`/api/comment/${props.commentId}/delete`, {
+		const response = await fetch(`/api/comment/${props.commentID}/delete`, {
 			method: "DELETE",
 		});
 		if (response.status === 200) {
 			dispatch(modalClose())
 			dispatch(
         toastNotificationAdd({
-          notificationId: Date.now(),
+          notificationID: Date.now(),
           title: "Comment deleted.",
           customDuration: 5000,
         })
 			);
-			props.fileId > 0 ?  dispatch(fetchFileComments(props.fileId)) : dispatch(fetchCourseComments(props.courseId))
+			props.fileID > 0 ?  dispatch(fetchFileComments(props.fileID)) : dispatch(fetchCourseComments(props.courseID))
 		} else {
 			dispatch(
         toastNotificationAdd({
-          notificationId: Date.now(),
+          notificationID: Date.now(),
           title: "Error occured.",
           customDuration: 5000,
         })

@@ -7,9 +7,6 @@ namespace BachelorThesis.Controllers;
 
 public static class NewsController
 {
-
-    public static int globalNewsID;
-
     public static void MapNewsControllerRoutes(this WebApplication app)
     {
         app.MapGet("api/news", async (StudyDb db) =>
@@ -24,60 +21,56 @@ public static class NewsController
 
         app.MapPost("api/news/add", async (StudyDb db, News news) =>
         {
-            news.NewsId = Interlocked.Increment(ref globalNewsID);
             news.DateAdded = DateTime.Now;
-            news.UserId = 0;
+            news.UserID = 0;
             await db.News.AddAsync(news);
 
             var log = new Log();
-            log.LogId = Interlocked.Increment(ref LogController.globalLogID);
-            log.UserId = 0;
+            log.UserID = 0;
             log.Event = LogEvent.NewsAdded;
             log.DateAdded = DateTime.Now;
-            log.NewsId = news.newsId;
+            log.NewsID = news.NewsID;
             await db.Logs.AddAsync(log);
 
             await db.SaveChangesAsync();
             return Results.Created("/", news);
         });
 
-        app.MapGet("api/news/{newsId}/get", async (StudyDb db, int newsId) =>
+        app.MapGet("api/news/{newsID}/get", async (StudyDb db, int newsID) =>
         {
-            var news = await db.News.FindAsync(newsId);
+            var news = await db.News.FindAsync(newsID);
             if (news is null) return Results.NotFound();
             return Results.Ok(news);
         });
 
-        app.MapPut("api/news/{newsId}/edit", async (StudyDb db, News updatedNews, int newsId) =>
+        app.MapPut("api/news/{newsID}/edit", async (StudyDb db, News updatedNews, int newsID) =>
         {
-            var news = await db.News.FindAsync(newsId);
+            var news = await db.News.FindAsync(newsID);
             if (news is null) return Results.NotFound();
             news.Content = updatedNews.Content;
 
             var log = new Log();
-            log.LogId = Interlocked.Increment(ref LogController.globalLogID);
-            log.UserId = 0;
+            log.UserID = 0;
             log.Event = LogEvent.NewsEdited;
             log.DateAdded = DateTime.Now;
-            log.NewsId = news.newsId;
+            log.NewsID = news.NewsID;
             await db.Logs.AddAsync(log);
 
             await db.SaveChangesAsync();
             return Results.Ok();
         });
 
-        app.MapDelete("api/news/{newsId}/delete", async (StudyDb db, int newsId) =>
+        app.MapDelete("api/news/{newsID}/delete", async (StudyDb db, int newsID) =>
         {
-            var news = await db.News.FindAsync(newsId);
+            var news = await db.News.FindAsync(newsID);
             if (news is null) return Results.NotFound();
             db.News.Remove(news);
 
             var log = new Log();
-            log.LogId = Interlocked.Increment(ref LogController.globalLogID);
-            log.UserId = 0;
+            log.UserID = 0;
             log.Event = LogEvent.NewsDeleted;
             log.DateAdded = DateTime.Now;
-            log.NewsId = news.newsId;
+            log.NewsID = news.NewsID;
             await db.Logs.AddAsync(log);
 
             await db.SaveChangesAsync();

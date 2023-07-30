@@ -18,12 +18,12 @@ export default function EditCourse(props: PropsWithChildren<ModalInterface>) {
 
     const form = e.target;
     const formData = {
-        id: props.courseId,
+        ID: props.courseID,
         title: form[0].value,
         short: form[1].value
     }
 
-    const response = await fetch(`/api/course/${props.courseId}/edit`, {
+    const response = await fetch(`/api/course/${props.courseID}/edit`, {
         headers: {
             'Accept': 'application/json',
             'Content-Type': 'application/json'
@@ -35,17 +35,17 @@ export default function EditCourse(props: PropsWithChildren<ModalInterface>) {
       dispatch(modalClose())
       dispatch(
 				toastNotificationAdd({
-					notificationId: Date.now(),
+					notificationID: Date.now(),
 					title: "Course edited.",
 					customDuration: 5000,
 				})
       );
-      dispatch(fetchCourse(props.courseId))
+      dispatch(fetchCourse(props.courseID))
       dispatch(fetchCourses())
     } else {
       dispatch(
 				toastNotificationAdd({
-					notificationId: Date.now(),
+					notificationID: Date.now(),
 					title: "Error occured.",
 					customDuration: 5000,
 				})

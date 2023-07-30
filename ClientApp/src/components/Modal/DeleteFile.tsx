@@ -11,23 +11,23 @@ export default function DeleteFile(props: PropsWithChildren<ModalInterface>) {
 	const dispatch: AppDispatch = useDispatch()
 
 	async function deleteCourse() {
-		const response = await fetch(`/api/file/${props.fileId}/delete`, {
+		const response = await fetch(`/api/file/${props.fileID}/delete`, {
 			method: "DELETE",
 		});
 		if (response.status === 200) {
-			window.location.href = `/course/${props.courseId}`;
+			window.location.href = `/course/${props.courseID}`;
 			dispatch(
 				toastNotificationAdd({
-					notificationId: Date.now(),
+					notificationID: Date.now(),
 					title: "File deleted.",
 					customDuration: 5000,
 				})
 			);
-			dispatch(fetchCourse(props.courseId))
+			dispatch(fetchCourse(props.courseID))
 		} else {
 			dispatch(
 				toastNotificationAdd({
-					notificationId: Date.now(),
+					notificationID: Date.now(),
 					title: "Error occured.",
 					customDuration: 5000,
 				})

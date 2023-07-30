@@ -1,5 +1,5 @@
 export type CourseType = {
-  courseId: number,
+  courseID: number,
   dateAdded: Date,
   short: string
   title: string,
@@ -7,9 +7,9 @@ export type CourseType = {
 };
 
 export type FileType = {
-  courseFileId: number,
+  courseFileID: number,
   name: string
-  userId: number,
+  userID: number,
   dateAdded: Date,
   filetype: string,
   url: string,
@@ -18,23 +18,23 @@ export type FileType = {
   dislikes: number,
   reacted: boolean,
   numberOfDownloads: number,
-  courseId: number,
+  courseID: number,
   notificationSet: boolean
 }
 
 export type NewsType = {
-  newsId: number,
+  newsID: number,
   dateAdded: Date,
   content: string
 }
 
 export type CommentType = {
-  commentId: number,
+  commentID: number,
   commentText: string,
   dateAdded: Date,
-  userId: number,
-  fileId: number,
-  courseId: number,
+  userID: number,
+  fileID: number,
+  courseID: number,
   categoryName: string,
   likes: number,
   dislikes: number,
@@ -42,7 +42,7 @@ export type CommentType = {
 }
 
 export type UserType = {
-  userId: number,
+  userID: number,
   name: string,
   username : string,
   email: string,
@@ -50,19 +50,19 @@ export type UserType = {
 }
 
 export type NotificationType = {
-  notificationId: number,
-  userId: number,
-  courseId: number,
-  courseFileId: number
+  notificationID: number,
+  userID: number,
+  courseID: number,
+  courseFileID: number
 }
 
 export type LogType = {
-  logId: number,
-  userId: number,
+  logID: number,
+  userID: number,
   dateAdded: Date,
-  commentId: number,
-  newsId: number,
-  courseId: number,
-  courseFileId: number
+  commentID: number,
+  newsID: number,
+  courseID: number,
+  courseFileID: number
   event: number
 }

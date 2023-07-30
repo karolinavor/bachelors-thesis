@@ -7,89 +7,88 @@ namespace BachelorThesis.Controllers;
 
 public static class CommentController
 {
-    public static int globalCommentID;
-
     public static void MapCommentControllerRoutes(this WebApplication app)
     {
-        app.MapPost("api/course/{courseId}/comments/add", async (StudyDb db, Comment comment, int courseId) =>
+        app.MapPost("api/course/{courseID}/comments/add", async (StudyDb db, Comment comment, int courseID) =>
         {        
-            var course = db.Courses.FindAsync(courseId);
-            comment.CommentId = Interlocked.Increment(ref globalCommentID);
+            var course = db.Courses.FindAsync(courseID);
             comment.DateAdded = DateTime.Now;
-            comment.CourseId = courseId;
-            comment.UserId = 0;
+            comment.CourseID = courseID;
+            comment.UserID = 0;
             comment.CategoryName = course.Result.Short + " - " + course.Result.Title;
-            comment.FileId = 0;
+            comment.FileID = 0;
             comment.Likes = 0;
             comment.Dislikes = 0;
             db.Comments.Add(comment);
 
             var log = new Log();
-            log.LogId = Interlocked.Increment(ref LogController.globalLogID);
-            log.UserId = 0;
+            log.UserID = 0;
             log.Event = LogEvent.CommentAdded;
             log.DateAdded = DateTime.Now;
-            log.CommentId = comment.CommentId;
+            log.CommentID = comment.CommentID;
             await db.Logs.AddAsync(log);
 
             await db.SaveChangesAsync();
-            return Results.Created($"/course/{courseId}", comment);
+            return Results.Created($"/course/{courseID}", comment);
         });
 
-        app.MapPost("api/file/{fileId}/comments/add", async (StudyDb db, Comment comment, int fileId) =>
+        app.MapPost("api/file/{fileID}/comments/add", async (StudyDb db, Comment comment, int fileID) =>
         {
-            var file = db.CourseFiles.FindAsync(fileId);
-            comment.CommentId = Interlocked.Increment(ref globalCommentID);
+            var file = db.CourseFiles.FindAsync(fileID);
             comment.DateAdded = DateTime.Now;
-            comment.FileId = fileId;
-            comment.UserId = 0;
-            comment.CourseId = file.Result.CourseId;
+            comment.FileID = fileID;
+            comment.UserID = 0;
+            comment.CourseID = file.Result.CourseID;
             comment.CategoryName = file.Result.Name;
             comment.Likes = 0;
             comment.Dislikes = 0;
             db.Comments.Add(comment);
 
             var log = new Log();
-            log.LogId = Interlocked.Increment(ref LogController.globalLogID);
-            log.UserId = 0;
+            log.UserID = 0;
             log.Event = LogEvent.CommentAdded;
             log.DateAdded = DateTime.Now;
-            log.CommentId = comment.CommentId;
+            log.CommentID = comment.CommentID;
             await db.Logs.AddAsync(log);
 
             await db.SaveChangesAsync();
-            return Results.Created($"/course/{file.Result.CourseId}/file/{fileId}/", comment);
+            return Results.Created($"/course/{file.Result.CourseID}/file/{fileID}/", comment);
+
+            // trigger, pri kterem zkontroluju, jestli je na soubor/kurz nastavena notifikace. N a FE zobrazuju log.
         });
 
-        app.MapDelete("api/comment/{commentId}/delete", async (StudyDb db, int commentId) =>
+        app.MapDelete("api/comment/{commentID}/delete", async (StudyDb db, int commentID) =>
         {
-            var comment = await db.Comments.FindAsync(commentId);
+            var comment = await db.Comments.FindAsync(commentID);
             if (comment is null) return Results.NotFound();
             db.Comments.Remove(comment);
 
             var log = new Log();
-            log.LogId = Interlocked.Increment(ref LogController.globalLogID);
-            log.UserId = 0;
+            log.UserID = 0;
             log.Event = LogEvent.CommentDeleted;
             log.DateAdded = DateTime.Now;
-            log.CommentId = comment.CommentId;
+            log.CommentID = comment.CommentID;
             await db.Logs.AddAsync(log);
 
             await db.SaveChangesAsync();
             return Results.Ok();
+
+            // TODO kaskadove mazani u vsech delete
         });
 
-        app.MapGet("api/course/{courseId}/comments", async (StudyDb db, int courseId) =>
+        app.MapGet("api/course/{courseID}/comments", async (StudyDb db, int courseID) =>
         {
-            var comments = db.Comments.Where(s => s.CourseId == courseId).OrderByDescending(s => s.DateAdded);
+            var comments = db.Comments.Where(s => s.CourseID == courseID).OrderByDescending(s => s.DateAdded);
             if (comments is null) return Results.NotFound();
+            // TODO naplnit likes/dislikes
             return Results.Ok(comments);
         });
 
-        app.MapGet("api/file/{fileId}/comments", async (StudyDb db, int fileId) =>
+        app.MapGet("api/file/{fileID}/comments", async (StudyDb db, int fileID) =>
         {
-            var comments = db.Comments.Where(s => s.FileId == fileId).OrderByDescending(s => s.DateAdded);
+            var comments = db.Comments.Where(s => s.FileID == fileID).OrderByDescending(s => s.DateAdded);
             if (comments is null) return Results.NotFound();
+            // TODO naplnit likes/dislikes
             return Results.Ok(comments);
         });
 

@@ -25,16 +25,16 @@ export default function Comment({ comment, showCommentCategory, limitLines }: Co
     dispatch(modalOpen({
         type: `deleteComment`,
         data: {
-          commentId: comment.commentId,
-          fileId: comment.fileId,
-          courseId: comment.courseId
+          commentID: comment.commentID,
+          fileID: comment.fileID,
+          courseID: comment.courseID
         }
     }))
   }
 
   async function addReaction(reaction) {
     const formData = {
-      commentId: comment.commentId
+      commentID: comment.commentID
     }
     
     const url = (reaction === "Like" ? `/api/like/add` : `/api/dislike/add`)
@@ -50,7 +50,7 @@ export default function Comment({ comment, showCommentCategory, limitLines }: Co
     if (response.status === 201) {
       dispatch(
         toastNotificationAdd({
-          notificationId: Date.now(),
+          notificationID: Date.now(),
           title: reaction === "Like" ? "Like added." : "Dislike added.",
           customDuration: 5000,
         })
@@ -58,7 +58,7 @@ export default function Comment({ comment, showCommentCategory, limitLines }: Co
     } else {
       dispatch(
         toastNotificationAdd({
-          notificationId: Date.now(),
+          notificationID: Date.now(),
           title: "Error occured.",
           customDuration: 5000,
         })
@@ -72,11 +72,11 @@ export default function Comment({ comment, showCommentCategory, limitLines }: Co
         <img src={userIcon} alt="user" width="28" height="28" />
       </span>
       <div>
-        <Link className="Link Comment-heading" to={"/user/" + comment.userId}>{comment.userId}</Link>
+        <Link className="Link Comment-heading" to={"/user/" + comment.userID}>{comment.userID}</Link>
         {showCommentCategory &&
           <>
-          <span> in {comment.fileId > 0 ? "file " : "course "}</span>
-            <Link className="Link" to={"/" + (comment.fileId > 0 ? `course/${comment.courseId}/file/${comment.fileId}` : `course/${comment.courseId}`)}>{comment.categoryName}</Link>
+          <span> in {comment.fileID > 0 ? "file " : "course "}</span>
+            <Link className="Link" to={"/" + (comment.fileID > 0 ? `course/${comment.courseID}/file/${comment.fileID}` : `course/${comment.courseID}`)}>{comment.categoryName}</Link>
           </>
         }
         <div>{getLocalTime(comment.dateAdded)} {getLocalDate(comment.dateAdded)}</div>

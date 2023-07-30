@@ -20,12 +20,12 @@ export default function UploadFile(props: PropsWithChildren<ModalInterface>) {
     for (const file of files) {
       const formData = new FormData();
       formData.append("file", file);
-      formData.append("userId", "0");
+      formData.append("userID", "0");
       formData.append("name", file.name.split('.')[0]);
       formData.append("filetype", file.name.split('.')[1]);
       formData.append("size", file.size);
 
-      const response = await fetch(`/api/course/${props.courseId}/file/add`, {
+      const response = await fetch(`/api/course/${props.courseID}/file/add`, {
         method: "POST",
         body: formData
       });
@@ -34,16 +34,16 @@ export default function UploadFile(props: PropsWithChildren<ModalInterface>) {
         dispatch(modalClose())
         dispatch(
           toastNotificationAdd({
-            notificationId: Date.now(),
+            notificationID: Date.now(),
             title: "New file uploaded.",
             customDuration: 5000,
           })
         );
-        dispatch(fetchCourseFiles(props.courseId))
+        dispatch(fetchCourseFiles(props.courseID))
       } else {
         dispatch(
           toastNotificationAdd({
-            notificationId: Date.now(),
+            notificationID: Date.now(),
             title: "Error occured.",
             customDuration: 5000,
           })

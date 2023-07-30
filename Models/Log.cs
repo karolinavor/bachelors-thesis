@@ -18,14 +18,14 @@ namespace BachelorThesis.Models
 
     public class Log
     {
-        public int LogId { get; set; }
-        public int UserId { get; set; }
+        public int LogID { get; set; }
+        public int UserID { get; set; }
         public LogEvent Event { get; set; }
         public DateTime DateAdded { get; set; }
-        public int CourseId { get; set; }
-        public int CourseFileId { get; set; }
-        public int CommentId { get; set; }
-        public int NewsId { get; set; }
+        public int CourseID { get; set; }
+        public int CourseFileID { get; set; }
+        public int CommentID { get; set; }
+        public int NewsID { get; set; }
     }
 }
 

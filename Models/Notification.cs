@@ -4,10 +4,10 @@ namespace BachelorThesis.Models
 {
     public class Notification
     {
-        public int NotificationId { get; set; }
-        public int UserId { get; set; }
-        public int CourseId { get; set; }
-        public int CourseFileId { get; set; }
+        public int NotificationID { get; set; }
+        public int UserID { get; set; }
+        public int CourseID { get; set; }
+        public int CourseFileID { get; set; }
     }
 }
 

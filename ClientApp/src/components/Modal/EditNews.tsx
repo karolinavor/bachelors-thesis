@@ -18,7 +18,7 @@ export default function EditNews(props: PropsWithChildren<ModalInterface>) {
 	}, [])
 
 	async function getNews() {
-		const response = await fetch(`/api/news/${props.newsId}/get`);
+		const response = await fetch(`/api/news/${props.newsID}/get`);
 		const data = await response.json();
 		setNews(data)
 	}
@@ -28,11 +28,11 @@ export default function EditNews(props: PropsWithChildren<ModalInterface>) {
 
     const form = e.target;
     const formData = {
-      id: props.newsId,
+      ID: props.newsID,
       content: form[0].value
     }
 
-    const response = await fetch(`/api/news/${props.newsId}/edit`, {
+    const response = await fetch(`/api/news/${props.newsID}/edit`, {
         headers: {
             'Accept': 'application/json',
             'Content-Type': 'application/json'
@@ -44,7 +44,7 @@ export default function EditNews(props: PropsWithChildren<ModalInterface>) {
       dispatch(modalClose())
       dispatch(
 				toastNotificationAdd({
-					notificationId: Date.now(),
+					notificationID: Date.now(),
 					title: "News edited.",
 					customDuration: 5000,
 				})
@@ -53,7 +53,7 @@ export default function EditNews(props: PropsWithChildren<ModalInterface>) {
     } else {
       dispatch(
 				toastNotificationAdd({
-					notificationId: Date.now(),
+					notificationID: Date.now(),
 					title: "Error occured.",
 					customDuration: 5000,
 				})

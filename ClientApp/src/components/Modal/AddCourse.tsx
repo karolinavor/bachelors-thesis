@@ -30,7 +30,7 @@ export default function AddCourse() {
       dispatch(modalClose())
       dispatch(
         toastNotificationAdd({
-          notificationId: Date.now(),
+          notificationID: Date.now(),
           title: "New course added.",
           customDuration: 5000,
         })
@@ -39,7 +39,7 @@ export default function AddCourse() {
     } else {
 			dispatch(
         toastNotificationAdd({
-          notificationId: Date.now(),
+          notificationID: Date.now(),
           title: "Error occured.",
           customDuration: 5000,
         })

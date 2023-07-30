@@ -18,7 +18,7 @@ export const toastNotificationSlice = createSlice({
     toastNotificationRemove: (state, action: PayloadAction<number>) => {
       return {
         ...state,
-        notifications: state.toastNotifications.filter(item => item.notificationId !== action.payload)
+        notifications: state.toastNotifications.filter(item => item.notificationID !== action.payload)
       }
     },
   },

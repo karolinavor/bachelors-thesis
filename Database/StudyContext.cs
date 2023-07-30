@@ -26,6 +26,15 @@ namespace BachelorThesis.Database
       modelBuilder.Entity<Notification>().ToTable("Notification");
       modelBuilder.Entity<Log>().ToTable("Log");
       modelBuilder.Entity<Reaction>().ToTable("Reaction");
+
+      modelBuilder.Entity<Course>().Property(f => f.CourseID).ValueGeneratedOnAdd();
+      modelBuilder.Entity<Comment>().Property(f => f.CommentID).ValueGeneratedOnAdd();
+      modelBuilder.Entity<CourseFile>().Property(f => f.CourseFileID).ValueGeneratedOnAdd();
+      modelBuilder.Entity<News>().Property(f => f.NewsID).ValueGeneratedOnAdd();
+      modelBuilder.Entity<User>().Property(f => f.UserID).ValueGeneratedOnAdd();
+      modelBuilder.Entity<Notification>().Property(f => f.NotificationID).ValueGeneratedOnAdd();
+      modelBuilder.Entity<Log>().Property(f => f.LogID).ValueGeneratedOnAdd();
+      modelBuilder.Entity<Reaction>().Property(f => f.ReactionID).ValueGeneratedOnAdd();
     }
   }
 }

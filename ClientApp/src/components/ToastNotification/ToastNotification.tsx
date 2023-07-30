@@ -4,7 +4,7 @@ import { AppDispatch } from '../../store/store'
 import { toastNotificationRemove } from '../../store/reducers/toastNotificationsSlice'
 
 export interface ToastNotificationItem {
-  notificationId: number
+  notificationID: number
   title: string
   message?: string
   customDuration?: number | false
@@ -19,7 +19,7 @@ export default function ToastNotificationCard(props: PropsWithChildren<ToastNoti
   const message = props.message
 
   const closeHandler = () => {
-    dispatch(toastNotificationRemove(props.notificationId))
+    dispatch(toastNotificationRemove(props.notificationID))
   }
 
   const [visible, setVisible] = useState(true)

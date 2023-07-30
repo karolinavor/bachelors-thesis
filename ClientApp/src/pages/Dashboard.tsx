@@ -115,7 +115,7 @@ export default function Dashboard() {
                         <h2>Latest courses</h2>
                         {latestCourses?.map((course: CourseType, index) =>
                             <div key={index}>
-                                <Link className="Link" to={"/course/" + course.courseId}>{course.short} - {course.title}</Link>
+                                <Link className="Link" to={"/course/" + course.courseID}>{course.short} - {course.title}</Link>
                             </div>
                         )}
                     </div>
@@ -125,7 +125,7 @@ export default function Dashboard() {
                         <h2>Latest files</h2>
                         {latestFiles?.map((file: FileType, index) =>
                             <div key={index}>
-                                <Link className="Link" to={`/course/${file.courseId}/file/` + file.courseFileId}>{file.name}.{file.filetype}</Link>
+                                <Link className="Link" to={`/course/${file.courseID}/file/` + file.courseFileID}>{file.name}.{file.filetype}</Link>
                             </div>
                         )}
                     </div>
