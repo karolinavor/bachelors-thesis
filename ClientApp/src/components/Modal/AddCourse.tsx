@@ -35,7 +35,7 @@ export default function AddCourse() {
           customDuration: 5000,
         })
       );
-      //dispatch(fetchCourses())
+      dispatch(fetchCourses())
     } else {
 			dispatch(
         toastNotificationAdd({

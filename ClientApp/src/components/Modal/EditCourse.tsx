@@ -1,27 +1,17 @@
-import React, { PropsWithChildren, useEffect, useState } from 'react'
-import { useDispatch } from 'react-redux'
+import React, { PropsWithChildren } from 'react'
+import { useDispatch, useSelector } from 'react-redux'
 
 import { modalClose } from '../../store/reducers/modalSlice'
-import { AppDispatch } from '../../store/store'
-import { CourseType } from '../../types/types'
+import { AppDispatch, RootState } from '../../store/store'
 import { ModalInterface } from './Modal'
 import { fetchCourses } from '../../store/reducers/coursesSlice'
 import { toastNotificationAdd } from '../../store/reducers/toastNotificationsSlice'
+import { fetchCourse } from '../../store/reducers/courseSlice'
 
 export default function EditCourse(props: PropsWithChildren<ModalInterface>) {
 	const dispatch: AppDispatch = useDispatch()
 
-	const [course, setCourse] = useState<CourseType>();
-
-	useEffect(() => {
-		getCourse()
-	}, [])
-
-	async function getCourse() {
-		const response = await fetch(`/api/course/${props.courseId}/get`);
-		const data = await response.json();
-		setCourse(data)
-	}
+	const courseState = useSelector((state: RootState) => state.course)
 
   async function submitModal(e:React.ChangeEvent<any>) {
     e.preventDefault();
@@ -49,7 +39,8 @@ export default function EditCourse(props: PropsWithChildren<ModalInterface>) {
 					title: "Course edited.",
 					customDuration: 5000,
 				})
-			);
+      );
+      dispatch(fetchCourse(props.courseId))
       dispatch(fetchCourses())
     } else {
       dispatch(
@@ -67,11 +58,11 @@ export default function EditCourse(props: PropsWithChildren<ModalInterface>) {
       <form onSubmit={event => submitModal(event)} className="flex-column">
           <div>
               <label htmlFor="name">Course name</label>
-              <input id="name" type="text" required defaultValue={course?.title}></input>
+              <input id="name" type="text" required defaultValue={courseState?.title}></input>
           </div>
           <div>
               <label htmlFor="short">Course short</label>
-              <input id="short" type="text" required defaultValue={course?.short}></input>
+              <input id="short" type="text" required defaultValue={courseState?.short}></input>
           </div>
           <button className="Button" type="submit">Submit</button>
       </form>

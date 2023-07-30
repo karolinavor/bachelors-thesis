@@ -5,6 +5,7 @@ import { modalClose } from '../../store/reducers/modalSlice'
 import { AppDispatch } from '../../store/store'
 import { ModalInterface } from './Modal'
 import { toastNotificationAdd } from '../../store/reducers/toastNotificationsSlice'
+import { fetchCourse } from '../../store/reducers/courseSlice'
 
 export default function DeleteFile(props: PropsWithChildren<ModalInterface>) {
 	const dispatch: AppDispatch = useDispatch()
@@ -14,8 +15,7 @@ export default function DeleteFile(props: PropsWithChildren<ModalInterface>) {
 			method: "DELETE",
 		});
 		if (response.status === 200) {
-			let courseUrl = window.location.href.split("file")[0]
-			window.location.href = courseUrl;
+			window.location.href = `/course/${props.courseId}`;
 			dispatch(
 				toastNotificationAdd({
 					notificationId: Date.now(),
@@ -23,6 +23,7 @@ export default function DeleteFile(props: PropsWithChildren<ModalInterface>) {
 					customDuration: 5000,
 				})
 			);
+			dispatch(fetchCourse(props.courseId))
 		} else {
 			dispatch(
 				toastNotificationAdd({

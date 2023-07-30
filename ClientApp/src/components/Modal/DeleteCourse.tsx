@@ -6,6 +6,7 @@ import { AppDispatch } from '../../store/store'
 import { ModalInterface } from './Modal'
 import { fetchCourses } from '../../store/reducers/coursesSlice'
 import { toastNotificationAdd } from '../../store/reducers/toastNotificationsSlice'
+import { fetchCourse } from '../../store/reducers/courseSlice'
 
 export default function EditCourse(props: PropsWithChildren<ModalInterface>) {
 	const dispatch: AppDispatch = useDispatch()
@@ -20,6 +21,7 @@ export default function EditCourse(props: PropsWithChildren<ModalInterface>) {
 		});
 		if (response.status === 200) {
 			window.location.href = "/";
+			dispatch(fetchCourses())
 			dispatch(
 				toastNotificationAdd({
 					notificationId: Date.now(),
@@ -27,7 +29,6 @@ export default function EditCourse(props: PropsWithChildren<ModalInterface>) {
 					customDuration: 5000,
 				})
 			);
-			dispatch(fetchCourses())
 		} else {
 			dispatch(
         toastNotificationAdd({

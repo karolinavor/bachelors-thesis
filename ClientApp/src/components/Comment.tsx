@@ -7,14 +7,17 @@ import { modalOpen } from "../store/reducers/modalSlice";
 import { useDispatch } from "react-redux";
 import { AppDispatch } from "../store/store";
 import deleteIcon from "../assets/delete.svg"
+import likeIcon from '../assets/like.svg'
+import dislikeIcon from '../assets/dislike.svg'
 import { toastNotificationAdd } from "../store/reducers/toastNotificationsSlice";
 
 type CommentTypeExtended = {
   comment: CommentType,
-  showCommentCategory?: boolean
+  showCommentCategory?: boolean,
+  limitLines?: boolean
 }
 
-export default function Comment({ comment, showCommentCategory }: CommentTypeExtended) {
+export default function Comment({ comment, showCommentCategory, limitLines }: CommentTypeExtended) {
 
   let dispatch: AppDispatch = useDispatch();
 
@@ -22,7 +25,9 @@ export default function Comment({ comment, showCommentCategory }: CommentTypeExt
     dispatch(modalOpen({
         type: `deleteComment`,
         data: {
-          commentId: comment.commentId
+          commentId: comment.commentId,
+          fileId: comment.fileId,
+          courseId: comment.courseId
         }
     }))
   }
@@ -46,7 +51,7 @@ export default function Comment({ comment, showCommentCategory }: CommentTypeExt
       dispatch(
         toastNotificationAdd({
           notificationId: Date.now(),
-          title: "Like added.",
+          title: reaction === "Like" ? "Like added." : "Dislike added.",
           customDuration: 5000,
         })
       );
@@ -76,7 +81,7 @@ export default function Comment({ comment, showCommentCategory }: CommentTypeExt
         }
         <div>{getLocalTime(comment.dateAdded)} {getLocalDate(comment.dateAdded)}</div>
       </div>
-      <div className="Comment-content">
+      <div className={"Comment-content" + (limitLines ? " Comment-content--limited" : "")}>
         <p>{comment.commentText}</p>
       </div>
       <div className="Button-row mb-0 mt-1">
@@ -84,10 +89,10 @@ export default function Comment({ comment, showCommentCategory }: CommentTypeExt
           <img src={deleteIcon} alt="Delete icon" width="16" height="16" />
         </button>
         <button className="Button" onClick={() => addReaction("Like")}>
-          Like
+          <img src={likeIcon} alt="Like icon" /> {comment.likes}
         </button>
         <button className="Button" onClick={() => addReaction("Dislike")}>
-          Dislike
+          <img src={dislikeIcon} alt="Dislike icon" /> {comment.dislikes}
         </button>
       </div>
     </div>

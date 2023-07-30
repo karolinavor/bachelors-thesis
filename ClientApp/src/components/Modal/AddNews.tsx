@@ -4,6 +4,7 @@ import { useDispatch } from 'react-redux'
 import { modalClose } from '../../store/reducers/modalSlice'
 import { AppDispatch } from '../../store/store'
 import { toastNotificationAdd } from '../../store/reducers/toastNotificationsSlice'
+import { fetchAllNews } from '../../store/reducers/newsSlice'
 
 export default function AddNews() {
   const dispatch: AppDispatch = useDispatch()
@@ -33,6 +34,7 @@ export default function AddNews() {
           customDuration: 5000,
         })
       );
+      dispatch(fetchAllNews())
     } else {
 			dispatch(
         toastNotificationAdd({

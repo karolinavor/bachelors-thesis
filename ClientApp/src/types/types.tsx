@@ -14,10 +14,9 @@ export type FileType = {
   filetype: string,
   url: string,
   size: number,
-  /*
   likes: number,
   dislikes: number,
-  */
+  reacted: boolean,
   numberOfDownloads: number,
   courseId: number,
   notificationSet: boolean
@@ -38,7 +37,8 @@ export type CommentType = {
   courseId: number,
   categoryName: string,
   likes: number,
-  dislikes: number
+  dislikes: number,
+  reacted: boolean
 }
 
 export type UserType = {

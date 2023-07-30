@@ -1,50 +1,52 @@
 import React, { useEffect, useState } from 'react'
-import { Link, useNavigate, useParams } from 'react-router-dom'
-import { CommentType, FileType } from '../types/types';
+import { Link, useParams } from 'react-router-dom'
+import { CommentType } from '../types/types';
 import { getLocalDate, getLocalTime } from '../utils/getTime';
 import { modalOpen } from '../store/reducers/modalSlice';
-import { AppDispatch } from '../store/store';
-import { useDispatch } from 'react-redux';
+import { AppDispatch, RootState } from '../store/store';
+import { useDispatch, useSelector } from 'react-redux';
 import Comment from './Comment';
 import bellIcon from "../assets/bell.svg"
 import downloadIcon from "../assets/download.svg"
 import deleteIcon from "../assets/delete.svg"
 import bellTicked from "../assets/bell-ticked.svg"
 import leftIcon from "../assets/left.svg"
+import likeIcon from "../assets/like.svg"
+import dislikeIcon from "../assets/dislike.svg"
 import { toastNotificationAdd } from '../store/reducers/toastNotificationsSlice';
+import { fetchFile, fetchFileComments } from '../store/reducers/fileSlice';
 
 export default function File() {
 
     const { fileId } = useParams();
     let dispatch: AppDispatch = useDispatch();
-    const navigate = useNavigate();
-    const [file, setFile] = useState<FileType>(null);
-    const [fileComments, setFileComments] = useState<CommentType[]>();
 
+    const fileState = useSelector((state: RootState) => state.file)
+
+    const [error, setError] = useState(null);
 
     useEffect(() => {
-        getFile()
-        getFileComments()
+        getFileData()
     }, [])
 
     useEffect(() => {
-        getFile()
-        getFileComments()
+        getFileData()
     }, [fileId])
 
-    async function getFile() {
-        const response = await fetch(`/api/file/${fileId}/get`);
-        if (!response.ok) {
-            navigate(window.location.href.split("file")[0].split(window.location.host)[1]);
-        }
-        const data = await response.json();
-        setFile(data)
-    }
+    useEffect(() => {
+        if (error) throw new Error();
+    }, [error])
 
-    async function getFileComments() {
-        const response = await fetch(`/api/file/${fileId}/comments`);
-        const data = await response.json();
-        setFileComments(data)
+    async function getFileData() {
+        let responseFile = await dispatch(fetchFile(parseInt(fileId)))
+        if (responseFile.meta.requestStatus === "rejected") {
+            setError(true)
+        }
+
+        let responseComments = await dispatch(fetchFileComments(parseInt(fileId)))
+        if (responseComments.meta.requestStatus === "rejected") {
+            setError(true)
+        }
     }
 
     async function downloadFile() {
@@ -61,9 +63,10 @@ export default function File() {
             const element = document.createElement("a");
             const newFile = new Blob([response], {type: 'text/plain'});
             element.href = URL.createObjectURL(newFile);
-            element.download = `${file.name}.${file.filetype}`;
+            element.download = `${fileState.name}.${fileState.filetype}`;
             document.body.appendChild(element);
             element.click();
+            dispatch(fetchFile(parseInt(fileId)))
         }
     }
 
@@ -93,7 +96,8 @@ export default function File() {
 					title: "New comment added.",
 					customDuration: 5000,
 				})
-			);
+            );
+            dispatch(fetchFileComments(parseInt(fileId)))
         } else {
             dispatch(
 				toastNotificationAdd({
@@ -109,7 +113,8 @@ export default function File() {
         dispatch(modalOpen({
             type: `deleteFile`,
             data: {
-                fileId: parseInt(fileId)
+                fileId: parseInt(fileId),
+                courseId: fileState.courseId
             }
         }))
     }
@@ -135,7 +140,8 @@ export default function File() {
 					title: "File notifications turned off.",
 					customDuration: 5000,
 				})
-			);
+            );
+            dispatch(fetchFile(parseInt(fileId)))
         } else if (response.status === 201) {
             dispatch(
 				toastNotificationAdd({
@@ -143,7 +149,8 @@ export default function File() {
 					title: "File notifications turned on.",
 					customDuration: 5000,
 				})
-			);
+            );
+            dispatch(fetchFile(parseInt(fileId)))
         } else {
             dispatch(
 				toastNotificationAdd({
@@ -152,6 +159,41 @@ export default function File() {
 					customDuration: 5000,
 				})
 			);
+        }
+    }
+
+    async function addReaction(reaction) {
+        const formData = {
+          fileId: parseInt(fileId)
+        }
+        
+        const url = (reaction === "Like" ? `/api/like/add` : `/api/dislike/add`)
+        const response = await fetch(url, {
+          headers: {
+            'Accept': 'application/json',
+            'Content-Type': 'application/json'
+          },
+          method: "POST",
+          body: JSON.stringify(formData)
+        });
+    
+        if (response.status === 201) {
+          dispatch(
+            toastNotificationAdd({
+              notificationId: Date.now(),
+              title: reaction === "Like" ? "Like added." : "Dislike added.",
+              customDuration: 5000,
+            })
+          );
+          dispatch(fetchFile(parseInt(fileId)))
+        } else {
+          dispatch(
+            toastNotificationAdd({
+              notificationId: Date.now(),
+              title: "Error occured.",
+              customDuration: 5000,
+            })
+          );
         }
     }
 
@@ -164,7 +206,7 @@ export default function File() {
                 </Link>
             </div>
             <section>
-                <h1>{file?.name}.{file?.filetype}</h1>
+                <h1>{fileState?.name}.{fileState?.filetype}</h1>
                 <div className="Button-row">
                     <button className="Button" onClick={() => downloadFile()}>
                         <img src={downloadIcon} alt="Download icon" />
@@ -175,45 +217,39 @@ export default function File() {
                         Delete
                     </button>
                     <button className="Button" onClick={() => toggleNotifications()}>
-                        {file?.notificationSet ?
+                        {fileState?.notificationSet ?
                             <img alt="bell icon" src={bellTicked} />
                             :<img alt="bell icon" src={bellIcon} />
                         }
+                    </button>
+                    <button className="Button" onClick={() => addReaction("Like")}>
+                        <img src={likeIcon} alt="Like icon" /> {fileState.likes}
+                    </button>
+                    <button className="Button" onClick={() => addReaction("Dislike")}>
+                        <img src={dislikeIcon} alt="Dislike icon" /> {fileState.dislikes}
                     </button>
                 </div>
                 <div className='File-metadata'>
                     <div>
                         <div><b>User</b></div>
-                        <div>{file?.userId}</div>
+                        <div>{fileState?.userId}</div>
                     </div>
                     <div>
                         <div><b>Date published</b></div>
-                        <div>{getLocalTime(file?.dateAdded)} {getLocalDate(file?.dateAdded)}</div>
+                        <div>{getLocalTime(fileState?.dateAdded)} {getLocalDate(fileState?.dateAdded)}</div>
                     </div>
                     <div>
                         <div><b>Filetype</b></div>
-                        <div>{file?.filetype}</div>
+                        <div>{fileState?.filetype}</div>
                     </div>
                     <div>
                         <div><b>Size</b></div>
-                        <div>{file?.size} B</div>
+                        <div>{fileState?.size} B</div>
                     </div>
                     <div>
                         <div><b>Number of downloads</b></div>
-                        <div>{file?.numberOfDownloads}</div>
+                        <div>{fileState?.numberOfDownloads}</div>
                     </div>
-                    {/*
-                    <div className='flex'>
-                        <div>
-                            <div><b>Likes</b></div>
-                            <div>{file?.likes}</div>
-                        </div>
-                        <div>
-                            <div><b>Dislikes</b></div>
-                            <div>{file?.dislikes}</div>
-                        </div>                        
-                    </div>
-                    */}
                 </div>
             </section>
             <section>
@@ -228,7 +264,7 @@ export default function File() {
                     </div>
                 </form>
                 <div className="Comments">
-                    {fileComments?.map((comment: CommentType, index) =>
+                    {fileState?.comments?.map((comment: CommentType, index) =>
                         <Comment
                             key={index}
                             comment={comment}

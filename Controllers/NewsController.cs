@@ -34,7 +34,7 @@ public static class NewsController
             log.UserId = 0;
             log.Event = LogEvent.NewsAdded;
             log.DateAdded = DateTime.Now;
-            log.NewsId = news.NewsId;
+            log.NewsId = news.newsId;
             await db.Logs.AddAsync(log);
 
             await db.SaveChangesAsync();
@@ -59,7 +59,7 @@ public static class NewsController
             log.UserId = 0;
             log.Event = LogEvent.NewsEdited;
             log.DateAdded = DateTime.Now;
-            log.NewsId = news.NewsId;
+            log.NewsId = news.newsId;
             await db.Logs.AddAsync(log);
 
             await db.SaveChangesAsync();
@@ -77,7 +77,7 @@ public static class NewsController
             log.UserId = 0;
             log.Event = LogEvent.NewsDeleted;
             log.DateAdded = DateTime.Now;
-            log.NewsId = news.NewsId;
+            log.NewsId = news.newsId;
             await db.Logs.AddAsync(log);
 
             await db.SaveChangesAsync();

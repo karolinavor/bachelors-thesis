@@ -11,12 +11,11 @@ namespace BachelorThesis.Models
         public string Filetype { get; set; }
         public int Size { get; set; }
         public string Url { get; set; }
-        /*
-        public int Likes { get; set; }
-        public int Dislikes { get; set; }
-        */
         public int NumberOfDownloads { get; set; }
         public int CourseId { get; set; }
         public bool NotificationSet { get; set; }
+        public int Likes { get; set; }
+        public int Dislikes { get; set; }
+        public bool Reacted { get; set; }
     }
 }

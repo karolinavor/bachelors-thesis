@@ -6,6 +6,7 @@ import { AppDispatch } from '../../store/store'
 import { NewsType } from '../../types/types'
 import { ModalInterface } from './Modal'
 import { toastNotificationAdd } from '../../store/reducers/toastNotificationsSlice'
+import { fetchAllNews } from '../../store/reducers/newsSlice'
 
 export default function EditNews(props: PropsWithChildren<ModalInterface>) {
 	const dispatch: AppDispatch = useDispatch()
@@ -47,7 +48,8 @@ export default function EditNews(props: PropsWithChildren<ModalInterface>) {
 					title: "News edited.",
 					customDuration: 5000,
 				})
-			);
+      );
+      dispatch(fetchAllNews())
     } else {
       dispatch(
 				toastNotificationAdd({

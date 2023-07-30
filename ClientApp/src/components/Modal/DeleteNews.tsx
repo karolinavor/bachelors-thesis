@@ -5,6 +5,7 @@ import { modalClose } from '../../store/reducers/modalSlice'
 import { AppDispatch } from '../../store/store'
 import { ModalInterface } from './Modal'
 import { toastNotificationAdd } from '../../store/reducers/toastNotificationsSlice'
+import { fetchAllNews } from '../../store/reducers/newsSlice'
 
 export default function DeleteNews(props: PropsWithChildren<ModalInterface>) {
 	const dispatch: AppDispatch = useDispatch()
@@ -22,6 +23,7 @@ export default function DeleteNews(props: PropsWithChildren<ModalInterface>) {
 					customDuration: 5000,
 				})
 			);
+			dispatch(fetchAllNews())
 		} else {
 			dispatch(
 				toastNotificationAdd({

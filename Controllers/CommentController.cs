@@ -20,6 +20,8 @@ public static class CommentController
             comment.UserId = 0;
             comment.CategoryName = course.Result.Short + " - " + course.Result.Title;
             comment.FileId = 0;
+            comment.Likes = 0;
+            comment.Dislikes = 0;
             db.Comments.Add(comment);
 
             var log = new Log();
@@ -43,6 +45,8 @@ public static class CommentController
             comment.UserId = 0;
             comment.CourseId = file.Result.CourseId;
             comment.CategoryName = file.Result.Name;
+            comment.Likes = 0;
+            comment.Dislikes = 0;
             db.Comments.Add(comment);
 
             var log = new Log();

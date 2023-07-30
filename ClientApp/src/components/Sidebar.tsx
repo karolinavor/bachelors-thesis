@@ -1,13 +1,13 @@
 import React, { useEffect } from 'react';
 import { NavLink } from "react-router-dom";
-import { AppDispatch, RootState } from '../store/store';
-import { useDispatch, useSelector } from 'react-redux';
+import { RootState, useAppDispatch } from '../store/store';
+import { useSelector } from 'react-redux';
 import { modalOpen } from '../store/reducers/modalSlice';
 import { fetchCourses } from '../store/reducers/coursesSlice';
 import addIcon from "../assets/add.svg"
 
 export default function Sidebar() {    
-    const dispatch: AppDispatch = useDispatch()
+    const dispatch = useAppDispatch()
     const coursesState = useSelector((state: RootState) => state.courses)
 
     useEffect(() => {

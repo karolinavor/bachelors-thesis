@@ -5,6 +5,8 @@ import { modalClose } from '../../store/reducers/modalSlice'
 import { AppDispatch } from '../../store/store'
 import { ModalInterface } from './Modal'
 import { toastNotificationAdd } from '../../store/reducers/toastNotificationsSlice'
+import { fetchCourseComments } from '../../store/reducers/courseSlice'
+import { fetchFileComments } from '../../store/reducers/fileSlice'
 
 export default function DeleteComment(props: PropsWithChildren<ModalInterface>) {
 	const dispatch: AppDispatch = useDispatch()
@@ -21,7 +23,8 @@ export default function DeleteComment(props: PropsWithChildren<ModalInterface>) 
           title: "Comment deleted.",
           customDuration: 5000,
         })
-      );
+			);
+			props.fileId > 0 ?  dispatch(fetchFileComments(props.fileId)) : dispatch(fetchCourseComments(props.courseId))
 		} else {
 			dispatch(
         toastNotificationAdd({

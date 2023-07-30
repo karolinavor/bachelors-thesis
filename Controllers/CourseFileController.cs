@@ -38,6 +38,8 @@ public static class CourseFileController
             courseFile.NotificationSet = false;
             courseFile.Url = $"FileSystem/course_{courseId}/file_{courseFile.CourseId}.{courseFile.Filetype}";
             courseFile.NumberOfDownloads = 0;
+            courseFile.Likes = 0;
+            courseFile.Dislikes = 0;
             db.CourseFiles.Add(courseFile);
             
             if (!Directory.Exists("FileSystem/course_{courseId}/")) {

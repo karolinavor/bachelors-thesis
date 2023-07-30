@@ -3,32 +3,39 @@ import { Link } from 'react-router-dom';
 import News from '../components/News';
 import Comment from '../components/Comment';
 import { CommentType, CourseType, FileType, NewsType } from '../types/types';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { modalOpen } from '../store/reducers/modalSlice';
-import { AppDispatch } from '../store/store';
+import { AppDispatch, RootState } from '../store/store';
 import addIcon from "../assets/add.svg"
-import { toastNotificationAdd } from '../store/reducers/toastNotificationsSlice';
+import { fetchLatestNews } from '../store/reducers/newsSlice';
 
 export default function Dashboard() {
 
     const dispatch: AppDispatch = useDispatch()
-    const [news, setNews] = useState<NewsType[]>([]);
     const [latestComments, setLatestComments] = useState<CommentType[]>([]);
     const [latestCourses, setLatestCourses] = useState<CourseType[]>([]);
     const [latestFiles, setLatestFiles] = useState<FileType[]>([]);
 
+    const newsState = useSelector((state: RootState) => state.news)
+
+    const [error, setError] = useState(null);
+
     useEffect(() => {
-        getNews()
+        getNewsData()
+
         getLatestComments()
         getLatestCourses()
         getLatestFiles()
     }, [])
 
-    async function getNews() {
-        const response = await fetch('/api/news');
-        if (response.status === 200) {
-            const data = await response.json();
-            setNews(data)
+    useEffect(() => {
+        if (error) throw new Error();
+    }, [error])
+
+    async function getNewsData() {
+        let responseCourse = await dispatch(fetchLatestNews())
+        if (responseCourse.meta.requestStatus === "rejected") {
+            setError(true)
         }
     }
 
@@ -76,13 +83,14 @@ export default function Dashboard() {
                             Add news
                         </button>
                     </div>
-                    {news?.map((newsItem: NewsType, index) =>
+                    {newsState?.news?.map((newsItem: NewsType, index) =>
+                        (index < 3 ?
                         <News
                             news={newsItem}
                             key={index}
-                        />
+                        /> : null)
                     )}
-                    {news.length > 0 ?
+                    {newsState?.news.length > 0 ?
                         <Link className="Button" to={"/news/"}>Show more</Link>
                         : <div>No news.</div>
                     }
@@ -96,6 +104,7 @@ export default function Dashboard() {
                                     key={index}
                                     comment={comment}
                                     showCommentCategory={true}
+                                    limitLines={true}
                                 />
                             )}
                         </div>

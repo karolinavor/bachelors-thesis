@@ -1,6 +1,9 @@
 import { configureStore } from '@reduxjs/toolkit'
 import modalReducer from './reducers/modalSlice'
 import coursesReducer from './reducers/coursesSlice'
+import courseReducer from './reducers/courseSlice'
+import fileReducer from './reducers/fileSlice'
+import newsReducer from './reducers/newsSlice'
 import toastNotificationsReducer from './reducers/toastNotificationsSlice'
 import { useDispatch, TypedUseSelectorHook, useSelector } from 'react-redux'
 
@@ -8,6 +11,9 @@ export const store = configureStore({
   reducer: {
     modal: modalReducer,
     courses: coursesReducer,
+    course: courseReducer,
+    file: fileReducer,
+    news: newsReducer,
     notifications: toastNotificationsReducer,
   },
 })

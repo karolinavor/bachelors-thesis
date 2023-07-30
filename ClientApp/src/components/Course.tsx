@@ -1,59 +1,127 @@
 import React, { useEffect, useState } from 'react';
-import { useParams, Outlet, Link, useLocation, useNavigate } from 'react-router-dom';
-import { CommentType, CourseType, FileType } from "../types/types"
+import { useParams, Outlet, Link, useLocation } from 'react-router-dom';
+import { CommentType, FileType } from "../types/types"
 import Comment from './Comment';
 import { modalOpen } from '../store/reducers/modalSlice';
-import { useDispatch } from 'react-redux';
-import { AppDispatch } from '../store/store';
+import { useDispatch, useSelector } from 'react-redux';
+import { AppDispatch, RootState } from '../store/store';
 import bellIcon from "../assets/bell.svg"
 import bellTicked from "../assets/bell-ticked.svg"
 import deleteIcon from "../assets/delete.svg"
 import editIcon from "../assets/edit.svg"
 import uploadIcon from "../assets/upload.svg"
+import likeBlueIcon from "../assets/like-blue.svg"
+import dislikeBlueIcon from "../assets/dislike-blue.svg"
 import { toastNotificationAdd } from '../store/reducers/toastNotificationsSlice';
+import { fetchCourse, fetchCourseComments, fetchCourseFiles } from '../store/reducers/courseSlice';
 
 export default function Course() {
 
     const { courseId } = useParams();
     const location = useLocation();
-    const navigate = useNavigate();
     let dispatch: AppDispatch = useDispatch();
 
-    const [course, setCourse] = useState<CourseType>();
-    const [files, setFiles] = useState<FileType[]>();
-    const [courseComments, setCourseComments] = useState<CommentType[]>();
+    const courseState = useSelector((state: RootState) => state.course)
+
+    const [error, setError] = useState(null);
 
     useEffect(() => {
-        getCourse()
-        getCourseComments()
-        getFiles()
+        getCourseData()
     }, [])
 
     useEffect(() => {
-        getCourse()
-        getCourseComments()
-        getFiles()
+        getCourseData()
     }, [courseId])
 
-    async function getCourse() {
-        const response = await fetch(`/api/course/${courseId}/get`);
-        if (response.status !== 200) {
-            navigate("/");
+    useEffect(() => {
+        if (error) throw new Error();
+    }, [error])
+
+    async function getCourseData() {
+        let responseCourse = await dispatch(fetchCourse(parseInt(courseId)))
+        if (responseCourse.meta.requestStatus === "rejected") {
+            setError(true)
         }
-        const data = await response.json();
-        setCourse(data)
+
+        let responseFiles = await dispatch(fetchCourseFiles(parseInt(courseId)))
+        if (responseFiles.meta.requestStatus === "rejected") {
+            setError(true)
+        }
+
+        let responseComments = await dispatch(fetchCourseComments(parseInt(courseId)))
+        if (responseComments.meta.requestStatus === "rejected") {
+            setError(true)
+        }
     }
 
-    async function getFiles() {
-        const response = await fetch(`/api/course/${courseId}/files`);
-        const data = await response.json();
-        setFiles(data)
+    async function openEditCourseModal() {
+        dispatch(modalOpen({
+            type: `editCourse`,
+            data: {
+                courseId: courseState.courseId
+            }
+        }))
     }
 
-    async function getCourseComments() {
-        const response = await fetch(`/api/course/${courseId}/comments`);
-        const data = await response.json();
-        setCourseComments(data)
+    async function openDeleteCourseModal() {
+        dispatch(modalOpen({
+            type: `deleteCourse`,
+            data: {
+                courseId: courseState.courseId
+            }
+        }))
+    }
+
+    function openUploadFileModal() {
+        dispatch(modalOpen({
+            type: `uploadFile`,
+            data: {
+                courseId: courseState.courseId
+            }
+        }))
+    }
+
+    async function toggleNotifications() {
+        const formData = {
+            courseId: courseId
+        }
+
+        const response = await fetch(`/api/notifications/set`, {
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json'
+            },
+            method: "POST",
+            body: JSON.stringify(formData)
+        });
+
+        if (response.status === 200) {
+            dispatch(
+				toastNotificationAdd({
+					notificationId: Date.now(),
+					title: "Course notifications turned off.",
+					customDuration: 5000,
+				})
+            );
+            dispatch(fetchCourse(parseInt(courseId)))
+        } else if (response.status === 201) {
+            dispatch(
+				toastNotificationAdd({
+					notificationId: Date.now(),
+					title: "Course notifications turned on.",
+					customDuration: 5000,
+				})
+            );
+            dispatch(fetchCourse(parseInt(courseId)))
+        } else {
+            dispatch(
+				toastNotificationAdd({
+					notificationId: Date.now(),
+					title: "Error occured.",
+					customDuration: 5000,
+				})
+			);
+        }
     }
 
     async function addNewComment(e:React.ChangeEvent<any>) {
@@ -83,6 +151,7 @@ export default function Course() {
                   customDuration: 5000,
                 })
             );
+            dispatch(fetchCourseComments(parseInt(courseId)))
         } else {
             dispatch(
                 toastNotificationAdd({
@@ -94,80 +163,12 @@ export default function Course() {
         }
     }
 
-    async function openEditCourseModal() {
-        dispatch(modalOpen({
-            type: `editCourse`,
-            data: {
-                courseId: course.courseId
-            }
-        }))
-    }
-
-    async function openDeleteCourseModal() {
-        dispatch(modalOpen({
-            type: `deleteCourse`,
-            data: {
-                courseId: course.courseId
-            }
-        }))
-    }
-
-    function openUploadFileModal() {
-        dispatch(modalOpen({
-            type: `uploadFile`,
-            data: {
-                courseId: course.courseId
-            }
-        }))
-    }
-
-    async function toggleNotifications() {
-        const formData = {
-            courseId: courseId
-        }
-
-        const response = await fetch(`/api/notifications/set`, {
-            headers: {
-                'Accept': 'application/json',
-                'Content-Type': 'application/json'
-            },
-            method: "POST",
-            body: JSON.stringify(formData)
-        });
-
-        if (response.status === 200) {
-            dispatch(
-				toastNotificationAdd({
-					notificationId: Date.now(),
-					title: "Course notifications turned off.",
-					customDuration: 5000,
-				})
-			);
-        } else if (response.status === 201) {
-            dispatch(
-				toastNotificationAdd({
-					notificationId: Date.now(),
-					title: "Course notifications turned on.",
-					customDuration: 5000,
-				})
-			);
-        } else {
-            dispatch(
-				toastNotificationAdd({
-					notificationId: Date.now(),
-					title: "Error occured.",
-					customDuration: 5000,
-				})
-			);
-        }
-    }
-
     return (
         <>
             {!location.pathname.includes("/file/") &&
                 <>
                 <section>
-                    <h1>{course?.short} - {course?.title}</h1>
+                    <h1>{courseState?.short} - {courseState?.title}</h1>
                         <div className="Button-row">
                             <button className="Button" onClick={() => openEditCourseModal()}>
                                 <img src={editIcon} alt="Edit icon" />
@@ -182,7 +183,7 @@ export default function Course() {
                                 Upload file
                             </button>
                             <button className="Button" onClick={() => toggleNotifications()}>
-                                {course?.notificationSet ?
+                                {courseState?.notificationSet ?
                                     <img alt="bell icon" src={bellTicked} />
                                     :<img alt="bell icon" src={bellIcon} />
                                 }
@@ -195,9 +196,19 @@ export default function Course() {
                                 File system
                             </h2>
                             <div className="Table">
-                                {files?.map((file: FileType, index) => 
-                                    <Link className="Table-row" key={index} to={"file/" + file.courseFileId}>{file.name}.{file.filetype}</Link>
-                                )}
+                                {courseState?.files?.length > 0 ? courseState?.files?.map((file: FileType, index) => 
+                                    <Link className="Table-row" key={index} to={"file/" + file.courseFileId}>
+                                        <div>{file.name}.{file.filetype}</div>
+                                        <div className="flex gap-5">
+                                            <div className="flex align-center gap-25">
+                                                <img src={likeBlueIcon} alt="Like icon" className="me-1" /> {file.likes ?? 0}</div>
+                                            <div className="flex align-center gap-25">
+                                                <img src={dislikeBlueIcon} alt="Dislike icon" /> {file.likes ?? 0}
+                                            </div>
+                                        </div>
+                                    </Link>
+                                ) : 
+                                <div className="Table-row">No files</div>}
                             </div>
                         </section>
                         <div>
@@ -213,7 +224,7 @@ export default function Course() {
                                     </div>
                                 </form>
                                 <div className="Comments">
-                                    {courseComments?.map((comment: CommentType, index) => 
+                                    {courseState?.comments?.map((comment: CommentType, index) => 
                                         <Comment
                                             key={index}
                                             comment={comment}

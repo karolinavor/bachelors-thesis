@@ -13,7 +13,15 @@ export const initialCoursesState: CoursesSliceState = {
   loading: `idle`
 }
 
-export const fetchCoursesData = async () => {
+export const fetchCourses = createAsyncThunk(
+  `courses/fetch`,
+  async () => {
+    const response = await fetchCoursesFromAPI()
+    return response
+  }
+)
+
+export const fetchCoursesFromAPI = async () => {
   return await fetch(`/api/courses`, {
     method: `GET`,
   })
@@ -25,25 +33,55 @@ export const fetchCoursesData = async () => {
     })
 }
 
-export const fetchCourses = createAsyncThunk(
-  `courses/requestStatus`,
-  async () => {
-    const response = await fetchCoursesData()
+/*
+export const addCourse = createAsyncThunk(
+  `courses/add`,
+  async (requestData, thunkAPI) => {
+    const response = await addCoursesToAPI(requestData)
     return response
   }
 )
+
+export const addCoursesToAPI = async (requestData) => {
+  return await fetch(`/api/course/add`, {
+    headers: {
+        'Accept': 'application/json',
+        'Content-Type': 'application/json'
+    },
+    method: "POST",
+    body: JSON.stringify(requestData)
+  });
+}
+*/
 
 export const coursesSlice = createSlice({
   name: `courses`,
   initialState: initialCoursesState,
   reducers: {},
   extraReducers: (builder) => {
-    builder.addCase(fetchCourses.fulfilled, (state, action) => {return {
-      ...state, loading: `idle`, courses: action.payload
-    }})
-    builder.addCase(fetchCourses.pending, (state) => {return {
-      ...state, loading: `pending`
-    }})
+    builder.addCase(fetchCourses.fulfilled, (state, action) => {
+      return {
+        ...state, loading: `idle`, courses: action.payload
+      }
+    })
+    builder.addCase(fetchCourses.pending, (state) => {
+      return {
+        ...state, loading: `pending`
+      }
+    })
+    /*
+    builder.addCase(addCourse.fulfilled, (state, action) => {
+      return {
+        ...state, loading: `idle`, courses: action.payload
+      }
+    })
+    builder.addCase(addCourse.pending, (state) => {
+      return {
+        ...state,
+        loading: `pending`,
+      }
+    })
+    */
   },
 })
 

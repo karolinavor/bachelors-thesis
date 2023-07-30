@@ -5,6 +5,7 @@ import { modalClose } from '../../store/reducers/modalSlice'
 import { AppDispatch } from '../../store/store'
 import { ModalInterface } from './Modal'
 import { toastNotificationAdd } from '../../store/reducers/toastNotificationsSlice'
+import { fetchCourseFiles } from '../../store/reducers/courseSlice'
 
 export default function UploadFile(props: PropsWithChildren<ModalInterface>) {
   const dispatch: AppDispatch = useDispatch()
@@ -38,6 +39,7 @@ export default function UploadFile(props: PropsWithChildren<ModalInterface>) {
             customDuration: 5000,
           })
         );
+        dispatch(fetchCourseFiles(props.courseId))
       } else {
         dispatch(
           toastNotificationAdd({

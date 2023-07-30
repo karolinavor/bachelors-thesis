@@ -1,24 +1,33 @@
 import React, { useEffect, useState } from 'react'
 import { NewsType } from '../types/types';
 import News from '../components/News';
-import { useDispatch } from 'react-redux';
-import { AppDispatch } from '../store/store';
+import { useDispatch, useSelector } from 'react-redux';
+import { AppDispatch, RootState } from '../store/store';
 import { modalOpen } from '../store/reducers/modalSlice';
 import addIcon from "../assets/add.svg"
+import { fetchAllNews } from '../store/reducers/newsSlice';
 
 export default function NewsPage() {
 
     let dispatch: AppDispatch = useDispatch();
-    const [news, setNews] = useState<NewsType[]>([]);
+    
+    const newsState = useSelector((state: RootState) => state.news)
+
+    const [error, setError] = useState(null);
     
     useEffect(() => {
-        getNews()
+        getAllNewsData()
     }, [])
 
-    async function getNews() {
-        const response = await fetch('/api/news/all');
-        const data = await response.json();
-        setNews(data)
+    useEffect(() => {
+        if (error) throw new Error();
+    }, [error])
+
+    async function getAllNewsData() {
+        let responseCourse = await dispatch(fetchAllNews())
+        if (responseCourse.meta.requestStatus === "rejected") {
+            setError(true)
+        }
     }
 
     function openAddNewsModal() {
@@ -37,7 +46,7 @@ export default function NewsPage() {
                         Add news
                     </button>
                 </div>
-                {news?.map((newsItem: NewsType, index) =>
+                {newsState?.news?.map((newsItem: NewsType, index) =>
                     <News
                         news={newsItem}
                         key={index}

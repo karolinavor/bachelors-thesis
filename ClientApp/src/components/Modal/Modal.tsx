@@ -75,9 +75,9 @@ export default function ModalContainer(props: PropsWithChildren<ModalSliceState>
       case `deleteCourse`:
         return <DeleteCourse courseId={props.data.courseId ?? 0} />
       case `deleteFile`:
-        return <DeleteFile fileId={props.data.fileId ?? 0} />
+        return <DeleteFile fileId={props.data.fileId ?? 0} courseId={props.data.courseId ?? 0}/>
       case `deleteComment`:
-        return <DeleteComment commentId={props.data.commentId ?? 0} />
+        return <DeleteComment commentId={props.data.commentId ?? 0} fileId={props.data.fileId ?? 0} courseId={props.data.courseId ?? 0} />
       case `deleteNews`:
         return <DeleteNews newsId={props.data.newsId ?? 0} />
       case `addNews`:
