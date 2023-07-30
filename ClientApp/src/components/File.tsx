@@ -14,7 +14,7 @@ import leftIcon from "../assets/left.svg"
 import likeIcon from "../assets/like.svg"
 import dislikeIcon from "../assets/dislike.svg"
 import { toastNotificationAdd } from '../store/reducers/toastNotificationsSlice';
-import { fetchFile, fetchFileComments, file } from '../store/reducers/fileSlice';
+import { fetchFile, fetchFileComments } from '../store/reducers/fileSlice';
 
 export default function File() {
 
@@ -196,8 +196,6 @@ export default function File() {
           );
         }
     }
-
-    console.log(fileState)
 
     return (
         <>

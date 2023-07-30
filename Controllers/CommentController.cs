@@ -38,7 +38,7 @@ public static class CommentController
             comment.DateAdded = DateTime.Now;
             comment.FileID = courseFileID;
             comment.UserID = 0;
-            comment.CourseID = file.Result.CourseID;
+            comment.CourseID = 0;
             comment.CategoryName = file.Result.Name;
             comment.Likes = 0;
             comment.Dislikes = 0;
@@ -81,10 +81,10 @@ public static class CommentController
             var comments = db.Comments.Where(s => s.CourseID == courseID).OrderByDescending(s => s.DateAdded);
             if (comments is null) return Results.NotFound();
             foreach (var comment in comments) {
-                comment.Likes = db.Reactions.Where(s => s.CourseFileID == courseID && s.ReactionType == ReactionType.Like).Count();
-                comment.Dislikes = db.Reactions.Where(s => s.CourseFileID == courseID && s.ReactionType == ReactionType.Dislike).Count();
+                comment.Likes = db.Reactions.Where(s => s.CommentID == comment.CommentID && s.ReactionType == ReactionType.Like).Count();
+                comment.Dislikes = db.Reactions.Where(s => s.CommentID == comment.CommentID && s.ReactionType == ReactionType.Dislike).Count();
 
-                var reacted = db.Reactions.SingleOrDefault(s => s.UserID == 0 && s.CourseFileID == courseID);
+                var reacted = db.Reactions.SingleOrDefault(s => s.UserID == 0 && s.CommentID == comment.CommentID);
                 if (reacted != null) {
                     if (reacted.ReactionType == ReactionType.Like) {
                         comment.Reacted = ReactedType.Liked;
@@ -104,10 +104,10 @@ public static class CommentController
             var comments = db.Comments.Where(s => s.FileID == courseFileID).OrderByDescending(s => s.DateAdded);
             if (comments is null) return Results.NotFound();
             foreach (var comment in comments) {
-                comment.Likes = db.Reactions.Where(s => s.CourseFileID == courseFileID && s.ReactionType == ReactionType.Like).Count();
-                comment.Dislikes = db.Reactions.Where(s => s.CourseFileID == courseFileID && s.ReactionType == ReactionType.Dislike).Count();
+                comment.Likes = db.Reactions.Where(s => s.CommentID == comment.CommentID && s.ReactionType == ReactionType.Like).Count();
+                comment.Dislikes = db.Reactions.Where(s => s.CommentID == comment.CommentID && s.ReactionType == ReactionType.Dislike).Count();
 
-                var reacted = db.Reactions.SingleOrDefault(s => s.UserID == 0 && s.CourseFileID == courseFileID);
+                var reacted = db.Reactions.SingleOrDefault(s => s.UserID == 0 && s.CommentID == comment.CommentID);
                 if (reacted != null) {
                     if (reacted.ReactionType == ReactionType.Like) {
                         comment.Reacted = ReactedType.Liked;

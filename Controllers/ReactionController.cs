@@ -8,7 +8,7 @@ namespace BachelorThesis.Controllers;
 public static class ReactionController
 {
     public static void MapReactionControllerRoutes(this WebApplication app)
-    {
+    {        
         app.MapPost("api/like/add", async (StudyDb db, Reaction reaction) =>
         {
             if (reaction.CommentID > 0) {
@@ -21,7 +21,11 @@ public static class ReactionController
                     await db.SaveChangesAsync();
                     return Results.Created($"/", reaction);
                 } else {
-                    foundReaction.ReactionType = ReactionType.Like;
+                    if (foundReaction.ReactionType == ReactionType.Like) {
+                        db.Reactions.Remove(foundReaction);
+                    } else {
+                        foundReaction.ReactionType = ReactionType.Like;
+                    }
                     await db.SaveChangesAsync();
                     return Results.Ok();
                 }
@@ -60,7 +64,11 @@ public static class ReactionController
                     await db.SaveChangesAsync();
                     return Results.Created($"/", reaction);
                 } else {
-                    foundReaction.ReactionType = ReactionType.Dislike;
+                    if (foundReaction.ReactionType == ReactionType.Dislike) {
+                        db.Reactions.Remove(foundReaction);
+                    } else {
+                        foundReaction.ReactionType = ReactionType.Dislike;
+                    }
                     await db.SaveChangesAsync();
                     return Results.Ok();
                 }
