@@ -11,7 +11,7 @@ export default function DeleteFile(props: PropsWithChildren<ModalInterface>) {
 	const dispatch: AppDispatch = useDispatch()
 
 	async function deleteCourse() {
-		const response = await fetch(`/api/file/${props.fileID}/delete`, {
+		const response = await fetch(`/api/file/${props.courseFileID}/delete`, {
 			method: "DELETE",
 		});
 		if (response.status === 200) {

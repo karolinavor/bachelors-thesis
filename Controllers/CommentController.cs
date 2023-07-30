@@ -32,11 +32,11 @@ public static class CommentController
             return Results.Created($"/course/{courseID}", comment);
         });
 
-        app.MapPost("api/file/{fileID}/comments/add", async (StudyDb db, Comment comment, int fileID) =>
+        app.MapPost("api/file/{courseFileID}/comments/add", async (StudyDb db, Comment comment, int courseFileID) =>
         {
-            var file = db.CourseFiles.FindAsync(fileID);
+            var file = db.CourseFiles.FindAsync(courseFileID);
             comment.DateAdded = DateTime.Now;
-            comment.FileID = fileID;
+            comment.FileID = courseFileID;
             comment.UserID = 0;
             comment.CourseID = file.Result.CourseID;
             comment.CategoryName = file.Result.Name;
@@ -52,7 +52,7 @@ public static class CommentController
             await db.Logs.AddAsync(log);
 
             await db.SaveChangesAsync();
-            return Results.Created($"/course/{file.Result.CourseID}/file/{fileID}/", comment);
+            return Results.Created($"/course/{file.Result.CourseID}/file/{courseFileID}/", comment);
 
             // trigger, pri kterem zkontroluju, jestli je na soubor/kurz nastavena notifikace. N a FE zobrazuju log.
         });
@@ -80,15 +80,45 @@ public static class CommentController
         {
             var comments = db.Comments.Where(s => s.CourseID == courseID).OrderByDescending(s => s.DateAdded);
             if (comments is null) return Results.NotFound();
-            // TODO naplnit likes/dislikes
+            foreach (var comment in comments) {
+                comment.Likes = db.Reactions.Where(s => s.CourseFileID == courseID && s.ReactionType == ReactionType.Like).Count();
+                comment.Dislikes = db.Reactions.Where(s => s.CourseFileID == courseID && s.ReactionType == ReactionType.Dislike).Count();
+
+                var reacted = db.Reactions.SingleOrDefault(s => s.UserID == 0 && s.CourseFileID == courseID);
+                if (reacted != null) {
+                    if (reacted.ReactionType == ReactionType.Like) {
+                        comment.Reacted = ReactedType.Liked;
+                    } else {
+                        comment.Reacted = ReactedType.Disliked;
+                    }
+                } else {
+                    comment.Reacted = ReactedType.None;
+                }
+            }
+            await db.SaveChangesAsync();
             return Results.Ok(comments);
         });
 
-        app.MapGet("api/file/{fileID}/comments", async (StudyDb db, int fileID) =>
+        app.MapGet("api/file/{courseFileID}/comments", async (StudyDb db, int courseFileID) =>
         {
-            var comments = db.Comments.Where(s => s.FileID == fileID).OrderByDescending(s => s.DateAdded);
+            var comments = db.Comments.Where(s => s.FileID == courseFileID).OrderByDescending(s => s.DateAdded);
             if (comments is null) return Results.NotFound();
-            // TODO naplnit likes/dislikes
+            foreach (var comment in comments) {
+                comment.Likes = db.Reactions.Where(s => s.CourseFileID == courseFileID && s.ReactionType == ReactionType.Like).Count();
+                comment.Dislikes = db.Reactions.Where(s => s.CourseFileID == courseFileID && s.ReactionType == ReactionType.Dislike).Count();
+
+                var reacted = db.Reactions.SingleOrDefault(s => s.UserID == 0 && s.CourseFileID == courseFileID);
+                if (reacted != null) {
+                    if (reacted.ReactionType == ReactionType.Like) {
+                        comment.Reacted = ReactedType.Liked;
+                    } else {
+                        comment.Reacted = ReactedType.Disliked;
+                    }
+                } else {
+                    comment.Reacted = ReactedType.None;
+                }
+            }
+            await db.SaveChangesAsync();
             return Results.Ok(comments);
         });
 

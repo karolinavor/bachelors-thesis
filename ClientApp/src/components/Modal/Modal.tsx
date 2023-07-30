@@ -30,7 +30,7 @@ const customStyles = {
 
 export interface ModalInterface {
   courseID?: number,
-  fileID?: number,
+  courseFileID?: number,
   newsID?: number,
   commentID?: number
 }
@@ -75,9 +75,9 @@ export default function ModalContainer(props: PropsWithChildren<ModalSliceState>
       case `deleteCourse`:
         return <DeleteCourse courseID={props.data.courseID ?? 0} />
       case `deleteFile`:
-        return <DeleteFile fileID={props.data.fileID ?? 0} courseID={props.data.courseID ?? 0}/>
+        return <DeleteFile courseFileID={props.data.courseFileID ?? 0} courseID={props.data.courseID ?? 0}/>
       case `deleteComment`:
-        return <DeleteComment commentID={props.data.commentID ?? 0} fileID={props.data.fileID ?? 0} courseID={props.data.courseID ?? 0} />
+        return <DeleteComment commentID={props.data.commentID ?? 0} courseFileID={props.data.courseFileID ?? 0} courseID={props.data.courseID ?? 0} />
       case `deleteNews`:
         return <DeleteNews newsID={props.data.newsID ?? 0} />
       case `addNews`:

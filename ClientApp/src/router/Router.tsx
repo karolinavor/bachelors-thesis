@@ -37,7 +37,7 @@ export const RoutesList = {
     name: `Course`
   },
   file: {
-    url: `file/:fileID/`,
+    url: `file/:courseFileID/`,
     name: `File`
   },
   error: {

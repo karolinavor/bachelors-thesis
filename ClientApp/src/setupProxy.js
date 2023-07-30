@@ -21,7 +21,7 @@ const context = [
   "/api/log",
   "/api/comment",
   "/api/like",
-  "/api/dislike",
+  "/api/dislike"
 ];
 
 const onError = (err, req, resp, target) => {

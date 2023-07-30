@@ -9,24 +9,29 @@ public static class CourseFileController
 {
     public static void MapCourseFileControllerRoutes(this WebApplication app)
     {    
-        app.MapGet("api/file/{fileID}/get", async (StudyDb db, int fileID) =>
+        app.MapGet("api/file/{courseFileID}/get", async (StudyDb db, int courseFileID) =>
         {
-            var courseFile = await db.CourseFiles.FindAsync(fileID);
+            var courseFile = await db.CourseFiles.FindAsync(courseFileID);
             if (courseFile is null) return Results.NotFound();
-            var notificationSet = db.Notifications.SingleOrDefault(s => s.CourseFileID == fileID);
+            var notificationSet = db.Notifications.SingleOrDefault(s => s.CourseFileID == courseFileID);
             if (notificationSet != null) {
                 courseFile.NotificationSet = true;
             } else {
                 courseFile.NotificationSet = false;
             }
 
-            courseFile.Likes = db.Reactions.Where(s => s.CourseFileID == fileID && s.ReactionType == ReactionType.Like).Count();
-            courseFile.Dislikes = db.Reactions.Where(s => s.CourseFileID == fileID && s.ReactionType == ReactionType.Dislike).Count();
-            var reacted = db.Reactions.SingleOrDefault(s => s.UserID == 0 && s.CourseFileID == fileID);
+            courseFile.Likes = db.Reactions.Where(s => s.CourseFileID == courseFileID && s.ReactionType == ReactionType.Like).Count();
+            courseFile.Dislikes = db.Reactions.Where(s => s.CourseFileID == courseFileID && s.ReactionType == ReactionType.Dislike).Count();
+
+            var reacted = db.Reactions.SingleOrDefault(s => s.UserID == 0 && s.CourseFileID == courseFileID);
             if (reacted != null) {
-                courseFile.Reacted = true;
+                if (reacted.ReactionType == ReactionType.Like) {
+                    courseFile.Reacted = ReactedType.Liked;
+                } else {
+                    courseFile.Reacted = ReactedType.Disliked;
+                }
             } else {
-                courseFile.Reacted = false;
+                courseFile.Reacted = ReactedType.None;
             }
 
             return Results.Ok(courseFile);
@@ -70,9 +75,9 @@ public static class CourseFileController
             return Results.Created($"/course/{courseID}/file/{courseFile.CourseID}", courseFile);
         });
 
-        app.MapGet("api/file/{fileID}/download", async (StudyDb db, int fileID) =>
+        app.MapGet("api/file/{courseFileID}/download", async (StudyDb db, int courseFileID) =>
         {
-            var courseFile = await db.CourseFiles.FindAsync(fileID);
+            var courseFile = await db.CourseFiles.FindAsync(courseFileID);
             if (courseFile is null) return Results.NotFound();
             if (File.Exists(Path.Combine(Directory.GetCurrentDirectory(),courseFile.Url)))
             {
@@ -86,9 +91,9 @@ public static class CourseFileController
             }
         });
 
-        app.MapDelete("api/file/{fileID}/delete", async (StudyDb db, int fileID) =>
+        app.MapDelete("api/file/{courseFileID}/delete", async (StudyDb db, int courseFileID) =>
         {
-            var courseFile = await db.CourseFiles.FindAsync(fileID);
+            var courseFile = await db.CourseFiles.FindAsync(courseFileID);
             if (courseFile is null) return Results.NotFound();
             db.CourseFiles.Remove(courseFile);
             if (File.Exists(Path.Combine(Directory.GetCurrentDirectory(),courseFile.Url))) {

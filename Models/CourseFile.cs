@@ -1,7 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 
 namespace BachelorThesis.Models 
-{
+{ 
     public class CourseFile
     {
         public int CourseFileID { get; set; }
@@ -16,6 +16,6 @@ namespace BachelorThesis.Models
         public bool NotificationSet { get; set; }
         public int Likes { get; set; }
         public int Dislikes { get; set; }
-        public bool Reacted { get; set; }
+        public ReactedType Reacted { get; set; }
     }
 }

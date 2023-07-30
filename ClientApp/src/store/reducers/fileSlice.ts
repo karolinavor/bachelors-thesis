@@ -22,20 +22,20 @@ export const initialFileState: FileSliceState = {
   url: "",
   likes: 0,
   dislikes: 0,
-  reacted: false,
+  reacted: 0,
   comments: []
 }
 
 export const fetchFile = createAsyncThunk(
   `file/fetch`,
-  async (fileID: number, thunkAPI) => {
-    const response = await fetchFileFromAPI(fileID)
+  async (courseFileID: number, thunkAPI) => {
+    const response = await fetchFileFromAPI(courseFileID)
     return response
   }
 )
 
-export const fetchFileFromAPI = async (fileID) => {
-  return await fetch(`/api/file/${fileID}/get`, {
+export const fetchFileFromAPI = async (courseFileID) => {
+  return await fetch(`/api/file/${courseFileID}/get`, {
     method: `GET`,
   })
   .then(
@@ -48,14 +48,14 @@ export const fetchFileFromAPI = async (fileID) => {
 
 export const fetchFileComments = createAsyncThunk(
   `fileComments/fetch`,
-  async (fileID: number, thunkAPI) => {
-    const response = await fetchFileCommentsFromAPI(fileID)
+  async (courseFileID: number, thunkAPI) => {
+    const response = await fetchFileCommentsFromAPI(courseFileID)
     return response
   }
 )
 
-export const fetchFileCommentsFromAPI = async (fileID) => {
-  return await fetch(`/api/file/${fileID}/comments`, {
+export const fetchFileCommentsFromAPI = async (courseFileID) => {
+  return await fetch(`/api/file/${courseFileID}/comments`, {
     method: `GET`,
   })
   .then(
@@ -84,6 +84,9 @@ export const fileSlice = createSlice({
         name: action.payload.name,
         userID: action.payload.userID,
         url: action.payload.url,
+        likes: action.payload.likes,
+        dislikes: action.payload.dislikes,
+        reacted: action.payload.reacted,
       }
     })
     builder.addCase(fetchFile.pending, (state) => {

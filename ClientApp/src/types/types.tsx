@@ -16,7 +16,7 @@ export type FileType = {
   size: number,
   likes: number,
   dislikes: number,
-  reacted: boolean,
+  reacted: number,
   numberOfDownloads: number,
   courseID: number,
   notificationSet: boolean
@@ -33,12 +33,12 @@ export type CommentType = {
   commentText: string,
   dateAdded: Date,
   userID: number,
-  fileID: number,
+  courseFileID: number,
   courseID: number,
   categoryName: string,
   likes: number,
   dislikes: number,
-  reacted: boolean
+  reacted: number
 }
 
 export type UserType = {

@@ -1,5 +1,5 @@
 import React from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 import { CommentType } from "../types/types";
 import { getLocalDate, getLocalTime } from "../utils/getTime";
 import userIcon from "../assets/user.svg"
@@ -26,7 +26,7 @@ export default function Comment({ comment, showCommentCategory, limitLines }: Co
         type: `deleteComment`,
         data: {
           commentID: comment.commentID,
-          fileID: comment.fileID,
+          courseFileID: comment.courseFileID,
           courseID: comment.courseID
         }
     }))
@@ -47,11 +47,11 @@ export default function Comment({ comment, showCommentCategory, limitLines }: Co
       body: JSON.stringify(formData)
     });
 
-    if (response.status === 201) {
+    if (response.status === 201 || response.status === 200) {
       dispatch(
         toastNotificationAdd({
           notificationID: Date.now(),
-          title: reaction === "Like" ? "Like added." : "Dislike added.",
+          title: "Reaction added.",
           customDuration: 5000,
         })
       );
@@ -75,8 +75,8 @@ export default function Comment({ comment, showCommentCategory, limitLines }: Co
         <Link className="Link Comment-heading" to={"/user/" + comment.userID}>{comment.userID}</Link>
         {showCommentCategory &&
           <>
-          <span> in {comment.fileID > 0 ? "file " : "course "}</span>
-            <Link className="Link" to={"/" + (comment.fileID > 0 ? `course/${comment.courseID}/file/${comment.fileID}` : `course/${comment.courseID}`)}>{comment.categoryName}</Link>
+          <span> in {comment.courseFileID > 0 ? "file " : "course "}</span>
+            <Link className="Link" to={"/" + (comment.courseFileID > 0 ? `course/${comment.courseID}/file/${comment.courseFileID}` : `course/${comment.courseID}`)}>{comment.categoryName}</Link>
           </>
         }
         <div>{getLocalTime(comment.dateAdded)} {getLocalDate(comment.dateAdded)}</div>
@@ -88,10 +88,10 @@ export default function Comment({ comment, showCommentCategory, limitLines }: Co
         <button className="Button" onClick={() => openDeleteCommentModal()}>
           <img src={deleteIcon} alt="Delete icon" width="16" height="16" />
         </button>
-        <button className="Button" onClick={() => addReaction("Like")}>
+        <button className={"Button" + (comment.reacted === 1 ? " active" : "")} onClick={() => addReaction("Like")}>
           <img src={likeIcon} alt="Like icon" /> {comment.likes}
         </button>
-        <button className="Button" onClick={() => addReaction("Dislike")}>
+        <button className={"Button" + (comment.reacted === 2 ? " active" : "")} onClick={() => addReaction("Dislike")}>
           <img src={dislikeIcon} alt="Dislike icon" /> {comment.dislikes}
         </button>
       </div>

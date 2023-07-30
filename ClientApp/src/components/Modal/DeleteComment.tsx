@@ -24,7 +24,7 @@ export default function DeleteComment(props: PropsWithChildren<ModalInterface>) 
           customDuration: 5000,
         })
 			);
-			props.fileID > 0 ?  dispatch(fetchFileComments(props.fileID)) : dispatch(fetchCourseComments(props.courseID))
+			props.courseFileID > 0 ?  dispatch(fetchFileComments(props.courseFileID)) : dispatch(fetchCourseComments(props.courseID))
 		} else {
 			dispatch(
         toastNotificationAdd({
