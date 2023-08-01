@@ -73,7 +73,7 @@
     .Header-notifications-wrapper {
       display: none;
       position: absolute;
-      top: 0;
+      top: 55px;
       left: 0;
       width: 100%;
       height: 100%;
@@ -83,7 +83,7 @@
 
     .Header-notifications-list {
       position: relative;
-      top: calc(1rem + 55px);
+      top: 1rem;
       max-width: 300px;
       width: -webkit-fill-available;
       margin-left: auto;

@@ -34,8 +34,8 @@ export default function HeaderNotifications() {
     return (
         <div className="Header-notifications-wrapper">
             <div className="Header-notifications-list">
-                {notificationsState?.notifications?.map((notif, index) => getNotification(notif, index)
-                )}
+                {notificationsState?.notifications.length > 0 ? notificationsState?.notifications?.map((notif, index) => getNotification(notif, index)
+                ) : <div>No notifications</div>}
             </div>
         </div>
     )

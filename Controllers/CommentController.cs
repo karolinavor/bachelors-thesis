@@ -16,7 +16,7 @@ public static class CommentController
             comment.CourseID = courseID;
             comment.UserID = 0;
             comment.CategoryName = course.Result.Short + " - " + course.Result.Title;
-            comment.FileID = 0;
+            comment.CourseFileID = 0;
             comment.Likes = 0;
             comment.Dislikes = 0;
             db.Comments.Add(comment);
@@ -39,7 +39,7 @@ public static class CommentController
         {
             var file = db.CourseFiles.FindAsync(courseFileID);
             comment.DateAdded = DateTime.Now;
-            comment.FileID = courseFileID;
+            comment.CourseFileID = courseFileID;
             comment.UserID = 0;
             comment.CourseID = 0;
             comment.CategoryName = file.Result.Name;
@@ -60,8 +60,6 @@ public static class CommentController
 
             await db.SaveChangesAsync();
             return Results.Created($"/course/{file.Result.CourseID}/file/{courseFileID}/", comment);
-
-            // trigger, pri kterem zkontroluju, jestli je na soubor/kurz nastavena notifikace. N a FE zobrazuju log.
         });
 
         app.MapDelete("api/comment/{commentID}/delete", async (StudyDb db, int commentID) =>
@@ -86,7 +84,7 @@ public static class CommentController
 
         app.MapGet("api/course/{courseID}/comments", async (StudyDb db, int courseID) =>
         {
-            var comments = db.Comments.Where(s => s.CourseID == courseID).OrderByDescending(s => s.DateAdded);
+            var comments = db.Comments.Where(s => s.CourseID == courseID && s.CourseFileID == 0).OrderByDescending(s => s.DateAdded);
             if (comments is null) return Results.NotFound();
             foreach (var comment in comments) {
                 comment.Likes = db.Reactions.Where(s => s.CommentID == comment.CommentID && s.ReactionType == ReactionType.Like).Count();
@@ -109,9 +107,12 @@ public static class CommentController
 
         app.MapGet("api/file/{courseFileID}/comments", async (StudyDb db, int courseFileID) =>
         {
-            var comments = db.Comments.Where(s => s.FileID == courseFileID).OrderByDescending(s => s.DateAdded);
+            var comments = db.Comments.Where(s => s.CourseFileID == courseFileID).OrderByDescending(s => s.DateAdded);
+            var file = db.CourseFiles.SingleOrDefault(s => s.CourseFileID == courseFileID);
             if (comments is null) return Results.NotFound();
-            foreach (var comment in comments) {
+            foreach (var comment in comments)
+            {
+                comment.CourseID = file.CourseID;
                 comment.Likes = db.Reactions.Where(s => s.CommentID == comment.CommentID && s.ReactionType == ReactionType.Like).Count();
                 comment.Dislikes = db.Reactions.Where(s => s.CommentID == comment.CommentID && s.ReactionType == ReactionType.Dislike).Count();
 
