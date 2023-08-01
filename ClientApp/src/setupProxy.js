@@ -21,7 +21,8 @@ const context = [
   "/api/log",
   "/api/comment",
   "/api/like",
-  "/api/dislike"
+  "/api/dislike",
+  "/api/notifications/set/read"
 ];
 
 const onError = (err, req, resp, target) => {

@@ -4,6 +4,7 @@ import coursesReducer from './reducers/coursesSlice'
 import courseReducer from './reducers/courseSlice'
 import fileReducer from './reducers/fileSlice'
 import newsReducer from './reducers/newsSlice'
+import notificationsReducer from './reducers/notificationsSlice'
 import toastNotificationsReducer from './reducers/toastNotificationsSlice'
 import { useDispatch, TypedUseSelectorHook, useSelector } from 'react-redux'
 
@@ -14,7 +15,8 @@ export const store = configureStore({
     course: courseReducer,
     file: fileReducer,
     news: newsReducer,
-    notifications: toastNotificationsReducer,
+    notifications: notificationsReducer,
+    toastNotifications: toastNotificationsReducer,
   },
 })
 

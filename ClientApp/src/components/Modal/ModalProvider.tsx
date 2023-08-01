@@ -4,7 +4,7 @@ import { useSelector } from 'react-redux'
 import { RootState } from '../../store/store'
 import ModalContainer from './Modal'
 
-function ModalProvIDer(props) {
+function ModalProvider(props) {
 
   const modalState = useSelector((state: RootState) => state.modal)
   const [isOpen, setIsOpen] = useState<boolean>(modalState.isOpen)
@@ -18,11 +18,11 @@ function ModalProvIDer(props) {
   })
 
   return (
-    <div className='ModalProvIDer'>
+    <div className='ModalProvider'>
       <ModalContainer isOpen={isOpen} type={type} data={data}></ModalContainer>
       {props.children}
     </div>
   )
 }
 
-export default ModalProvIDer
+export default ModalProvider

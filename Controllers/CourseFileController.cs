@@ -50,12 +50,11 @@ public static class CourseFileController
             courseFile.Url = $"FileSystem/course_{courseID}/file_{courseFile.CourseID}.{courseFile.Filetype}";
             courseFile.NumberOfDownloads = 0;
             db.CourseFiles.Add(courseFile);
+            await db.SaveChangesAsync();
 
             if (!Directory.Exists("FileSystem/course_{courseID}/")) {
                 Directory.CreateDirectory(Path.Combine(Directory.GetCurrentDirectory(), "FileSystem",$"course_{courseID}"));
             }
-
-            // TODO validovat soubory
 
             var courseFolder = $"FileSystem/course_{courseID}/";
             var folder = Path.Combine(Directory.GetCurrentDirectory(), courseFolder);
@@ -69,6 +68,8 @@ public static class CourseFileController
             log.Event = LogEvent.CourseFileAdded;
             log.DateAdded = DateTime.Now;
             log.CourseFileID = courseFile.CourseFileID;
+            log.CourseID = courseID;
+            log.Read = false;
             await db.Logs.AddAsync(log);
             
             await db.SaveChangesAsync();
@@ -105,6 +106,7 @@ public static class CourseFileController
             log.Event = LogEvent.CourseFileDeleted;
             log.DateAdded = DateTime.Now;
             log.CourseFileID = courseFile.CourseFileID;
+            log.Read = false;
             await db.Logs.AddAsync(log);
 
             await db.SaveChangesAsync();

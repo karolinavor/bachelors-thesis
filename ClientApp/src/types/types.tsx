@@ -53,7 +53,9 @@ export type NotificationType = {
   notificationID: number,
   userID: number,
   courseID: number,
-  courseFileID: number
+  courseFileID: number,
+  dateAdded: Date,
+  read: boolean
 }
 
 export type LogType = {

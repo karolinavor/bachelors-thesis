@@ -28,12 +28,14 @@ public static class CourseController
             course.UserID = 0;
             course.NotificationSet = false;
             await db.Courses.AddAsync(course);
+            await db.SaveChangesAsync();
 
             var log = new Log();
             log.UserID = 0;
             log.Event = LogEvent.CourseAdded;
             log.DateAdded = DateTime.Now;
             log.CourseID = course.CourseID;
+            log.Read = false;
             await db.Logs.AddAsync(log);
 
             await db.SaveChangesAsync();
@@ -52,6 +54,7 @@ public static class CourseController
             log.Event = LogEvent.CourseEdited;
             log.DateAdded = DateTime.Now;
             log.CourseID = course.CourseID;
+            log.Read = false;
             await db.Logs.AddAsync(log);
 
             await db.SaveChangesAsync();
@@ -65,15 +68,16 @@ public static class CourseController
             {
                 return Results.NotFound();
             }
-            db.Courses.Remove(course);
 
             var log = new Log();
             log.UserID = 0;
             log.Event = LogEvent.CourseDeleted;
             log.DateAdded = DateTime.Now;
             log.CourseID = course.CourseID;
+            log.Read = false;
             await db.Logs.AddAsync(log);
 
+            db.Courses.Remove(course);
             await db.SaveChangesAsync();
             return Results.Ok();
         });

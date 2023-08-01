@@ -1,34 +1,41 @@
-import React, { useEffect, useState } from "react";
-import { NotificationType } from "../../types/types";
+import React, { useEffect } from "react";
+import { RootState } from "../../store/store";
+import { useSelector } from "react-redux";
 
 export default function HeaderNotifications() {
-
-    const [notifications, setNotifications] = useState<NotificationType[]>();
-
-    async function getNotifications() {
-        const response = await fetch('/api/notifications/get');
-        const data = await response.json();
-        setNotifications(data)
-    }
+    const notificationsState = useSelector((state: RootState) => state.notifications)
+    const courseState = useSelector((state: RootState) => state.courses)
 
     useEffect(() => {
-        getNotifications()
+        sendReadNotifications()
     }, [])
 
-    // TODO
+    async function sendReadNotifications() {
+        await fetch('/api/notifications/set/read');
+    }
+
+    function getNotification(notif, index) {
+        switch (notif.event) {
+            case 3: 
+                return <div className={!notif.read ? "unread" : "read"} key={index}>
+                    <span>New file in <a className="Link" href={`/course/${notif.courseID}`}>{courseState.courses.find((c) => c.courseID === notif.courseID).title}</a> course.</span>
+                </div>
+            case 8: 
+                return (notif.courseFileID > 0 ?
+                <div className={!notif.read ? "unread" : "read"} key={index}>
+                        <span>New file comment in <a className="Link" href={`/course/${notif.courseID}/file/${notif.courseFileID}`}>{courseState.courses.find((c) => c.courseID === notif.courseID)?.title}</a>.</span>
+                </div> :
+                <div className={!notif.read ? "unread" : "read"} key={index}>
+                    <span>New comment in course <a className="Link" href={`/course/${notif.courseID}`}>{courseState.courses.find((c) => c.courseID === notif.courseID).title}</a>.</span>
+                </div>)
+        }
+    }
 
     return (
         <div className="Header-notifications-wrapper">
             <div className="Header-notifications-list">
-                TODO
-                {notifications?.map((notif, index) => {
-                    return <div key={index}>{notif.notificationID}</div>
-                })}
-                {/*
-                <div>New file in <a className="Link" href="/">KMI - Informatika</a> course.</div>
-                <div>New file in <a className="Link" href="/">KMI - Informatika</a> course.</div>
-                <div>New comment in <a className="Link" href="/">Test soubor</a> file.</div>
-                */}
+                {notificationsState?.notifications?.map((notif, index) => getNotification(notif, index)
+                )}
             </div>
         </div>
     )

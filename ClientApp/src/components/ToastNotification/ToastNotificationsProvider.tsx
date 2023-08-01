@@ -1,4 +1,4 @@
-import React, { PropsWithChildren, useEffect, useState } from 'react'
+import React, { PropsWithChildren } from 'react'
 import { useSelector } from 'react-redux'
 
 import { RootState } from '../../store/store'
@@ -9,18 +9,13 @@ interface ToastNotificationsProvIDerSettings {
 }
 
 export default function ToastNotificationsProvIDer(props: PropsWithChildren<ToastNotificationsProvIDerSettings>) {
-  const notificationsState = useSelector((state: RootState) => state.notifications)
-  const [state, setState] = useState(notificationsState)
-
-  useEffect(() => {
-    setState(notificationsState)
-  })
+  const toastNotificationsState = useSelector((state: RootState) => state.toastNotifications)
 
   return (
     <div className='ToastNotificationProvIDer'>
       <div className='ToastNotificationsWrapper'>
         <div className='ToastNotifications'>
-          {state.toastNotifications.map((notification, index) => <ToastNotificationCard key={index} {...notification} />)}
+          {toastNotificationsState?.toastNotifications.map((notification, index) => <ToastNotificationCard key={index} {...notification} />)}
         </div>
       </div>
       {props.children}

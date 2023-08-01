@@ -16,18 +16,18 @@ export default function Log() {
         getlog()
     }, [])
 
-    function getEventType(event) {
-        switch (event) {
-            case 0: return "New course was added";
-            case 1: return "Course was edited";
-            case 2: return "Course was deleted";
-            case 3: return "New file was added";
-            case 4: return "File was deleted";
+    function getEventType(log) {
+        switch (log.event) {
+            case 0: return `New course ${log.courseID} was added`;
+            case 1: return `Course ${log.courseID} was edited`;
+            case 2: return `Course ${log.courseID} was deleted`;
+            case 3: return `New file ${log.courseFileID} was added`;
+            case 4: return `File ${log.courseFileID} was deleted`;
             case 5: return "News was added";
             case 6: return "News was edited";
             case 7: return "News was deleted";
-            case 8: return "New comment was added";
-            case 9: return "Comment was deleted";
+            case 8: return `New comment ${log.commentID} was added`;
+            case 9: return `Comment ${log.commentID} was deleted`;
         }
     }
 
@@ -40,7 +40,7 @@ export default function Log() {
                         return (
                             <div className="Table-row" key={index}>
                                 <div>{getLocalTimeWithSeconds(log.dateAdded)} {getLocalDate(log.dateAdded)}</div>
-                                <div>{getEventType(log.event)} by user {log.userID}</div>
+                                <div>{getEventType(log)} by user {log.userID}</div>
                             </div>
                         )
                     })}

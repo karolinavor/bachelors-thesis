@@ -7,7 +7,7 @@ export interface ToastNotificationSliceState {
 }
 
 export const toastNotificationSlice = createSlice({
-  name: `data`,
+  name: `toastNotifications`,
   initialState: {
     toastNotifications: []
   } as ToastNotificationSliceState,

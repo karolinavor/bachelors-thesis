@@ -26,6 +26,7 @@ namespace BachelorThesis.Models
         public int CourseFileID { get; set; }
         public int CommentID { get; set; }
         public int NewsID { get; set; }
+        public bool Read { get; set; }
     }
 }
 

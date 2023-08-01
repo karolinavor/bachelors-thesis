@@ -54,17 +54,19 @@
 
     .Header-bell {
       position: relative;
-  
-      &::before {
-        content: "";
-        position: absolute;
-        top: 1px;
-        right: -1px;
-        display: block;
-        width: 10px;
-        height: 10px;
-        border-radius: 50%;
-        background-color: rgb(214, 21, 21);
+
+      &--unread {
+        &::before {
+          content: "";
+          position: absolute;
+          top: 1px;
+          right: -1px;
+          display: block;
+          width: 10px;
+          height: 10px;
+          border-radius: 50%;
+          background-color: rgb(214, 21, 21);
+        }
       }
     }
 
@@ -90,6 +92,32 @@
       background: whitesmoke;
       border-radius: 7px;
       color: $black;
+      box-shadow: 0 3px 10px rgb(0 0 0 / 15%);
+      text-align: start;
+
+      a {
+        color: $dark_blue;
+      }
+
+      .unread {
+        position: relative;
+        display: flex;
+        align-items: center;
+
+        span {
+          display: inline;
+        }
+
+        &::before {
+          content: "";
+          display: block;
+          width: 5px;
+          height: 5px;
+          margin-right: 0.5rem;
+          background-color: $dark_blue;
+          border-radius: 50%;
+        }
+      }
     }
   }
 }

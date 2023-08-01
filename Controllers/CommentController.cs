@@ -20,12 +20,15 @@ public static class CommentController
             comment.Likes = 0;
             comment.Dislikes = 0;
             db.Comments.Add(comment);
+            await db.SaveChangesAsync();
 
             var log = new Log();
             log.UserID = 0;
             log.Event = LogEvent.CommentAdded;
             log.DateAdded = DateTime.Now;
             log.CommentID = comment.CommentID;
+            log.CourseID = comment.CourseID;
+            log.Read = false;
             await db.Logs.AddAsync(log);
 
             await db.SaveChangesAsync();
@@ -43,12 +46,16 @@ public static class CommentController
             comment.Likes = 0;
             comment.Dislikes = 0;
             db.Comments.Add(comment);
+            await db.SaveChangesAsync();
 
             var log = new Log();
             log.UserID = 0;
             log.Event = LogEvent.CommentAdded;
             log.DateAdded = DateTime.Now;
             log.CommentID = comment.CommentID;
+            log.CourseFileID = courseFileID;
+            log.CourseID = file.Result.CourseID;
+            log.Read = false;
             await db.Logs.AddAsync(log);
 
             await db.SaveChangesAsync();
@@ -68,6 +75,7 @@ public static class CommentController
             log.Event = LogEvent.CommentDeleted;
             log.DateAdded = DateTime.Now;
             log.CommentID = comment.CommentID;
+            log.Read = false;
             await db.Logs.AddAsync(log);
 
             await db.SaveChangesAsync();

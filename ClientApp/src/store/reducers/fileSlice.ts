@@ -73,20 +73,7 @@ export const fileSlice = createSlice({
   extraReducers: (builder) => {
     builder.addCase(fetchFile.fulfilled, (state, action) => {
       return {
-        ...state, loading: `idle`,
-        courseFileID: action.payload.courseFileID,
-        dateAdded: action.payload.dateAdded,
-        filetype: action.payload.filetype,
-        size: action.payload.size,
-        numberOfDownloads: action.payload.numberOfDownloads,
-        notificationSet: action.payload.notificationSet,
-        courseID: action.payload.courseID,
-        name: action.payload.name,
-        userID: action.payload.userID,
-        url: action.payload.url,
-        likes: action.payload.likes,
-        dislikes: action.payload.dislikes,
-        reacted: action.payload.reacted,
+        ...state, loading: `idle`, ...action.payload
       }
     })
     builder.addCase(fetchFile.pending, (state) => {

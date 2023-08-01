@@ -8,23 +8,52 @@ import logoIcon from "../../assets/logo.svg"
 import { RoutesList } from "../../router/Router";
 import { UserType } from "../../types/types";
 import HeaderNotifications from "./HeaderNotifications";
+import { useDispatch, useSelector } from "react-redux";
+import { fetchNotifications } from "../../store/reducers/notificationsSlice";
+import { AppDispatch, RootState } from "../../store/store";
 
 export default function Header() {
 
+    let dispatch: AppDispatch = useDispatch();
     const navigate = useNavigate();
     const [user, setUser] = useState<UserType>();
     const [hamburgerOpen, setHamburgerOpen] = useState(false);
     const [notificationsOpen, setNotificationsOpen] = useState(false);
+    const [unreadNotifications, setUnreadNotifications] = useState(false);
+
+    const notificationsState = useSelector((state: RootState) => state.notifications)
+
+    const [error, setError] = useState(null);
+    
+    useEffect(() => {
+        getNotificationsData()
+        getUser()
+    }, [])
+
+    useEffect(() => {
+        notificationsState?.notifications?.map((notif, index) => {
+            if (!notif.read) {
+                setUnreadNotifications(true)
+            }
+        })
+    }, [notificationsState])
+
+    useEffect(() => {
+        if (error) throw new Error();
+    }, [error])
+
+    async function getNotificationsData() {
+        let responseCourse = await dispatch(fetchNotifications())
+        if (responseCourse.meta.requestStatus === "rejected") {
+            setError(true)
+        }
+    }
 
     async function getUser() {
         const response = await fetch('/api/user');
         const data = await response.json();
         setUser(data)
     }
-
-    useEffect(() => {
-        getUser()
-    }, [])
 
     function logOutUser() {
         navigate("/login");
@@ -43,11 +72,11 @@ export default function Header() {
                     <span className="Button-text">{user?.name}</span>
                 </NavLink>
                 <button className="Header-notifications Link" onClick={() => setNotificationsOpen(!notificationsOpen)}>
-                    <div className="Header-bell flex">
+                    <div className={`Header-bell flex ${unreadNotifications ? 'Header-bell--unread' : 'Header-bell'}`}>
                         <img src={bellIcon} alt="bell icon" width="21" height="21" />
                     </div>
                     <span className="Button-text">Notifications</span>
-                    <HeaderNotifications />
+                    {notificationsOpen && <HeaderNotifications />}
                 </button>
                 <button className="Link" onClick={() => logOutUser()} >
                     <img src={logoutIcon} alt="logout" width="21" height="21" />
