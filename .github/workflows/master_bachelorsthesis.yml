@@ -55,8 +55,3 @@ jobs:
           slot-name: 'Production'
           publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE_9ED03D9A694646528768FBC984651CD1 }}
           package: .
-          
-      - name: Create database
-        run: |
-          dotnet ef migrations add InitialCreate 
-          dotnet ef database update
