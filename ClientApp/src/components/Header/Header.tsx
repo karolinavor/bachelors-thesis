@@ -22,8 +22,6 @@ export default function Header() {
     const [unreadNotifications, setUnreadNotifications] = useState(false);
 
     const notificationsState = useSelector((state: RootState) => state.notifications)
-
-    const [error, setError] = useState(null);
     
     useEffect(() => {
         getNotificationsData()
@@ -38,16 +36,8 @@ export default function Header() {
         })
     }, [notificationsState])
 
-    useEffect(() => {
-        if (error) throw new Error();
-        setError(false);
-    }, [error])
-
     async function getNotificationsData() {
-        let responseCourse = await dispatch(fetchNotifications())
-        if (responseCourse.meta.requestStatus === "rejected") {
-            setError(true)
-        }
+        await dispatch(fetchNotifications())
     }
 
     async function getUser() {
