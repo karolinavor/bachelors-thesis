@@ -22,7 +22,6 @@ export default function Dashboard() {
 
     useEffect(() => {
         getNewsData()
-
         getLatestComments()
         getLatestCourses()
         getLatestFiles()
