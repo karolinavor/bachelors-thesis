@@ -40,6 +40,7 @@ export default function Header() {
 
     useEffect(() => {
         if (error) throw new Error();
+        setError(false);
     }, [error])
 
     async function getNotificationsData() {

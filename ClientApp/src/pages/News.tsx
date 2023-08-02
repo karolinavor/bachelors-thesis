@@ -21,6 +21,7 @@ export default function NewsPage() {
 
     useEffect(() => {
         if (error) throw new Error();
+        setError(false);
     }, [error])
 
     async function getAllNewsData() {

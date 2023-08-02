@@ -30,6 +30,7 @@ export default function Dashboard() {
 
     useEffect(() => {
         if (error) throw new Error();
+        setError(false);
     }, [error])
 
     async function getNewsData() {

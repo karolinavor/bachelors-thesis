@@ -35,6 +35,7 @@ export default function Course() {
 
     useEffect(() => {
         if (error) throw new Error();
+        setError(false);
     }, [error])
 
     async function getCourseData() {
