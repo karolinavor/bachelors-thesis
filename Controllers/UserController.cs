@@ -9,7 +9,6 @@ using System.Text.Json;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.OpenIdConnect;
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.Graph;
 using Microsoft.Identity.Client;
 using Microsoft.Identity.Web;
 
@@ -30,12 +29,17 @@ public static class UserController
             };
         }).RequireAuthorization();
 
-        app.MapGet("api/login",  () =>
-        {}).RequireAuthorization();
-        
-        app.MapGet("api/signin-oidc", async (HttpRequest request) =>
+        app.MapGet("api/login", (HttpContext context) =>
         {
-            Results.Ok(request);
+            var usr = context.User;
+            //return Results.Json(usr.Claims.Select(p => p.Value));
+            return Results.Redirect("/dashboard");
+        }).RequireAuthorization();
+
+        app.MapPost("api/logout", async (HttpContext context) =>
+        {
+            await context.SignOutAsync("Cookies");
+            await context.SignOutAsync("OpenIdConnect");
         }).RequireAuthorization();
     }
 }

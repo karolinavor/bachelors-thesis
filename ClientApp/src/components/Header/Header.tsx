@@ -64,10 +64,12 @@ export default function Header() {
                     <span className="Button-text">Notifications</span>
                     {notificationsOpen && <HeaderNotifications />}
                 </button>
-                <a className="Link" href="/signout-callback-oidc">
-                    <img src={logoutIcon} alt="logout" width="21" height="21" />
-                    <span className="Button-text">Logout</span>
-                </a>
+                <form method="POST" action="/api/logout">
+                    <button className="Link" type="submit">
+                        <img src={logoutIcon} alt="logout" width="21" height="21" />
+                        <span className="Button-text">Logout</span>
+                    </button>
+                </form>
                 <button className="Header-hamburger Link" onClick={() => setHamburgerOpen(!hamburgerOpen)} >
                     <img src={menuIcon} alt="Menu icon" width="21" height="21" />
                 </button>

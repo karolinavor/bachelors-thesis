@@ -59,6 +59,7 @@ const router = createBrowserRouter([
   {
     path: RoutesList.login.url,
     element: <Layout />,
+    errorElement: <Error />,
     children: [
       {
         path: RoutesList.dashboard.url,
