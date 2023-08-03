@@ -9,7 +9,7 @@ type ErrorType = {
 
 export default function Error() {
     const error = useRouteError() as ErrorType;
-    
+
     return (
         <div className="ErrorPage">
             <Header />

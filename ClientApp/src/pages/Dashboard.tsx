@@ -8,15 +8,17 @@ import { modalOpen } from '../store/reducers/modalSlice';
 import { AppDispatch, RootState } from '../store/store';
 import addIcon from "../assets/add.svg"
 import { fetchLatestNews } from '../store/reducers/newsSlice';
+import { fetchDashboardComments } from '../store/reducers/dashboardSlice';
 
 export default function Dashboard() {
 
     const dispatch: AppDispatch = useDispatch()
-    const [latestComments, setLatestComments] = useState<CommentType[]>([]);
     const [latestCourses, setLatestCourses] = useState<CourseType[]>([]);
     const [latestFiles, setLatestFiles] = useState<FileType[]>([]);
 
     const newsState = useSelector((state: RootState) => state.news)
+    const userState = useSelector((state: RootState) => state.user)
+    const dashboardState = useSelector((state: RootState) => state.dashboard)
 
     const [error, setError] = useState(null);
 
@@ -40,10 +42,9 @@ export default function Dashboard() {
     }
 
     async function getLatestComments() {
-        const response = await fetch('/api/comments/latest');
-        if (response.status === 200) {
-            const data = await response.json();
-            setLatestComments(data)
+        let responseComments = await dispatch(fetchDashboardComments())
+        if (responseComments.meta.requestStatus === "rejected") {
+            setError(true)
         }
     }
 
@@ -77,12 +78,14 @@ export default function Dashboard() {
             <div className="Homepage-grid">
                 <div>
                     <h2>News</h2>
-                    <div className="Button-row">
-                        <button className="Button" onClick={() => openAddNewsModal()}>
-                            <img src={addIcon} alt="Add icon" />
-                            Add news
-                        </button>
-                    </div>
+                    {userState.isAdmin &&
+                        <div className="Button-row">
+                            <button className="Button" onClick={() => openAddNewsModal()}>
+                                <img src={addIcon} alt="Add icon" />
+                                Add news
+                            </button>
+                        </div>
+                    }
                     {newsState?.news?.map((newsItem: NewsType, index) =>
                         (index < 3 ?
                         <News
@@ -95,11 +98,11 @@ export default function Dashboard() {
                         : <div>No news.</div>
                     }
                 </div>
-                {latestComments.length > 0 &&
+                {dashboardState?.comments?.length > 0 &&
                     <div>
                         <h2>Latest comments</h2>
                         <div className="Comments">
-                            {latestComments?.map((comment: CommentType, index) =>
+                            {dashboardState?.comments?.map((comment: CommentType, index) =>
                                 <Comment
                                     key={index}
                                     comment={comment}

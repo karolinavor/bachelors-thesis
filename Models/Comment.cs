@@ -14,6 +14,7 @@ namespace BachelorThesis.Models
         public int CommentID { get; set; }
         public string CommentText { get; set; }
         public int UserID { get; set; }
+        public string Username { get; set; }
         public DateTime DateAdded { get; set; }
         public int CourseID { get; set; }
         public int CourseFileID { get; set; }

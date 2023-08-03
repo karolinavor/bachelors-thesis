@@ -1,37 +1,23 @@
-import React, { useEffect, useState } from 'react'
-import { UserType } from '../types/types';
+import React from 'react'
+import { useSelector } from 'react-redux';
+import { RootState } from '../store/store';
 
 export default function Profile() {
 
-    const [user, setUser] = useState<UserType>();
-
-    async function getUser() {
-        const response = await fetch('/api/user');
-        const data = await response.json();
-        setUser(data)
-    }
-
-    useEffect(() => {
-        getUser()
-    }, [])
+    const userState = useSelector((state: RootState) => state.user)
 
     return (
         <>
             <section>
-                <h1>Profile TODO</h1>
-                <h2>Profile Information</h2>
+                <h1>Profile Information</h1>
                 <div>
                     <div>Username</div>
-                    <div>{user?.name}</div>
+                    <div>{userState?.username}</div>
                     <div>Email</div>
-                    <div>{user?.email}</div>
+                    <div>{userState?.email}</div>
+                    <div>Profile</div>
+                    <div>{userState?.isAdmin ? "Admin" : "User"}</div>
                 </div>
-            </section>
-            <section>
-                <h2>My files</h2>
-                <div>xxx</div>
-                <div>xxx</div>
-                <div>xxx</div>
             </section>
         </>
     )

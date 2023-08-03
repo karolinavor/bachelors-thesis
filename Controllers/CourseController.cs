@@ -1,4 +1,5 @@
-﻿using BachelorThesis.Models;
+﻿using System.Security.Claims;
+using BachelorThesis.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using BachelorThesis.Database;
@@ -22,16 +23,19 @@ public static class CourseController
             return Results.Ok(course);
         }).RequireAuthorization();
 
-        app.MapPost("api/course/add", async (StudyDb db, Course course) =>
+        app.MapPost("api/course/add", async (StudyDb db, Course course, HttpContext context) =>
         {
+            var user = db.Users.SingleOrDefault(u => u.Email == context.User.FindFirstValue("preferred_username"));
+            if (user is null) return Results.NotFound();
+
             course.DateAdded = DateTime.Now;
-            course.UserID = 0;
+            course.UserID = user.UserID;
             course.NotificationSet = false;
             await db.Courses.AddAsync(course);
             await db.SaveChangesAsync();
 
             var log = new Log();
-            log.UserID = 0;
+            log.UserID = user.UserID;
             log.Event = LogEvent.CourseAdded;
             log.DateAdded = DateTime.Now;
             log.CourseID = course.CourseID;
@@ -42,15 +46,18 @@ public static class CourseController
             return Results.Created($"/course/{course.CourseID}", course);
         }).RequireAuthorization();
 
-        app.MapPut("api/course/{ID}/edit", async (StudyDb db, Course updatedCourse, int ID) =>
+        app.MapPut("api/course/{ID}/edit", async (StudyDb db, Course updatedCourse, int ID, HttpContext context) =>
         {
+            var user = db.Users.SingleOrDefault(u => u.Email == context.User.FindFirstValue("preferred_username"));
+            if (user is null) return Results.NotFound();
+
             var course = await db.Courses.FindAsync(ID);
             if (course is null) return Results.NotFound();
             course.Title = updatedCourse.Title;
             course.Short = updatedCourse.Short;
 
             var log = new Log();
-            log.UserID = 0;
+            log.UserID = user.UserID;
             log.Event = LogEvent.CourseEdited;
             log.DateAdded = DateTime.Now;
             log.CourseID = course.CourseID;
@@ -61,8 +68,11 @@ public static class CourseController
             return Results.Ok();
         }).RequireAuthorization();
         
-        app.MapDelete("api/course/{ID}/delete", async (StudyDb db, int ID) =>
+        app.MapDelete("api/course/{ID}/delete", async (StudyDb db, int ID, HttpContext context) =>
         {
+            var user = db.Users.SingleOrDefault(u => u.Email == context.User.FindFirstValue("preferred_username"));
+            if (user is null) return Results.NotFound();
+
             var course = await db.Courses.FindAsync(ID);
             if (course is null)
             {
@@ -70,7 +80,7 @@ public static class CourseController
             }
 
             var log = new Log();
-            log.UserID = 0;
+            log.UserID = user.UserID;
             log.Event = LogEvent.CourseDeleted;
             log.DateAdded = DateTime.Now;
             log.CourseID = course.CourseID;

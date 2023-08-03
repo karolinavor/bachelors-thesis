@@ -22,6 +22,7 @@ export default function Course() {
     let dispatch: AppDispatch = useDispatch();
 
     const courseState = useSelector((state: RootState) => state.course)
+    const userState = useSelector((state: RootState) => state.user)
 
     const [error, setError] = useState(null);
 
@@ -170,15 +171,19 @@ export default function Course() {
                 <>
                 <section>
                     <h1>{courseState?.short} - {courseState?.title}</h1>
-                        <div className="Button-row">
-                            <button className="Button" onClick={() => openEditCourseModal()}>
-                                <img src={editIcon} alt="Edit icon" />
-                                Edit
-                            </button>
-                            <button className="Button" onClick={() => openDeleteCourseModal()}>
-                                <img src={deleteIcon} alt="Delete icon" />
-                                Delete
-                            </button>
+                    <div className="Button-row">
+                            {userState.isAdmin &&
+                            <>
+                                <button className="Button" onClick={() => openEditCourseModal()}>
+                                    <img src={editIcon} alt="Edit icon" />
+                                    Edit
+                                </button>
+                                <button className="Button" onClick={() => openDeleteCourseModal()}>
+                                    <img src={deleteIcon} alt="Delete icon" />
+                                    Delete
+                                </button>
+                            </>
+                            }
                             <button className="Button" onClick={() => openUploadFileModal()}>
                                 <img src={uploadIcon} alt="Upload icon" />
                                 Upload file

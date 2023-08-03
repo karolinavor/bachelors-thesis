@@ -19,7 +19,8 @@ export type FileType = {
   reacted: number,
   numberOfDownloads: number,
   courseID: number,
-  notificationSet: boolean
+  notificationSet: boolean,
+  username: string
 }
 
 export type NewsType = {
@@ -38,15 +39,15 @@ export type CommentType = {
   categoryName: string,
   likes: number,
   dislikes: number,
-  reacted: number
+  reacted: number,
+  username: string
 }
 
 export type UserType = {
   userID: number,
-  name: string,
-  username : string,
+  username: string,
   email: string,
-  profileImage: string
+  isAdmin: boolean
 }
 
 export type NotificationType = {

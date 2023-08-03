@@ -1,4 +1,7 @@
-﻿using BachelorThesis.Models;
+﻿using System.Net;
+using System.Net.Mail;
+using System.Security.Claims;
+using BachelorThesis.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using BachelorThesis.Database;
@@ -37,15 +40,19 @@ public static class CourseFileController
             return Results.Ok(courseFile);
         }).RequireAuthorization();
 
-        app.MapPost("api/course/{courseID}/file/add", async (StudyDb db, int courseID, HttpContext httpContext, HttpRequest request) =>
+        app.MapPost("api/course/{courseID}/file/add", async (StudyDb db, int courseID, HttpContext context, HttpRequest request) =>
         {
+            var user = db.Users.SingleOrDefault(u => u.Email == context.User.FindFirstValue("preferred_username"));
+            if (user is null) return Results.NotFound();
+
             var courseFile = new CourseFile();
             courseFile.DateAdded = DateTime.Now;
             courseFile.CourseID = courseID;
-            courseFile.Name = httpContext.Request.Form["name"];
-            courseFile.UserID = Int32.Parse(httpContext.Request.Form["userID"]);
-            courseFile.Size = Int32.Parse(httpContext.Request.Form["size"]);
-            courseFile.Filetype = httpContext.Request.Form["filetype"];
+            courseFile.Name = context.Request.Form["name"];
+            courseFile.UserID = user.UserID;
+            courseFile.Username = user.Username;
+            courseFile.Size = Int32.Parse(context.Request.Form["size"]);
+            courseFile.Filetype = context.Request.Form["filetype"];
             courseFile.NotificationSet = false;
             courseFile.Url = $"FileSystem/course_{courseID}/file_{courseFile.CourseID}.{courseFile.Filetype}";
             courseFile.NumberOfDownloads = 0;
@@ -64,13 +71,26 @@ public static class CourseFileController
             await request.Form.Files[0].CopyToAsync(fs);
 
             var log = new Log();
-            log.UserID = 0;
+            log.UserID = user.UserID;
             log.Event = LogEvent.CourseFileAdded;
             log.DateAdded = DateTime.Now;
             log.CourseFileID = courseFile.CourseFileID;
             log.CourseID = courseID;
             log.Read = false;
             await db.Logs.AddAsync(log);
+
+            var notifications = db.Notifications.Where(c => c.CourseID == courseID);
+            foreach (var notification in notifications)
+            {
+                var subscribedUser = db.Users.SingleOrDefault(c => c.UserID == notification.UserID);
+                var smtpClient = new SmtpClient("smtp-mail.outlook.com")
+                {
+                    Port = 587,
+                    Credentials = new NetworkCredential("vorlka00@upol.cz", "W!yr998BPA"),
+                    EnableSsl = true,
+                };
+                smtpClient.Send("vorlka00@upol.cz", subscribedUser.Email, "UPSHARE: New file", "New file uploaded in course " + db.Courses.SingleOrDefault(c => c.CourseID == courseID).Title + ".");
+            }   
             
             await db.SaveChangesAsync();
             return Results.Created($"/course/{courseID}/file/{courseFile.CourseID}", courseFile);
@@ -92,8 +112,11 @@ public static class CourseFileController
             }
         }).RequireAuthorization();
 
-        app.MapDelete("api/file/{courseFileID}/delete", async (StudyDb db, int courseFileID) =>
+        app.MapDelete("api/file/{courseFileID}/delete", async (StudyDb db, int courseFileID, HttpContext context) =>
         {
+            var user = db.Users.SingleOrDefault(u => u.Email == context.User.FindFirstValue("preferred_username"));
+            if (user is null) return Results.NotFound();
+
             var courseFile = await db.CourseFiles.FindAsync(courseFileID);
             if (courseFile is null) return Results.NotFound();
             db.CourseFiles.Remove(courseFile);
@@ -102,7 +125,7 @@ public static class CourseFileController
             }
 
             var log = new Log();
-            log.UserID = 0;
+            log.UserID = user.UserID;
             log.Event = LogEvent.CourseFileDeleted;
             log.DateAdded = DateTime.Now;
             log.CourseFileID = courseFile.CourseFileID;

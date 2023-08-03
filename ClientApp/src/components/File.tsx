@@ -22,6 +22,7 @@ export default function File() {
     let dispatch: AppDispatch = useDispatch();
 
     const fileState = useSelector((state: RootState) => state.file)
+    const userState = useSelector((state: RootState) => state.user)
 
     const [error, setError] = useState(null);
 
@@ -213,10 +214,12 @@ export default function File() {
                         <img src={downloadIcon} alt="Download icon" />
                         Download
                     </button>
-                    <button className="Button" onClick={() => openDeleteFileModal()}>
-                        <img src={deleteIcon} alt="Delete icon" />
-                        Delete
-                    </button>
+                    {userState.isAdmin &&
+                        <button className="Button" onClick={() => openDeleteFileModal()}>
+                            <img src={deleteIcon} alt="Delete icon" />
+                            Delete
+                        </button>
+                    }
                     <button className="Button" onClick={() => toggleNotifications()}>
                         {fileState?.notificationSet ?
                             <img alt="bell icon" src={bellTicked} />
@@ -233,7 +236,7 @@ export default function File() {
                 <div className='File-metadata'>
                     <div>
                         <div><b>User</b></div>
-                        <div>{fileState?.userID}</div>
+                        <a className="Link" href={`/user/${fileState?.userID}`}>{fileState?.username}</a>
                     </div>
                     <div>
                         <div><b>Date published</b></div>

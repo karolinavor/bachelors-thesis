@@ -8,7 +8,7 @@ export interface NewsSliceState {
   news: NewsType[]
 }
 
-export const initialFileState: NewsSliceState = {
+export const initialNewsState: NewsSliceState = {
   loading: `idle`,
   news: []
 }
@@ -54,8 +54,8 @@ export const fetchAllNewsFromAPI = async () => {
 }
 
 export const newsSlice = createSlice({
-  name: `file`,
-  initialState: initialFileState,
+  name: `news`,
+  initialState: initialNewsState,
   reducers: {},
   extraReducers: (builder) => {
     builder.addCase(fetchLatestNews.fulfilled, (state, action) => {

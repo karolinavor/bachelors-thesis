@@ -23,7 +23,8 @@ export const initialFileState: FileSliceState = {
   likes: 0,
   dislikes: 0,
   reacted: 0,
-  comments: []
+  comments: [],
+  username: ""
 }
 
 export const fetchFile = createAsyncThunk(

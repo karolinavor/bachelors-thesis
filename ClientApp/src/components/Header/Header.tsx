@@ -1,12 +1,11 @@
 import React, { useEffect, useState } from "react";
-import { Link, NavLink, useNavigate } from "react-router-dom";
+import { Link, NavLink } from "react-router-dom";
 import userWhiteIcon from "../../assets/user-white.svg"
 import logoutIcon from "../../assets/logout.svg"
 import menuIcon from "../../assets/menu.svg"
 import bellIcon from "../../assets/bell.svg"
 import logoIcon from "../../assets/logo.svg"
 import { RoutesList } from "../../router/Router";
-import { UserType } from "../../types/types";
 import HeaderNotifications from "./HeaderNotifications";
 import { useDispatch, useSelector } from "react-redux";
 import { fetchNotifications } from "../../store/reducers/notificationsSlice";
@@ -15,16 +14,15 @@ import { AppDispatch, RootState } from "../../store/store";
 export default function Header() {
 
     let dispatch: AppDispatch = useDispatch();
-    const [user, setUser] = useState<UserType>();
     const [hamburgerOpen, setHamburgerOpen] = useState(false);
     const [notificationsOpen, setNotificationsOpen] = useState(false);
     const [unreadNotifications, setUnreadNotifications] = useState(false);
 
     const notificationsState = useSelector((state: RootState) => state.notifications)
+    const userState = useSelector((state: RootState) => state.user)
     
     useEffect(() => {
         getNotificationsData()
-        getUser()
     }, [])
 
     useEffect(() => {
@@ -39,12 +37,6 @@ export default function Header() {
         await dispatch(fetchNotifications())
     }
 
-    async function getUser() {
-        const response = await fetch('/api/user');
-        const data = await response.json();
-        setUser(data)
-    }
-
     return (
         <header className={"Header" + (hamburgerOpen ? " Header-hamburger--open" : "") + (notificationsOpen ? " Header-notifications--open" : "")}>
             <div className="Header-logo">
@@ -53,9 +45,9 @@ export default function Header() {
                 </Link>
             </div>
             <div className="Header-menu">
-                <NavLink className="Link" to="/user/test">
+                <NavLink className="Link" to="/profile">
                     <img src={userWhiteIcon} alt="user" width="21" height="21" />
-                    <span className="Button-text">{user?.name}</span>
+                    <span className="Button-text">{userState?.username}</span>
                 </NavLink>
                 <button className="Header-notifications Link" onClick={() => setNotificationsOpen(!notificationsOpen)}>
                     <div className={`Header-bell flex ${unreadNotifications ? 'Header-bell--unread' : 'Header-bell'}`}>

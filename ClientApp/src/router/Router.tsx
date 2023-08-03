@@ -1,5 +1,5 @@
 import React from 'react'
-import { createBrowserRouter } from 'react-router-dom'
+import { LoaderFunction, Navigate, createBrowserRouter } from 'react-router-dom'
 
 import Layout from '../pages/Layout';
 import Dashboard from '../pages/Dashboard';
@@ -10,6 +10,7 @@ import Course from '../components/Course';
 import Error from '../pages/Error'
 import News from '../pages/News';
 import Log from '../pages/Log';
+import User from '../pages/User';
 
 export const RoutesList = {
   dashboard: {
@@ -20,8 +21,12 @@ export const RoutesList = {
     url: `/`,
     name: `Login`
   },
+  profile: {
+    url: `profile/`,
+    name: `User`
+  },
   user: {
-    url: `user/:user/`,
+    url: `user/:userID/`,
     name: `User`
   },
   settings: {
@@ -54,20 +59,32 @@ const router = createBrowserRouter([
   {
     path: RoutesList.login.url,
     element: <Login />,
-    errorElement: <Error />,
+    errorElement: <Login />,
   },
   {
-    path: RoutesList.login.url,
+    path: "/",
     element: <Layout />,
     errorElement: <Error />,
+    loader: async() => {
+      const response = await fetch("/api/user/loggedin").then(data => data.json());
+      if (response === "false") {
+        window.location.href = "/";
+      } else {
+        return { ok: true }
+      }
+    },
     children: [
       {
         path: RoutesList.dashboard.url,
         element: <Dashboard />
       },
       {
-        path: RoutesList.user.url,
+        path: RoutesList.profile.url,
         element: <Profile />,
+      },
+      {
+        path: RoutesList.user.url,
+        element: <User />,
       },
       {
         path: RoutesList.news.url,

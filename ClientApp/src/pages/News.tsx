@@ -12,6 +12,7 @@ export default function NewsPage() {
     let dispatch: AppDispatch = useDispatch();
     
     const newsState = useSelector((state: RootState) => state.news)
+    const userState = useSelector((state: RootState) => state.user)
 
     const [error, setError] = useState(null);
     
@@ -41,12 +42,14 @@ export default function NewsPage() {
         <>
             <section>
                 <h1>News</h1>
-                <div className="Button-row">
-                    <button className="Button" onClick={() => openAddNewsModal()}>
-                        <img src={addIcon} alt="Add icon" />
-                        Add news
-                    </button>
-                </div>
+                {userState.isAdmin &&
+                    <div className="Button-row">
+                        <button className="Button" onClick={() => openAddNewsModal()}>
+                            <img src={addIcon} alt="Add icon" />
+                            Add news
+                        </button>
+                    </div>
+                }
                 {newsState?.news?.map((newsItem: NewsType, index) =>
                     <News
                         news={newsItem}

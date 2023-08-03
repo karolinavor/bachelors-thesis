@@ -4,14 +4,15 @@ import { CommentType } from "../types/types";
 import { getLocalDate, getLocalTime } from "../utils/getTime";
 import userIcon from "../assets/user.svg"
 import { modalOpen } from "../store/reducers/modalSlice";
-import { useDispatch } from "react-redux";
-import { AppDispatch } from "../store/store";
+import { useDispatch, useSelector } from "react-redux";
+import { AppDispatch, RootState } from "../store/store";
 import deleteIcon from "../assets/delete.svg"
 import likeIcon from '../assets/like.svg'
 import dislikeIcon from '../assets/dislike.svg'
 import { toastNotificationAdd } from "../store/reducers/toastNotificationsSlice";
-import { fetchFile } from "../store/reducers/fileSlice";
-import { fetchCourse } from "../store/reducers/courseSlice";
+import { fetchFile, fetchFileComments } from "../store/reducers/fileSlice";
+import { fetchCourse, fetchCourseComments } from "../store/reducers/courseSlice";
+import { fetchDashboardComments } from "../store/reducers/dashboardSlice";
 
 type CommentTypeExtended = {
   comment: CommentType,
@@ -22,6 +23,8 @@ type CommentTypeExtended = {
 export default function Comment({ comment, showCommentCategory, limitLines }: CommentTypeExtended) {
 
   let dispatch: AppDispatch = useDispatch();
+
+  const userState = useSelector((state: RootState) => state.user)
 
   async function openDeleteCommentModal() {
     dispatch(modalOpen({
@@ -58,9 +61,11 @@ export default function Comment({ comment, showCommentCategory, limitLines }: Co
         })
       );
       if (window.location.pathname.includes("file/")) {
-        dispatch(fetchFile(comment.courseFileID))
+        dispatch(fetchFileComments(comment.courseFileID))
       } else if (window.location.pathname.includes("course/")) {
-        dispatch(fetchCourse(comment.courseID))
+        dispatch(fetchCourseComments(comment.courseID))
+      } else if (window.location.pathname.includes("dashboard")) {
+        dispatch(fetchDashboardComments())
       }
     } else {
       dispatch(
@@ -79,7 +84,7 @@ export default function Comment({ comment, showCommentCategory, limitLines }: Co
         <img src={userIcon} alt="user" width="28" height="28" />
       </span>
       <div>
-        <Link className="Link Comment-heading" to={"/user/" + comment.userID}>{comment.userID}</Link>
+        <Link className="Link Comment-heading" to={"/user/" + comment.userID}>{comment.username}</Link>
         {showCommentCategory &&
           <>
           <span> in {comment.courseFileID > 0 ? "file " : "course "}</span>
@@ -92,9 +97,11 @@ export default function Comment({ comment, showCommentCategory, limitLines }: Co
         <p>{comment.commentText}</p>
       </div>
       <div className="Button-row mb-0 mt-1">
-        <button className="Button" onClick={() => openDeleteCommentModal()}>
-          <img src={deleteIcon} alt="Delete icon" width="16" height="16" />
-        </button>
+        {userState?.isAdmin &&
+          <button className="Button" onClick={() => openDeleteCommentModal()}>
+            <img src={deleteIcon} alt="Delete icon" width="16" height="16" />
+          </button>
+        }
         <button className={"Button" + (comment.reacted === 1 ? " active" : "")} onClick={() => addReaction("Like")}>
           <img src={likeIcon} alt="Like icon" /> {comment.likes}
         </button>
