@@ -209,7 +209,7 @@ export default function Course() {
                                             <div className="flex align-center gap-25">
                                                 <img src={likeBlueIcon} alt="Like icon" className="me-1" /> {file.likes ?? 0}</div>
                                             <div className="flex align-center gap-25">
-                                                <img src={dislikeBlueIcon} alt="Dislike icon" /> {file.likes ?? 0}
+                                                <img src={dislikeBlueIcon} alt="Dislike icon" /> {file.dislikes ?? 0}
                                             </div>
                                         </div>
                                     </Link>

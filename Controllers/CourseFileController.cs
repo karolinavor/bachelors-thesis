@@ -12,8 +12,11 @@ public static class CourseFileController
 {
     public static void MapCourseFileControllerRoutes(this WebApplication app)
     {    
-        app.MapGet("api/file/{courseFileID}/get", async (StudyDb db, int courseFileID) =>
+        app.MapGet("api/file/{courseFileID}/get", async (StudyDb db, int courseFileID, HttpContext context) =>
         {
+            var user = db.Users.SingleOrDefault(u => u.Email == context.User.FindFirstValue("preferred_username"));
+            if (user is null) return Results.NotFound();
+
             var courseFile = await db.CourseFiles.FindAsync(courseFileID);
             if (courseFile is null) return Results.NotFound();
             var notificationSet = db.Notifications.SingleOrDefault(s => s.CourseFileID == courseFileID);
@@ -26,7 +29,7 @@ public static class CourseFileController
             courseFile.Likes = db.Reactions.Where(s => s.CourseFileID == courseFileID && s.ReactionType == ReactionType.Like).Count();
             courseFile.Dislikes = db.Reactions.Where(s => s.CourseFileID == courseFileID && s.ReactionType == ReactionType.Dislike).Count();
 
-            var reacted = db.Reactions.SingleOrDefault(s => s.UserID == 0 && s.CourseFileID == courseFileID);
+            var reacted = db.Reactions.SingleOrDefault(s => s.UserID == user.UserID && s.CourseFileID == courseFileID);
             if (reacted != null) {
                 if (reacted.ReactionType == ReactionType.Like) {
                     courseFile.Reacted = ReactedType.Liked;
@@ -136,10 +139,30 @@ public static class CourseFileController
             return Results.Ok();
         }).RequireAuthorization();
 
-        app.MapGet("api/course/{courseID}/files", async (StudyDb db, int courseID) =>
+        app.MapGet("api/course/{courseID}/files", async (StudyDb db, int courseID, HttpContext context) =>
         {
+            var user = db.Users.SingleOrDefault(u => u.Email == context.User.FindFirstValue("preferred_username"));
+            if (user is null) return Results.NotFound();
+
             var courseFiles = db.CourseFiles.Where(s => s.CourseID == courseID).OrderByDescending(s => s.DateAdded);
             if (courseFiles is null) return Results.NotFound();
+
+            foreach (var courseFile in courseFiles) {
+                courseFile.Likes = db.Reactions.Where(s => s.CourseFileID == courseFile.CourseFileID && s.ReactionType == ReactionType.Like).Count();
+                courseFile.Dislikes = db.Reactions.Where(s => s.CourseFileID == courseFile.CourseFileID && s.ReactionType == ReactionType.Dislike).Count();
+
+                var reacted = db.Reactions.SingleOrDefault(s => s.UserID == user.UserID && s.CourseFileID == courseFile.CourseFileID);
+                if (reacted != null) {
+                    if (reacted.ReactionType == ReactionType.Like) {
+                        courseFile.Reacted = ReactedType.Liked;
+                    } else {
+                        courseFile.Reacted = ReactedType.Disliked;
+                    }
+                } else {
+                    courseFile.Reacted = ReactedType.None;
+                }
+            }
+
             return Results.Ok(courseFiles);
         });
 
