@@ -1,13 +1,65 @@
-﻿using BachelorThesis.Controllers;
+﻿using System.Net;
+using BachelorThesis.Controllers;
 using BachelorThesis.Models;
 using BachelorThesis.Database;
+using Microsoft.AspNetCore.Authentication.OpenIdConnect;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Builder;
+using Microsoft.AspNetCore.Mvc.Authorization;
 using Microsoft.OpenApi.Models;
+using Microsoft.AspNetCore.Authentication.OpenIdConnect;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.Identity.Web;
+using Microsoft.Identity.Web.UI;
+using Microsoft.AspNetCore.Builder;
+using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.HttpsPolicy;
+using Microsoft.AspNetCore.Mvc.Authorization;
+using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Hosting;
 
 var builder = WebApplication.CreateBuilder(args);
 
 var connectionString = builder.Configuration.GetConnectionString("Study") ?? "Data Source=Study.db";
+
+builder.Services.AddAuthentication(OpenIdConnectDefaults.AuthenticationScheme)
+    .AddMicrosoftIdentityWebApp(builder.Configuration.GetSection("AzureAd"));
+
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy(name: "MyPolicy",
+        builder =>
+        {
+            builder.WithOrigins("https://localhost:44424",
+                "https://localhost:44424");
+            builder.WithOrigins("https://localhost:44424",
+                "https://login.microsoftonline.com");
+            builder.WithOrigins("localhost:44424",
+                "http://localhost:44424");
+            builder.WithOrigins(
+                "https://login.microsoftonline.com").AllowAnyMethod()
+                .AllowAnyHeader();;
+        });
+});
+
+builder.Services.Configure<ForwardedHeadersOptions>(options =>
+{
+    options.ForwardLimit = 2;
+    options.KnownProxies.Add(IPAddress.Parse("127.0.10.1"));
+});
+
+builder.Services.AddControllersWithViews(options =>
+{
+    var policy = new AuthorizationPolicyBuilder()
+        .RequireAuthenticatedUser()
+        .Build();
+    options.Filters.Add(new AuthorizeFilter(policy));
+});
+
+builder.Services.AddRazorPages()
+    .AddMicrosoftIdentityUI();
 
 builder.Services.AddControllersWithViews();
 builder.Services.AddEndpointsApiExplorer();
@@ -36,6 +88,19 @@ app.UseHttpsRedirection();
 app.UseStaticFiles();
 app.UseSwagger();
 app.UseRouting();
+
+app.UseAuthentication();
+app.UseAuthorization();
+
+ app.UseEndpoints(endpoints =>
+{
+    endpoints.MapControllerRoute(
+        name: "default",
+        pattern: "{controller=Home}/{action=Index}/{id?}");
+    endpoints.MapRazorPages();
+});
+
+app.UseCors("MyPolicy");
 
 app.MapControllerRoute(
     name: "default",

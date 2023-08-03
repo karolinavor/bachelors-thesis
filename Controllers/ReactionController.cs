@@ -50,7 +50,7 @@ public static class ReactionController
                 }
             }
             return Results.Ok();
-        });
+        }).RequireAuthorization();
 
         app.MapPost("api/dislike/add", async (StudyDb db, Reaction reaction) =>
         {
@@ -92,6 +92,6 @@ public static class ReactionController
                 }
             }
             return Results.Ok();
-        });
+        }).RequireAuthorization();
     }
 }

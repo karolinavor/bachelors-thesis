@@ -15,7 +15,6 @@ import { AppDispatch, RootState } from "../../store/store";
 export default function Header() {
 
     let dispatch: AppDispatch = useDispatch();
-    const navigate = useNavigate();
     const [user, setUser] = useState<UserType>();
     const [hamburgerOpen, setHamburgerOpen] = useState(false);
     const [notificationsOpen, setNotificationsOpen] = useState(false);
@@ -46,10 +45,6 @@ export default function Header() {
         setUser(data)
     }
 
-    function logOutUser() {
-        navigate("/login");
-    }
-
     return (
         <header className={"Header" + (hamburgerOpen ? " Header-hamburger--open" : "") + (notificationsOpen ? " Header-notifications--open" : "")}>
             <div className="Header-logo">
@@ -69,12 +64,12 @@ export default function Header() {
                     <span className="Button-text">Notifications</span>
                     {notificationsOpen && <HeaderNotifications />}
                 </button>
-                <button className="Link" onClick={() => logOutUser()} >
+                <a className="Link" href="/signout-callback-oidc">
                     <img src={logoutIcon} alt="logout" width="21" height="21" />
                     <span className="Button-text">Logout</span>
-                </button>
+                </a>
                 <button className="Header-hamburger Link" onClick={() => setHamburgerOpen(!hamburgerOpen)} >
-                    <img src={menuIcon} alt="logout" width="21" height="21" />
+                    <img src={menuIcon} alt="Menu icon" width="21" height="21" />
                 </button>
             </div>
         </header>

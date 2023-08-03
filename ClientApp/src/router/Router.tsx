@@ -13,11 +13,11 @@ import Log from '../pages/Log';
 
 export const RoutesList = {
   dashboard: {
-    url: `/`,
+    url: `/dashboard`,
     name: `Dashboard`
   },
   login: {
-    url: `login/`,
+    url: `/`,
     name: `Login`
   },
   user: {
@@ -51,42 +51,43 @@ export const RoutesList = {
 }
 
 const router = createBrowserRouter([
-{
-  path: RoutesList.login.url,
-  element: <Login />,
-},
-{
-  path: "/",
-  element: <Layout />,
-  errorElement: <Error />,
-  children: [
-    {
-      index: true,
-      element: <Dashboard />
-    },
-    {
-      path: RoutesList.user.url,
-      element: <Profile />,
-    },
-    {
-      path: RoutesList.news.url,
-      element: <News />,
-    },
-    {
-      path: RoutesList.log.url,
-      element: <Log />,
-    },
-    {
-      path: RoutesList.course.url,
-      element: <Course />,
-      children: [
-        {
-          path: RoutesList.file.url,
-          element: <File />,
-        }
-      ]
-    }
-  ],
-}]);
+  {
+    path: RoutesList.login.url,
+    element: <Login />,
+    errorElement: <Error />,
+  },
+  {
+    path: RoutesList.login.url,
+    element: <Layout />,
+    children: [
+      {
+        path: RoutesList.dashboard.url,
+        element: <Dashboard />
+      },
+      {
+        path: RoutesList.user.url,
+        element: <Profile />,
+      },
+      {
+        path: RoutesList.news.url,
+        element: <News />,
+      },
+      {
+        path: RoutesList.log.url,
+        element: <Log />,
+      },
+      {
+        path: RoutesList.course.url,
+        element: <Course />,
+        children: [
+          {
+            path: RoutesList.file.url,
+            element: <File />,
+          }
+        ]
+      }
+    ],
+  }
+]);
 
 export default router;

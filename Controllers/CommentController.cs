@@ -33,7 +33,7 @@ public static class CommentController
 
             await db.SaveChangesAsync();
             return Results.Created($"/course/{courseID}", comment);
-        });
+        }).RequireAuthorization();
 
         app.MapPost("api/file/{courseFileID}/comments/add", async (StudyDb db, Comment comment, int courseFileID) =>
         {
@@ -60,7 +60,7 @@ public static class CommentController
 
             await db.SaveChangesAsync();
             return Results.Created($"/course/{file.Result.CourseID}/file/{courseFileID}/", comment);
-        });
+        }).RequireAuthorization();
 
         app.MapDelete("api/comment/{commentID}/delete", async (StudyDb db, int commentID) =>
         {
@@ -80,7 +80,7 @@ public static class CommentController
             return Results.Ok();
 
             // TODO kaskadove mazani u vsech delete
-        });
+        }).RequireAuthorization();
 
         app.MapGet("api/course/{courseID}/comments", async (StudyDb db, int courseID) =>
         {
@@ -103,7 +103,7 @@ public static class CommentController
             }
             await db.SaveChangesAsync();
             return Results.Ok(comments);
-        });
+        }).RequireAuthorization();
 
         app.MapGet("api/file/{courseFileID}/comments", async (StudyDb db, int courseFileID) =>
         {
@@ -129,12 +129,12 @@ public static class CommentController
             }
             await db.SaveChangesAsync();
             return Results.Ok(comments);
-        });
+        }).RequireAuthorization();
 
         app.MapGet("api/comments/latest", async (StudyDb db) =>
         {
             return await db.Comments.OrderByDescending(s => s.DateAdded).Take(5).ToListAsync();
-        });
+        }).RequireAuthorization();
     }
 }
 

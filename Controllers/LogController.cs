@@ -12,6 +12,6 @@ public static class LogController
         app.MapGet("api/log", async (StudyDb db) =>
         {
             return await db.Logs.OrderByDescending(s => s.LogID).ToListAsync();
-        });
+        }).RequireAuthorization();
     }
 }

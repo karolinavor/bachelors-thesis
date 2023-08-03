@@ -12,12 +12,12 @@ public static class NewsController
         app.MapGet("api/news", async (StudyDb db) =>
         {
             return await db.News.OrderByDescending(s => s.DateAdded).Take(3).ToListAsync();
-        });
+        }).RequireAuthorization();
 
         app.MapGet("api/news/all", async (StudyDb db) =>
         {
             return await db.News.OrderByDescending(s => s.DateAdded).ToListAsync();
-        });
+        }).RequireAuthorization();
 
         app.MapPost("api/news/add", async (StudyDb db, News news) =>
         {
@@ -36,14 +36,14 @@ public static class NewsController
 
             await db.SaveChangesAsync();
             return Results.Created("/", news);
-        });
+        }).RequireAuthorization();
 
         app.MapGet("api/news/{newsID}/get", async (StudyDb db, int newsID) =>
         {
             var news = await db.News.FindAsync(newsID);
             if (news is null) return Results.NotFound();
             return Results.Ok(news);
-        });
+        }).RequireAuthorization();
 
         app.MapPut("api/news/{newsID}/edit", async (StudyDb db, News updatedNews, int newsID) =>
         {
@@ -61,7 +61,7 @@ public static class NewsController
 
             await db.SaveChangesAsync();
             return Results.Ok();
-        });
+        }).RequireAuthorization();
 
         app.MapDelete("api/news/{newsID}/delete", async (StudyDb db, int newsID) =>
         {
@@ -79,7 +79,7 @@ public static class NewsController
 
             await db.SaveChangesAsync();
             return Results.Ok();
-        });
+        }).RequireAuthorization();
     }
 }
 

@@ -35,7 +35,7 @@ public static class CourseFileController
             }
 
             return Results.Ok(courseFile);
-        });
+        }).RequireAuthorization();
 
         app.MapPost("api/course/{courseID}/file/add", async (StudyDb db, int courseID, HttpContext httpContext, HttpRequest request) =>
         {
@@ -74,7 +74,7 @@ public static class CourseFileController
             
             await db.SaveChangesAsync();
             return Results.Created($"/course/{courseID}/file/{courseFile.CourseID}", courseFile);
-        });
+        }).RequireAuthorization();
 
         app.MapGet("api/file/{courseFileID}/download", async (StudyDb db, int courseFileID) =>
         {
@@ -90,7 +90,7 @@ public static class CourseFileController
             {
                 return Results.NotFound();
             }
-        });
+        }).RequireAuthorization();
 
         app.MapDelete("api/file/{courseFileID}/delete", async (StudyDb db, int courseFileID) =>
         {
@@ -111,7 +111,7 @@ public static class CourseFileController
 
             await db.SaveChangesAsync();
             return Results.Ok();
-        });
+        }).RequireAuthorization();
 
         app.MapGet("api/course/{courseID}/files", async (StudyDb db, int courseID) =>
         {
@@ -123,7 +123,7 @@ public static class CourseFileController
         app.MapGet("api/files/latest", async (StudyDb db) =>
         {
             return await db.CourseFiles.OrderByDescending(s => s.DateAdded).Take(5).ToListAsync();
-        });
+        }).RequireAuthorization();
     }
 }
 

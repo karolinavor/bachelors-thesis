@@ -22,7 +22,11 @@ const context = [
   "/api/comment",
   "/api/like",
   "/api/dislike",
-  "/api/notifications/set/read"
+  "/api/notifications/set/read",
+  "/api/login",
+  "/api/logout",
+  "/signin-oidc",
+  "/signout-callback-oidc"
 ];
 
 const onError = (err, req, resp, target) => {

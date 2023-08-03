@@ -18,7 +18,7 @@ public static class NotificationController
             }
             await db.SaveChangesAsync();
             return Results.Ok();
-        });
+        }).RequireAuthorization();
 
         app.MapGet("api/notifications/get", async (StudyDb db) =>
         {
@@ -49,7 +49,7 @@ public static class NotificationController
             }
 
             return Results.Ok(userNotifications.OrderByDescending(s => s.DateAdded).Take(5));
-        });
+        }).RequireAuthorization();
 
         app.MapPost("api/notifications/set", async (StudyDb db, Notification notification) =>
         {
@@ -68,7 +68,7 @@ public static class NotificationController
                 await db.SaveChangesAsync();
                 return Results.Ok();
             };
-        });
+        }).RequireAuthorization();
     }
 }
 

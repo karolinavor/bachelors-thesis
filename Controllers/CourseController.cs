@@ -20,7 +20,7 @@ public static class CourseController
                 course.NotificationSet = false;
             }
             return Results.Ok(course);
-        });
+        }).RequireAuthorization();
 
         app.MapPost("api/course/add", async (StudyDb db, Course course) =>
         {
@@ -40,7 +40,7 @@ public static class CourseController
 
             await db.SaveChangesAsync();
             return Results.Created($"/course/{course.CourseID}", course);
-        });
+        }).RequireAuthorization();
 
         app.MapPut("api/course/{ID}/edit", async (StudyDb db, Course updatedCourse, int ID) =>
         {
@@ -59,7 +59,7 @@ public static class CourseController
 
             await db.SaveChangesAsync();
             return Results.Ok();
-        });
+        }).RequireAuthorization();
         
         app.MapDelete("api/course/{ID}/delete", async (StudyDb db, int ID) =>
         {
@@ -80,17 +80,17 @@ public static class CourseController
             db.Courses.Remove(course);
             await db.SaveChangesAsync();
             return Results.Ok();
-        });
+        }).RequireAuthorization();
 
         app.MapGet("api/courses", async (StudyDb db) =>
         {
             return await db.Courses.OrderBy(s => s.Short).ToListAsync();
-        });
+        }).RequireAuthorization();
 
         app.MapGet("api/courses/latest", async (StudyDb db) =>
         {
             return await db.Courses.OrderByDescending(s => s.DateAdded).Take(5).ToListAsync();
-        });
+        }).RequireAuthorization();
     }
 }
 
