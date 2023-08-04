@@ -1,11 +1,13 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit"
 import { CommentType, FileType } from "../../types/types"
+import { FetchNumberOfFiles } from "./courseSlice"
 
 export type UserLoading = `idle` | 'pending'
 
 export interface FileSliceState extends FileType {
   loading: UserLoading,
-  comments: CommentType[]
+  comments: CommentType[],
+  numberOfComments: number
 }
 
 export const initialFileState: FileSliceState = {
@@ -25,7 +27,8 @@ export const initialFileState: FileSliceState = {
   reacted: 0,
   comments: [],
   username: "",
-  description: ""
+  description: "",
+  numberOfComments: 0
 }
 
 export const fetchFile = createAsyncThunk(
@@ -50,15 +53,24 @@ export const fetchFileFromAPI = async (courseFileID) => {
 
 export const fetchFileComments = createAsyncThunk(
   `fileComments/fetch`,
-  async (courseFileID: number, thunkAPI) => {
-    const response = await fetchFileCommentsFromAPI(courseFileID)
+  async (data: FetchNumberOfFiles, thunkAPI) => {
+    const response = await fetchFileCommentsFromAPI(data)
     return response
   }
 )
 
-export const fetchFileCommentsFromAPI = async (courseFileID) => {
-  return await fetch(`/api/file/${courseFileID}/comments`, {
-    method: `GET`,
+export const fetchFileCommentsFromAPI = async (data) => {
+  let fetchData = {
+    showComments: data.showItems
+  }
+
+  return await fetch(`/api/file/${data.id}/comments`, {
+    method: `POST`,
+    headers: {
+      'Accept': 'application/json',
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify(fetchData)
   })
   .then(
     (response) => response.json())
@@ -84,9 +96,11 @@ export const fileSlice = createSlice({
       }
     })
     builder.addCase(fetchFileComments.fulfilled, (state, action) => {
+      console.log(action.payload)
       return {
         ...state, loading: `idle`,
-        comments: action.payload
+        comments: action.payload.comments,
+        numberOfComments: action.payload.numberOfComments
       }
     })
     builder.addCase(fetchFileComments.pending, (state) => {

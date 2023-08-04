@@ -33,26 +33,6 @@ export const fetchCoursesFromAPI = async () => {
     })
 }
 
-/*
-export const addCourse = createAsyncThunk(
-  `courses/add`,
-  async (requestData, thunkAPI) => {
-    const response = await addCoursesToAPI(requestData)
-    return response
-  }
-)
-
-export const addCoursesToAPI = async (requestData) => {
-  return await fetch(`/api/course/add`, {
-    headers: {
-        'Accept': 'application/json',
-        'Content-Type': 'application/json'
-    },
-    method: "POST",
-    body: JSON.stringify(requestData)
-  });
-}
-*/
 
 export const coursesSlice = createSlice({
   name: `courses`,
@@ -69,19 +49,6 @@ export const coursesSlice = createSlice({
         ...state, loading: `pending`
       }
     })
-    /*
-    builder.addCase(addCourse.fulfilled, (state, action) => {
-      return {
-        ...state, loading: `idle`, courses: action.payload
-      }
-    })
-    builder.addCase(addCourse.pending, (state) => {
-      return {
-        ...state,
-        loading: `pending`,
-      }
-    })
-    */
   },
 })
 

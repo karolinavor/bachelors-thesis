@@ -7,6 +7,7 @@ export interface CourseSliceState extends CourseType {
   loading: UserLoading,
   files: FileType[],
   comments: CommentType[]
+  numberOfComments: number
 }
 
 export const initialCourseState: CourseSliceState = {
@@ -17,7 +18,13 @@ export const initialCourseState: CourseSliceState = {
   title: "",
   notificationSet: false,
   files: [],
-  comments: []
+  comments: [],
+  numberOfComments: 0
+}
+
+export type FetchNumberOfFiles = {
+  id: number,
+  showItems: number
 }
 
 export const fetchCourse = createAsyncThunk(
@@ -62,15 +69,24 @@ export const fetchCourseFilesFromAPI = async (courseID) => {
 
 export const fetchCourseComments = createAsyncThunk(
   `courseComments/fetch`,
-  async (courseID: number, thunkAPI) => {
-    const response = await fetchCourseCommentsFromAPI(courseID)
+  async (data: FetchNumberOfFiles, thunkAPI) => {
+    const response = await fetchCourseCommentsFromAPI(data)
     return response
   }
 )
 
-export const fetchCourseCommentsFromAPI = async (courseID) => {
-  return await fetch(`/api/course/${courseID}/comments`, {
-    method: `GET`,
+export const fetchCourseCommentsFromAPI = async (data: FetchNumberOfFiles) => {
+  let fetchData = {
+    showComments: data.showItems
+  }
+
+  return await fetch(`/api/course/${data.id}/comments`, {
+    method: `POST`,
+    headers: {
+      'Accept': 'application/json',
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify(fetchData)
   })
   .then(
     (response) => response.json())
@@ -114,7 +130,8 @@ export const courseSlice = createSlice({
     builder.addCase(fetchCourseComments.fulfilled, (state, action) => {
       return {
         ...state, loading: `idle`,
-        comments: action.payload
+        comments: action.payload.comments,
+        numberOfComments: action.payload.numberOfComments
       }
     })
     builder.addCase(fetchCourseComments.pending, (state) => {

@@ -14,7 +14,8 @@ import leftIcon from "../assets/left.svg"
 import likeIcon from "../assets/like.svg"
 import dislikeIcon from "../assets/dislike.svg"
 import { toastNotificationAdd } from '../store/reducers/toastNotificationsSlice';
-import { fetchFile, fetchFileComments, file } from '../store/reducers/fileSlice';
+import { fetchFile, fetchFileComments } from '../store/reducers/fileSlice';
+import { fetchCourse, fetchCourseComments, fetchCourseFiles } from '../store/reducers/courseSlice';
 
 export default function File() {
 
@@ -45,7 +46,7 @@ export default function File() {
             setError(true)
         }
 
-        let responseComments = await dispatch(fetchFileComments(parseInt(courseFileID)))
+        let responseComments = await dispatch(fetchFileComments({id: parseInt(courseFileID), showItems: 5}))
         if (responseComments.meta.requestStatus === "rejected") {
             setError(true)
         }
@@ -99,7 +100,7 @@ export default function File() {
 					customDuration: 5000,
 				})
             );
-            dispatch(fetchFileComments(parseInt(courseFileID)))
+            dispatch(fetchFileComments({id: parseInt(courseFileID), showItems: 5}))
         } else {
             dispatch(
 				toastNotificationAdd({
@@ -212,11 +213,11 @@ export default function File() {
             return fileSize + " B"
         }
     }
-    
+
     return (
         <>
             <div className="Button-row">
-                <Link className="Button" to={window.location.href.split("file")[0]}>
+                <Link className="Button" to={window.location.href.split("file")[0]} onClick={() => { dispatch(fetchCourseFiles(fileState?.courseID)); dispatch(fetchCourse(fileState?.courseID)); dispatch(fetchCourseComments({id: fileState?.courseID, showItems: 5}))}}>
                     <img src={leftIcon} alt="Left icon" />
                     Back to course
                 </Link>
@@ -293,6 +294,11 @@ export default function File() {
                         />
                     )}
                 </div>
+                {(fileState.comments.length < fileState.numberOfComments && fileState.numberOfComments > 5) &&
+                    <button className="Button mt-1" onClick={() =>
+                        dispatch(fetchFileComments({id: parseInt(courseFileID), showItems: fileState.comments.length + 5}))}>Show more comments
+                    </button>
+                }
             </section>
         </>
     )

@@ -26,7 +26,7 @@ export default function DeleteComment(props: PropsWithChildren<ModalInterface>) 
           customDuration: 5000,
         })
 			);
-			props.courseFileID > 0 ? dispatch(fetchFileComments(props.courseFileID)) : dispatch(fetchCourseComments(props.courseID))
+			props.courseFileID > 0 ? dispatch(fetchFileComments({id: props.courseFileID, showItems: 5})) : dispatch(fetchCourseComments({id: props.courseID, showItems: 5}))
 			if (window.location.pathname.includes("dashboard")) {
 				dispatch(fetchDashboardComments())
 			} else if (window.location.pathname.includes("profile")) {

@@ -1,7 +1,7 @@
 import React from 'react'
 import { LoaderFunction, Navigate, createBrowserRouter } from 'react-router-dom'
 
-import Layout from '../pages/Layout';
+import Layout from '../components/Layout';
 import Dashboard from '../pages/Dashboard';
 import Login from "../pages/Login";
 import Profile from "../pages/Profile";

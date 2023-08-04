@@ -23,6 +23,8 @@ export default function Sidebar() {
             type: `addCourse`
         }))
     }
+
+    let filteredCourses = coursesState?.courses?.filter(f => f.short.toLowerCase().includes(filter) || f.title.toLowerCase().includes(filter) || filter === '')
     
     return (
         <aside>
@@ -46,15 +48,16 @@ export default function Sidebar() {
             </div>
             <nav>
                 <ul>
-                    {coursesState?.courses?.filter(f => f.short.toLowerCase().includes(filter) || f.title.toLowerCase().includes(filter) || filter === '').map((course) => {
+                    {filteredCourses.length > 0 ? filteredCourses.map((course) => {
                         return (
                             <li key={course.courseID}>
                                 <NavLink className="Link" to={"/course/" + course.courseID}>
                                     {course.short} - {course.title}
                                 </NavLink>
                             </li>
-                        )
-                    })}
+                        )})
+                        : <div>No courses</div>
+                    }
                 </ul>
             </nav>
         </aside>

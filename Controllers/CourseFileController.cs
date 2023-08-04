@@ -128,9 +128,19 @@ public static class CourseFileController
                 File.Delete(Path.Combine(Directory.GetCurrentDirectory(),courseFile.Url));
             }
 
+            var reactions = db.Reactions.Where(s => s.CourseFileID == courseFile.CourseFileID);
+            foreach (var reaction in reactions) {
+                db.Reactions.Remove(reaction);
+            }
+
             var comments = db.Comments.Where(s => s.CourseFileID == courseFileID);
             foreach (var comment in comments) {
                 db.Comments.Remove(comment);
+
+                var commentReactions = db.Reactions.Where(s => s.CommentID == comment.CommentID);
+                foreach (var commentReaction in commentReactions) {
+                    db.Reactions.Remove(commentReaction);
+                }
             }
 
             var logs = db.Logs.Where(s => s.CourseFileID == courseFileID);

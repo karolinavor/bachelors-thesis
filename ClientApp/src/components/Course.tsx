@@ -13,7 +13,9 @@ import uploadIcon from "../assets/upload.svg"
 import likeBlueIcon from "../assets/like-blue.svg"
 import dislikeBlueIcon from "../assets/dislike-blue.svg"
 import { toastNotificationAdd } from '../store/reducers/toastNotificationsSlice';
-import { fetchCourse, fetchCourseComments, fetchCourseFiles } from '../store/reducers/courseSlice';
+import { FetchNumberOfFiles, fetchCourse, fetchCourseComments, fetchCourseFiles } from '../store/reducers/courseSlice';
+import closeIcon from "../assets/close.svg"
+import { courses } from '../store/reducers/coursesSlice';
 
 export default function Course() {
 
@@ -25,6 +27,7 @@ export default function Course() {
     const userState = useSelector((state: RootState) => state.user)
 
     const [error, setError] = useState(null);
+    const [filter, setFilter] = useState("")
 
     useEffect(() => {
         getCourseData()
@@ -50,7 +53,7 @@ export default function Course() {
             setError(true)
         }
 
-        let responseComments = await dispatch(fetchCourseComments(parseInt(courseID)))
+        let responseComments = await dispatch(fetchCourseComments({id: parseInt(courseID), showItems: 5}))
         if (responseComments.meta.requestStatus === "rejected") {
             setError(true)
         }
@@ -153,7 +156,7 @@ export default function Course() {
                   customDuration: 5000,
                 })
             );
-            dispatch(fetchCourseComments(parseInt(courseID)))
+            dispatch(fetchCourseComments({id: parseInt(courseID), showItems: 5}))
         } else {
             dispatch(
                 toastNotificationAdd({
@@ -200,9 +203,20 @@ export default function Course() {
                         <section>
                             <h2 className="mb-1 flex">
                                 File system
-                            </h2>
+                        </h2>
+                        <div className="SearchInput">
+                            <input
+                                type="text"
+                                value={filter}
+                                onChange={event => setFilter(event.target.value.toLowerCase())}
+                                placeholder='Filter files..'
+                            />
+                            <button onClick={() => setFilter("")}>
+                                <img src={closeIcon} alt="Close icon" width="16" height="16" />
+                            </button>
+                        </div>
                             <div className="Table">
-                                {courseState?.files?.length > 0 ? courseState?.files?.map((file: FileType, index) => 
+                                {courseState?.files?.length > 0 ? courseState?.files?.filter((f, index) => f.name.toLowerCase().includes(filter) || f.filetype.toLowerCase().includes(filter) || filter === '').map((file: FileType, index) => 
                                     <Link className="Table-row" key={index} to={"file/" + file.courseFileID}>
                                         <div>{file.name}.{file.filetype}</div>
                                         <div className="flex gap-5">
@@ -237,6 +251,11 @@ export default function Course() {
                                         />
                                     )}
                                 </div>
+                                {(courseState.comments.length < courseState.numberOfComments && courseState.numberOfComments > 5) &&
+                                    <button className="Button mt-1" onClick={() =>
+                                        dispatch(fetchCourseComments({id: parseInt(courseID), showItems: courseState.comments.length + 5}))}>Show more comments
+                                    </button>
+                                }
                             </section>
                         </div>
                     </div>

@@ -78,10 +78,15 @@ public static class CourseController
             {
                 return Results.NotFound();
             }
-
+            
             var comments = db.Comments.Where(s => s.CourseID == courseID);
             foreach (var comment in comments) {
                 db.Comments.Remove(comment);
+                
+                var reactions = db.Reactions.Where(s => s.CommentID == comment.CommentID);
+                foreach (var reaction in reactions) {
+                    db.Reactions.Remove(reaction);
+                }
             }
 
             var files = db.CourseFiles.Where(s => s.CourseID == courseID);
@@ -90,6 +95,16 @@ public static class CourseController
                 var fileComments = db.Comments.Where(s => s.CourseFileID == file.CourseFileID);
                 foreach (var fileComment in fileComments) {
                     db.Comments.Remove(fileComment);
+
+                    var reactions = db.Reactions.Where(s => s.CommentID == fileComment.CommentID);
+                    foreach (var reaction in reactions) {
+                        db.Reactions.Remove(reaction);
+                    }
+                }
+                
+                var fileReactions = db.Reactions.Where(s => s.CourseFileID == file.CourseFileID);
+                foreach (var fileReaction in fileReactions) {
+                    db.Reactions.Remove(fileReaction);
                 }
                 db.CourseFiles.Remove(file);
             }

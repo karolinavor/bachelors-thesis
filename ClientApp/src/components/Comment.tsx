@@ -10,8 +10,8 @@ import deleteIcon from "../assets/delete.svg"
 import likeIcon from '../assets/like.svg'
 import dislikeIcon from '../assets/dislike.svg'
 import { toastNotificationAdd } from "../store/reducers/toastNotificationsSlice";
-import { fetchFile, fetchFileComments } from "../store/reducers/fileSlice";
-import { fetchCourse, fetchCourseComments } from "../store/reducers/courseSlice";
+import { fetchFileComments } from "../store/reducers/fileSlice";
+import { fetchCourseComments } from "../store/reducers/courseSlice";
 import { fetchDashboardComments } from "../store/reducers/dashboardSlice";
 
 type CommentTypeExtended = {
@@ -61,9 +61,9 @@ export default function Comment({ comment, showCommentCategory, limitLines }: Co
         })
       );
       if (window.location.pathname.includes("file/")) {
-        dispatch(fetchFileComments(comment.courseFileID))
+        dispatch(fetchFileComments({id: comment.courseFileID, showItems: 5}))
       } else if (window.location.pathname.includes("course/")) {
-        dispatch(fetchCourseComments(comment.courseID))
+        dispatch(fetchCourseComments({id: comment.courseID, showItems: 5}))
       } else if (window.location.pathname.includes("dashboard")) {
         dispatch(fetchDashboardComments())
       }

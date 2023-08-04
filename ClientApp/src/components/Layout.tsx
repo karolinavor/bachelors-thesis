@@ -1,12 +1,11 @@
 import React, { useEffect } from 'react';
 import { Outlet, useNavigate } from 'react-router-dom';
-import Header from '../components/Header/Header';
-import Footer from '../components/Footer';
-import Sidebar from '../components/Sidebar';
+import Header from './Header/Header';
+import Footer from './Footer';
+import Sidebar from './Sidebar';
 import { useDispatch } from 'react-redux';
 import { AppDispatch } from '../store/store';
 import { fetchUser } from '../store/reducers/userSlice';
-import { UserType } from '../types/types';
 
 export default function Layout() {
 

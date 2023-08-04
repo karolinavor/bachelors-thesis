@@ -10,6 +10,11 @@ namespace BachelorThesis.Controllers;
 
 public static class CommentController
 {
+    public class commentRequest
+    {
+        public int ShowComments {get;set;}
+    }
+
     public static void MapCommentControllerRoutes(this WebApplication app)
     {
         app.MapPost("api/course/{courseID}/comments/add", async (StudyDb db, Comment comment, int courseID, HttpContext context) =>
@@ -108,24 +113,22 @@ public static class CommentController
             if (comment is null) return Results.NotFound();
             db.Comments.Remove(comment);
 
-            var log = new Log();
-            log.UserID = user.UserID;
-            log.Event = LogEvent.CommentDeleted;
-            log.DateAdded = DateTime.Now;
-            log.CommentID = comment.CommentID;
-            log.Read = false;
-            await db.Logs.AddAsync(log);
-
+            var reactions = db.Reactions.Where(s => s.CommentID == comment.CommentID);
+            foreach (var reaction in reactions) {
+                db.Reactions.Remove(reaction);
+            }
+            
             await db.SaveChangesAsync();
             return Results.Ok();
         }).RequireAuthorization();
 
-        app.MapGet("api/course/{courseID}/comments", async (StudyDb db, int courseID, HttpContext context) =>
+        app.MapPost("api/course/{courseID}/comments", async (StudyDb db, int courseID, HttpContext context, commentRequest commentRequest) =>
         {
             var user = db.Users.SingleOrDefault(u => u.Email == context.User.FindFirstValue("preferred_username"));
             if (user is null) return Results.NotFound();
 
-            var comments = db.Comments.Where(s => s.CourseID == courseID && s.CourseFileID == 0).OrderByDescending(s => s.DateAdded);
+            var numberOfComments = db.Comments.Where(s => s.CourseID == courseID && s.CourseFileID == 0).Count();
+            var comments = db.Comments.Where(s => s.CourseID == courseID && s.CourseFileID == 0).OrderByDescending(s => s.DateAdded).Take(commentRequest.ShowComments);
             if (comments is null) return Results.NotFound();
             foreach (var comment in comments)
             {
@@ -144,16 +147,22 @@ public static class CommentController
                     comment.Reacted = ReactedType.None;
                 }
             }
+
+            var result = new {
+                numberOfComments,
+                comments = comments
+            };
             await db.SaveChangesAsync();
-            return Results.Ok(comments);
+            return Results.Ok(result);
         }).RequireAuthorization();
 
-        app.MapGet("api/file/{courseFileID}/comments", async (StudyDb db, int courseFileID, HttpContext context) =>
+        app.MapPost("api/file/{courseFileID}/comments", async (StudyDb db, int courseFileID, HttpContext context, commentRequest commentRequest) =>
         {
             var user = db.Users.SingleOrDefault(u => u.Email == context.User.FindFirstValue("preferred_username"));
             if (user is null) return Results.NotFound();
 
-            var comments = db.Comments.Where(s => s.CourseFileID == courseFileID).OrderByDescending(s => s.DateAdded);
+            var numberOfComments = db.Comments.Where(s => s.CourseFileID == courseFileID).Count();
+            var comments = db.Comments.Where(s => s.CourseFileID == courseFileID).OrderByDescending(s => s.DateAdded).Take(commentRequest.ShowComments);
             var file = db.CourseFiles.SingleOrDefault(s => s.CourseFileID == courseFileID);
             if (comments is null) return Results.NotFound();
             foreach (var comment in comments)
@@ -174,8 +183,12 @@ public static class CommentController
                     comment.Reacted = ReactedType.None;
                 }
             }
+            var result = new {
+                numberOfComments,
+                comments = comments
+            };
             await db.SaveChangesAsync();
-            return Results.Ok(comments);
+            return Results.Ok(result);
         }).RequireAuthorization();
 
         app.MapGet("api/comments/latest", async (StudyDb db, HttpContext context) =>
