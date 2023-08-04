@@ -1,18 +1,25 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit"
-import { UserType } from "../../types/types"
+import { CommentType, FileType, UserType } from "../../types/types"
 
 export type UserLoading = `idle` | 'pending'
 
-export interface UserSliceState extends UserType {
+export interface UserSliceState {
   loading: UserLoading,
+  user: UserType,
+  comments: CommentType[],
+  files: FileType[]
 }
 
 export const initialUserState: UserSliceState = {
   loading: `idle`,
-  userID: 0,
-  username: "",
-  email: "",
-  isAdmin: false
+  user: {
+    userID: 0,
+    username: "",
+    email: "",
+    isAdmin: false
+  },
+  comments: [],
+  files: []
 }
 
 export const fetchUser = createAsyncThunk(

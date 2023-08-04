@@ -42,7 +42,7 @@ export default function NewsPage() {
         <>
             <section>
                 <h1>News</h1>
-                {userState.isAdmin &&
+                {userState?.user?.isAdmin &&
                     <div className="Button-row">
                         <button className="Button" onClick={() => openAddNewsModal()}>
                             <img src={addIcon} alt="Add icon" />

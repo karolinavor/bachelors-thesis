@@ -18,6 +18,10 @@ namespace BachelorThesis.Controllers;
 
 public static class UserController
 {
+    class result {
+        public User user;
+    }
+    
     public static void MapUserControllerRoutes(this WebApplication app)
     {
         app.MapGet("api/user", async (StudyDb db, HttpContext context) =>
@@ -32,8 +36,17 @@ public static class UserController
                 } else {
                     user.IsAdmin = false;
                 }
+
+            var comments = db.Comments.Where(u => u.UserID == user.UserID);
+            var files = db.CourseFiles.Where(u => u.UserID == user.UserID);
+            
+            var result = new {
+                user,
+                comments,
+                files
+            };
             await db.SaveChangesAsync();
-            return Results.Ok(user);
+            return Results.Ok(result);
         }).RequireAuthorization();
 
         app.MapGet("api/user/{userID}/get", async (StudyDb db, int userID, HttpContext context) =>

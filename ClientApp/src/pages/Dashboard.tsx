@@ -65,7 +65,7 @@ export default function Dashboard() {
             <div className="Homepage-grid">
                 <div>
                     <h2>News</h2>
-                    {userState.isAdmin &&
+                    {userState?.user?.isAdmin &&
                         <div className="Button-row">
                             <button className="Button" onClick={() => openAddNewsModal()}>
                                 <img src={addIcon} alt="Add icon" />

@@ -97,7 +97,7 @@ export default function Comment({ comment, showCommentCategory, limitLines }: Co
         <p>{comment.commentText}</p>
       </div>
       <div className="Button-row mb-0 mt-1">
-        {userState?.isAdmin &&
+        {(userState?.user?.isAdmin || userState?.user?.userID === comment.userID) &&
           <button className="Button" onClick={() => openDeleteCommentModal()}>
             <img src={deleteIcon} alt="Delete icon" width="16" height="16" />
           </button>

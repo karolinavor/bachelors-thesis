@@ -35,7 +35,7 @@ export default function News({ news }: NewProps) {
     
     return (
         <div className="New">
-             {userState.isAdmin &&
+             {userState?.user?.isAdmin &&
                 <div className="Button-row mb-0">
                     <button className="Button mb-0" onClick={() => openEditNewsModal()}>
                         Edit news

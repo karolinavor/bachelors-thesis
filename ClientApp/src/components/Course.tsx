@@ -172,7 +172,7 @@ export default function Course() {
                 <section>
                     <h1>{courseState?.short} - {courseState?.title}</h1>
                     <div className="Button-row">
-                            {userState.isAdmin &&
+                            {userState?.user?.isAdmin &&
                             <>
                                 <button className="Button" onClick={() => openEditCourseModal()}>
                                     <img src={editIcon} alt="Edit icon" />

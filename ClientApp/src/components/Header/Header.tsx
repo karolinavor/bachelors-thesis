@@ -48,7 +48,7 @@ export default function Header() {
                 <div className="Header-menu">
                     <NavLink className="Link" to="/profile">
                         <img src={userWhiteIcon} alt="user" width="21" height="21" />
-                        <span className="Button-text">{userState?.username}</span>
+                        <span className="Button-text">{userState?.user?.username}</span>
                     </NavLink>
                     <button className="Header-notifications Link" onClick={() => setNotificationsOpen(!notificationsOpen)}>
                         <div className={`Header-bell flex ${unreadNotifications ? 'Header-bell--unread' : 'Header-bell'}`}>

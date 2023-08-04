@@ -228,7 +228,7 @@ export default function File() {
                         <img src={downloadIcon} alt="Download icon" />
                         Download
                     </button>
-                    {userState.isAdmin &&
+                    {(userState?.user?.isAdmin || userState?.user?.userID === fileState.userID) &&
                         <button className="Button" onClick={() => openDeleteFileModal()}>
                             <img src={deleteIcon} alt="Delete icon" />
                             Delete
