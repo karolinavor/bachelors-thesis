@@ -6,7 +6,6 @@ import { AppDispatch } from '../../store/store'
 import { ModalInterface } from './Modal'
 import { fetchCourses } from '../../store/reducers/coursesSlice'
 import { toastNotificationAdd } from '../../store/reducers/toastNotificationsSlice'
-import { fetchCourse } from '../../store/reducers/courseSlice'
 
 export default function EditCourse(props: PropsWithChildren<ModalInterface>) {
 	const dispatch: AppDispatch = useDispatch()
@@ -20,7 +19,7 @@ export default function EditCourse(props: PropsWithChildren<ModalInterface>) {
 			method: "DELETE"
 		});
 		if (response.status === 200) {
-			window.location.href = "/";
+			window.location.href = "/dashboard";
 			dispatch(fetchCourses())
 			dispatch(
 				toastNotificationAdd({

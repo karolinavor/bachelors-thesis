@@ -11,11 +11,11 @@ export default function Profile() {
             <section>
                 <h1>Profile Information</h1>
                 <div>
-                    <div>Username</div>
-                    <div>{userState?.username}</div>
-                    <div>Email</div>
-                    <div>{userState?.email}</div>
-                    <div>Profile</div>
+                    <div><b>Username</b></div>
+                    <div className="mb-1">{userState?.username}</div>
+                    <div><b>Email</b></div>
+                    <div className="mb-1">{userState?.email}</div>
+                    <div><b>Role</b></div>
                     <div>{userState?.isAdmin ? "Admin" : "User"}</div>
                 </div>
             </section>

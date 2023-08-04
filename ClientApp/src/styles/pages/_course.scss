@@ -2,17 +2,4 @@
   display: flex;
   flex-direction: column;
   gap: 2rem;
-
-  @include media(xl) {
-    flex-direction: row;
-    
-    & > section {
-      width: 100%;
-    }
-  
-    & > div {
-      min-width: 500px;
-      max-width: 700px;
-    }
-  }
 }

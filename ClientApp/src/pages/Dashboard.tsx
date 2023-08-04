@@ -8,25 +8,20 @@ import { modalOpen } from '../store/reducers/modalSlice';
 import { AppDispatch, RootState } from '../store/store';
 import addIcon from "../assets/add.svg"
 import { fetchLatestNews } from '../store/reducers/newsSlice';
-import { fetchDashboardComments } from '../store/reducers/dashboardSlice';
+import { fetchDashboardComments, fetchDashboardCourses, fetchDashboardFiles } from '../store/reducers/dashboardSlice';
 
 export default function Dashboard() {
 
     const dispatch: AppDispatch = useDispatch()
-    const [latestCourses, setLatestCourses] = useState<CourseType[]>([]);
-    const [latestFiles, setLatestFiles] = useState<FileType[]>([]);
 
-    const newsState = useSelector((state: RootState) => state.news)
     const userState = useSelector((state: RootState) => state.user)
     const dashboardState = useSelector((state: RootState) => state.dashboard)
+    const newsState = useSelector((state: RootState) => state.news)
 
     const [error, setError] = useState(null);
 
     useEffect(() => {
-        getNewsData()
-        getLatestComments()
-        getLatestCourses()
-        getLatestFiles()
+        getDashboardData()
     }, [])
 
     useEffect(() => {
@@ -34,33 +29,25 @@ export default function Dashboard() {
         setError(false);
     }, [error])
 
-    async function getNewsData() {
-        let responseCourse = await dispatch(fetchLatestNews())
-        if (responseCourse.meta.requestStatus === "rejected") {
+    async function getDashboardData() {
+        let responseNews = await dispatch(fetchLatestNews())
+        if (responseNews.meta.requestStatus === "rejected") {
             setError(true)
         }
-    }
 
-    async function getLatestComments() {
         let responseComments = await dispatch(fetchDashboardComments())
         if (responseComments.meta.requestStatus === "rejected") {
             setError(true)
         }
-    }
 
-    async function getLatestCourses() {
-        const response = await fetch('/api/courses/latest');
-        if (response.status === 200) {
-            const data = await response.json();
-            setLatestCourses(data)
+        let responseFiles = await dispatch(fetchDashboardFiles())
+        if (responseFiles.meta.requestStatus === "rejected") {
+            setError(true)
         }
-    }
 
-    async function getLatestFiles() {
-        const response = await fetch('/api/files/latest');
-        if (response.status === 200) {
-            const data = await response.json();
-            setLatestFiles(data)
+        let responseCourses = await dispatch(fetchDashboardCourses())
+        if (responseCourses.meta.requestStatus === "rejected") {
+            setError(true)
         }
     }
 
@@ -113,24 +100,28 @@ export default function Dashboard() {
                         </div>
                     </div>
                 }
-                {latestCourses.length > 0 &&
+                {dashboardState.courses.length > 0 &&
                     <div>
                         <h2>Latest courses</h2>
-                        {latestCourses?.map((course: CourseType, index) =>
-                            <div key={index}>
-                                <Link className="Link" to={"/course/" + course.courseID}>{course.short} - {course.title}</Link>
-                            </div>
-                        )}
+                        <ul>
+                            {dashboardState?.courses?.map((course: CourseType, index) =>
+                                <li key={index}>
+                                    <Link className="Link" to={"/course/" + course.courseID}>{course.short} - {course.title}</Link>
+                                </li>
+                            )}
+                        </ul>
                     </div>
                 }
-                {latestFiles.length > 0 &&
+                {dashboardState?.files?.length > 0 &&
                     <div>
                         <h2>Latest files</h2>
-                        {latestFiles?.map((file: FileType, index) =>
-                            <div key={index}>
-                                <Link className="Link" to={`/course/${file.courseID}/file/` + file.courseFileID}>{file.name}.{file.filetype}</Link>
-                            </div>
-                        )}
+                        <ul>
+                            {dashboardState?.files?.map((file: FileType, index) =>
+                                <li key={index}>
+                                    <Link className="Link" to={`/course/${file.courseID}/file/` + file.courseFileID}>{file.name}.{file.filetype}</Link>
+                                </li>
+                            )}
+                        </ul>
                     </div>
                 }
             </div>

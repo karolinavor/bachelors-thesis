@@ -14,7 +14,7 @@ import leftIcon from "../assets/left.svg"
 import likeIcon from "../assets/like.svg"
 import dislikeIcon from "../assets/dislike.svg"
 import { toastNotificationAdd } from '../store/reducers/toastNotificationsSlice';
-import { fetchFile, fetchFileComments } from '../store/reducers/fileSlice';
+import { fetchFile, fetchFileComments, file } from '../store/reducers/fileSlice';
 
 export default function File() {
 
@@ -198,7 +198,21 @@ export default function File() {
           );
         }
     }
-
+    
+    function getFileSize() {
+        var fileSize = fileState?.size;
+        var kilobyte = fileSize/1000;
+        var megabyte = kilobyte/1000;
+        
+        if (megabyte > 1) {
+            return megabyte + " MB"
+        } else if (kilobyte > 1) {
+            return kilobyte + " KB"
+        } else if (fileSize) {
+            return fileSize + " B"
+        }
+    }
+    
     return (
         <>
             <div className="Button-row">
@@ -248,11 +262,15 @@ export default function File() {
                     </div>
                     <div>
                         <div><b>Size</b></div>
-                        <div>{fileState?.size} B</div>
+                        <div>{getFileSize()}</div>
                     </div>
                     <div>
                         <div><b>Number of downloads</b></div>
                         <div>{fileState?.numberOfDownloads}</div>
+                    </div>
+                    <div>
+                        <div><b>Description</b></div>
+                        <div>{fileState?.description}</div>
                     </div>
                 </div>
             </section>
@@ -260,8 +278,8 @@ export default function File() {
                 <h2>Comments</h2>
                 <form onSubmit={event => addNewComment(event)} className="flex-column">
                     <div>
-                        <label htmlFor="content">Comment:</label>
-                        <textarea id="content" required></textarea>
+                        <label htmlFor="content">Comment - max. 400 characters</label>
+                        <textarea id="content" required maxLength={400}></textarea>
                     </div>
                     <div className="Button-row">
                         <button className="Button" type="submit">Send comment</button>

@@ -57,6 +57,7 @@ public static class CourseFileController
             courseFile.Size = Int32.Parse(context.Request.Form["size"]);
             courseFile.Filetype = context.Request.Form["filetype"];
             courseFile.NotificationSet = false;
+            courseFile.Description = context.Request.Form["description"];
             courseFile.Url = $"FileSystem/course_{courseID}/file_{courseFile.CourseID}.{courseFile.Filetype}";
             courseFile.NumberOfDownloads = 0;
             db.CourseFiles.Add(courseFile);
@@ -127,13 +128,15 @@ public static class CourseFileController
                 File.Delete(Path.Combine(Directory.GetCurrentDirectory(),courseFile.Url));
             }
 
-            var log = new Log();
-            log.UserID = user.UserID;
-            log.Event = LogEvent.CourseFileDeleted;
-            log.DateAdded = DateTime.Now;
-            log.CourseFileID = courseFile.CourseFileID;
-            log.Read = false;
-            await db.Logs.AddAsync(log);
+            var comments = db.Comments.Where(s => s.CourseFileID == courseFileID);
+            foreach (var comment in comments) {
+                db.Comments.Remove(comment);
+            }
+
+            var logs = db.Logs.Where(s => s.CourseFileID == courseFileID);
+            foreach (var log in logs) {
+                db.Logs.Remove(log);
+            }
 
             await db.SaveChangesAsync();
             return Results.Ok();
@@ -168,7 +171,7 @@ public static class CourseFileController
 
         app.MapGet("api/files/latest", async (StudyDb db) =>
         {
-            return await db.CourseFiles.OrderByDescending(s => s.DateAdded).Take(5).ToListAsync();
+            return await db.CourseFiles.OrderByDescending(s => s.DateAdded).Take(10).ToListAsync();
         }).RequireAuthorization();
     }
 }

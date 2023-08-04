@@ -57,12 +57,12 @@ export default function EditCourse(props: PropsWithChildren<ModalInterface>) {
     <div>
       <form onSubmit={event => submitModal(event)} className="flex-column">
           <div>
-              <label htmlFor="name">Course name</label>
-              <input id="name" type="text" required defaultValue={courseState?.title}></input>
+              <label htmlFor="name">Course name - max. 45 characters</label>
+              <input id="name" type="text" required defaultValue={courseState?.title} maxLength={45}></input>
           </div>
           <div>
-              <label htmlFor="short">Course short</label>
-              <input id="short" type="text" required defaultValue={courseState?.short}></input>
+              <label htmlFor="short">Course short - max. 5 characters</label>
+              <input id="short" type="text" required defaultValue={courseState?.short} maxLength={5}></input>
           </div>
           <button className="Button" type="submit">Submit</button>
       </form>

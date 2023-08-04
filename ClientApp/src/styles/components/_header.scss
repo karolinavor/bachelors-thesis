@@ -1,8 +1,11 @@
 .Header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  gap: 1rem;
+  .container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 1rem;
+  }
+  
 
   @include media(xxs, sm) {
     &.Header-hamburger--open ~ aside {

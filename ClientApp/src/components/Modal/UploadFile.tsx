@@ -20,8 +20,9 @@ export default function UploadFile(props: PropsWithChildren<ModalInterface>) {
     for (const file of files) {
       const formData = new FormData();
       formData.append("file", file);
-      formData.append("name", file.name.split('.')[0]);
-      formData.append("filetype", file.name.split('.')[1]);
+      formData.append("name", file.name.split('.').slice(0, -1).join('.'));
+      formData.append("filetype", file.name.split('.').pop());
+      formData.append("description", form[1].value);
       formData.append("size", file.size);
 
       const response = await fetch(`/api/course/${props.courseID}/file/add`, {
@@ -53,10 +54,12 @@ export default function UploadFile(props: PropsWithChildren<ModalInterface>) {
 
   return (
     <div>
-      <p className='mb-1'>Allowed file extensions are jpeg, docx, pdf, txt.</p>
       <form onSubmit={(e) => submitModal(e)}>
+        <label htmlFor="file">Please name your files meaningfully. The file names are used in the application. Maximum size of file is 28.6 MB.</label>
         <input name="file" id="file" type="file" required />
-        <button type='submit' className='Button Button--green'>Upload</button>
+        <label htmlFor="description">Description - max. 400 characters</label>
+        <textarea name="description" id="description" maxLength={400} />
+        <button type='submit' className="Button Button--green">Upload</button>
       </form>
     </div>
   )

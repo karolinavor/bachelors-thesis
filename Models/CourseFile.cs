@@ -18,5 +18,6 @@ namespace BachelorThesis.Models
         public int Likes { get; set; }
         public int Dislikes { get; set; }
         public ReactedType Reacted { get; set; }
+        public string Description { get; set; }
     }
 }

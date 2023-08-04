@@ -50,8 +50,8 @@ export default function AddNews() {
     <div>
       <form onSubmit={event => submitModal(event)} className="flex-column">
           <div>
-              <label htmlFor="content">News content</label>
-              <textarea id="content" required></textarea>
+              <label htmlFor="content">News content - max. 400 characters</label>
+              <textarea id="content" required maxLength={400}></textarea>
           </div>
           <button className="Button" type="submit">Submit</button>
       </form>

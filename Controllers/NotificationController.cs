@@ -68,7 +68,7 @@ public static class NotificationController
                 notification.DateAdded = DateTime.Now;
                 await db.Notifications.AddAsync(notification);
                 await db.SaveChangesAsync();
-                return Results.Created($"/", notification);
+                return Results.Created($"/dashboard", notification);
             } else {
                 var notificationToDelete = await db.Notifications.FindAsync(foundNotifications.NotificationID);
                 db.Notifications.Remove(notificationToDelete);

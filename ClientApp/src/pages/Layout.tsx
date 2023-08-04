@@ -27,10 +27,12 @@ export default function Layout() {
     return (
         <div className="Page">
             <Header />
-            <Sidebar />
-            <main>
-                <Outlet />
-            </main>
+            <div className="container">
+                <Sidebar />
+                <main>
+                    <Outlet />
+                </main>
+            </div>
             <Footer />
         </div>
     )

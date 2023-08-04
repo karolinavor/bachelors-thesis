@@ -1,6 +1,9 @@
 html {
   font-size: $font-size;
-  background-color: $light_blue;
+
+  @include media(2K) {
+    font-size: $font-size-2K;
+  }
 }
 
 body {
@@ -34,32 +37,52 @@ header, footer {
   color: $white;
 
   .Link {
-    &:hover {
+    color: $white;
+    text-decoration: none;
+
+    &:hover, &.active {
       color: $white;
     }
-    
+
     &.active {
       font-weight: 700;
-      color: $white;
+      text-decoration: none;
     }
   }
+}
+
+header .Link:hover {
+  text-decoration: none;
+}
+
+footer .Link:hover {
+  text-decoration: underline;
+  text-underline-offset: 2px;
 }
 
 main {
   background-color: $white;
 }
 
-header, footer, main, aside {
+main, aside {
   padding: 1rem;
 }
 
 ul {
   list-style: none;
   padding: 0;
+
+  li {
+    line-height: 1.5rem;
+  }
 }
 
 a, p {
   margin: 0;
+}
+
+p {
+  line-height: 1.3rem;
 }
 
 img {

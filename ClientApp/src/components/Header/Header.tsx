@@ -39,32 +39,34 @@ export default function Header() {
 
     return (
         <header className={"Header" + (hamburgerOpen ? " Header-hamburger--open" : "") + (notificationsOpen ? " Header-notifications--open" : "")}>
-            <div className="Header-logo">
-                <Link className="Link" to={RoutesList.dashboard.url}>
-                    <img src={logoIcon} alt="Logo icon" width="30" height="30" />
-                </Link>
-            </div>
-            <div className="Header-menu">
-                <NavLink className="Link" to="/profile">
-                    <img src={userWhiteIcon} alt="user" width="21" height="21" />
-                    <span className="Button-text">{userState?.username}</span>
-                </NavLink>
-                <button className="Header-notifications Link" onClick={() => setNotificationsOpen(!notificationsOpen)}>
-                    <div className={`Header-bell flex ${unreadNotifications ? 'Header-bell--unread' : 'Header-bell'}`}>
-                        <img src={bellIcon} alt="bell icon" width="21" height="21" />
-                    </div>
-                    <span className="Button-text">Notifications</span>
-                    {notificationsOpen && <HeaderNotifications />}
-                </button>
-                <form method="POST" action="/api/logout">
-                    <button className="Link" type="submit">
-                        <img src={logoutIcon} alt="logout" width="21" height="21" />
-                        <span className="Button-text">Logout</span>
+            <div className="container">
+                <div className="Header-logo">
+                    <Link className="Link" to={RoutesList.dashboard.url}>
+                        <img src={logoIcon} alt="Logo icon" width="30" height="30" />
+                    </Link>
+                </div>
+                <div className="Header-menu">
+                    <NavLink className="Link" to="/profile">
+                        <img src={userWhiteIcon} alt="user" width="21" height="21" />
+                        <span className="Button-text">{userState?.username}</span>
+                    </NavLink>
+                    <button className="Header-notifications Link" onClick={() => setNotificationsOpen(!notificationsOpen)}>
+                        <div className={`Header-bell flex ${unreadNotifications ? 'Header-bell--unread' : 'Header-bell'}`}>
+                            <img src={bellIcon} alt="bell icon" width="21" height="21" />
+                        </div>
+                        <span className="Button-text">Notifications</span>
+                        {notificationsOpen && <HeaderNotifications />}
                     </button>
-                </form>
-                <button className="Header-hamburger Link" onClick={() => setHamburgerOpen(!hamburgerOpen)} >
-                    <img src={menuIcon} alt="Menu icon" width="21" height="21" />
-                </button>
+                    <form method="POST" action="/api/logout" className="flex">
+                        <button className="Link" type="submit">
+                            <img src={logoutIcon} alt="logout" width="21" height="21" />
+                            <span className="Button-text">Logout</span>
+                        </button>
+                    </form>
+                    <button className="Header-hamburger Link" onClick={() => setHamburgerOpen(!hamburgerOpen)} >
+                        <img src={menuIcon} alt="Menu icon" width="21" height="21" />
+                    </button>
+                </div>
             </div>
         </header>
     )

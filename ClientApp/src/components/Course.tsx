@@ -222,8 +222,8 @@ export default function Course() {
                                 <h2 className='mt-0'>Course comments</h2>
                                 <form onSubmit={event => addNewComment(event)} className="flex-column">
                                     <div>
-                                        <label htmlFor="content">Comment:</label>
-                                        <textarea id="content" required></textarea>
+                                        <label htmlFor="content">Comment - max. 400 characters</label>
+                                        <textarea id="content" required maxLength={400}></textarea>
                                     </div>
                                     <div className="Button-row">
                                         <button className="Button" type="submit">Send comment</button>

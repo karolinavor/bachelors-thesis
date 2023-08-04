@@ -23,7 +23,7 @@ public static class ReactionController
                     reaction.ReactionType = ReactionType.Like;
                     await db.Reactions.AddAsync(reaction);
                     await db.SaveChangesAsync();
-                    return Results.Created($"/", reaction);
+                    return Results.Created($"/dashboard", reaction);
                 } else {
                     if (foundReaction.ReactionType == ReactionType.Like) {
                         db.Reactions.Remove(foundReaction);
@@ -41,7 +41,7 @@ public static class ReactionController
                     reaction.ReactionType = ReactionType.Like;
                     await db.Reactions.AddAsync(reaction);
                     await db.SaveChangesAsync();
-                    return Results.Created($"/", reaction);
+                    return Results.Created($"/dashboard", reaction);
                 } else {
                     if (foundReaction.ReactionType == ReactionType.Like) {
                         db.Reactions.Remove(foundReaction);
@@ -69,7 +69,7 @@ public static class ReactionController
                     reaction.ReactionType = ReactionType.Dislike;
                     await db.Reactions.AddAsync(reaction);
                     await db.SaveChangesAsync();
-                    return Results.Created($"/", reaction);
+                    return Results.Created($"/dashboard", reaction);
                 } else {
                     if (foundReaction.ReactionType == ReactionType.Dislike) {
                         db.Reactions.Remove(foundReaction);
@@ -87,7 +87,7 @@ public static class ReactionController
                     reaction.ReactionType = ReactionType.Dislike;
                     await db.Reactions.AddAsync(reaction);
                     await db.SaveChangesAsync();
-                    return Results.Created($"/", reaction);
+                    return Results.Created($"/dashboard", reaction);
                 } else {
                     if (foundReaction.ReactionType == ReactionType.Dislike) {
                         db.Reactions.Remove(foundReaction);

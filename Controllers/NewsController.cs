@@ -39,7 +39,7 @@ public static class NewsController
             await db.Logs.AddAsync(log);
 
             await db.SaveChangesAsync();
-            return Results.Created("/", news);
+            return Results.Created("/dashboard", news);
         }).RequireAuthorization();
 
         app.MapGet("api/news/{newsID}/get", async (StudyDb db, int newsID) =>

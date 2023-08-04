@@ -37,16 +37,19 @@ a, button {
 
   font-size: 1rem;
   cursor: pointer;
-  text-decoration: none;
 
-  &.active,
+  color: $dark_blue;
+
   &:hover {
     color: $dark_blue;
-    text-decoration: none;
+    text-decoration: underline;
+    text-underline-offset: 2px;
   }
 
   &.active {
     font-weight: 700;
+    text-decoration: underline;
+    text-underline-offset: 2px;
   }
 }
 

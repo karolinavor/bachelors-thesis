@@ -65,8 +65,8 @@ export default function EditNews(props: PropsWithChildren<ModalInterface>) {
     <div>
       <form onSubmit={event => submitModal(event)} className="flex-column">
           <div>
-              <label htmlFor="content">News content</label>
-              <textarea id="content" required defaultValue={news?.content} />
+              <label htmlFor="content">News content - max. 400 characters</label>
+              <textarea id="content" required defaultValue={news?.content} maxLength={400} />
           </div>
           <button className="Button" type="submit">Submit</button>
       </form>

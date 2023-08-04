@@ -23,11 +23,11 @@ export default function User() {
     return (
         <>
             <section>
-                <h1>User {user?.userID}</h1>
+                <h1>User Information</h1>
                 <div>
-                    <div>Username</div>
-                    <div>{user?.username}</div>
-                    <div>Email</div>
+                <div><b>Username</b></div>
+                    <div className="mb-1">{user?.username}</div>
+                    <div><b>Email</b></div>
                     <div>{user?.email}</div>
                 </div>
             </section>

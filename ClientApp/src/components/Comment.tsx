@@ -83,15 +83,15 @@ export default function Comment({ comment, showCommentCategory, limitLines }: Co
       <span className="Comment-picture">
         <img src={userIcon} alt="user" width="28" height="28" />
       </span>
-      <div>
-        <Link className="Link Comment-heading" to={"/user/" + comment.userID}>{comment.username}</Link>
+      <div className="Comment-heading">
+        <Link className="Link" to={"/user/" + comment.userID}>{comment.username}</Link>
         {showCommentCategory &&
           <>
           <span> in {comment.courseFileID > 0 ? "file " : "course "}</span>
             <Link className="Link" to={"/" + (comment.courseFileID > 0 ? `course/${comment.courseID}/file/${comment.courseFileID}` : `course/${comment.courseID}`)}>{comment.categoryName}</Link>
           </>
         }
-        <div>{getLocalTime(comment.dateAdded)} {getLocalDate(comment.dateAdded)}</div>
+        <div className="Comment-time">{getLocalTime(comment.dateAdded)} {getLocalDate(comment.dateAdded)}</div>
       </div>
       <div className={"Comment-content" + (limitLines ? " Comment-content--limited" : "")}>
         <p>{comment.commentText}</p>

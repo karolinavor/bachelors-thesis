@@ -15,7 +15,7 @@ export default function AddCourse() {
     const form = e.target;
     const formData = {
         title: form[0].value,
-        short: form[1].value,
+        short: form[1].value.toUpperCase(),
     }
 
     const response = await fetch(`/api/course/add`, {
@@ -51,12 +51,12 @@ export default function AddCourse() {
     <div>
       <form onSubmit={event => submitModal(event)} className="flex-column">
         <div>
-          <label htmlFor="name">Course name</label>
-          <input id="name" type="text" required></input>
+          <label htmlFor="name">Course name - max. 45 characters</label>
+          <input id="name" type="text" required maxLength={45}></input>
         </div>
         <div>
-          <label htmlFor="short">Course short</label>
-          <input id="short" type="text" required></input>
+          <label htmlFor="short">Course short - max. 5 characters</label>
+          <input id="short" type="text" required maxLength={5}></input>
         </div>
         <button className="Button" type="submit">Submit</button>
       </form>

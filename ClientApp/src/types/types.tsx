@@ -20,7 +20,8 @@ export type FileType = {
   numberOfDownloads: number,
   courseID: number,
   notificationSet: boolean,
-  username: string
+  username: string,
+  description: string
 }
 
 export type NewsType = {
