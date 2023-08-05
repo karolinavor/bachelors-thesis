@@ -13,18 +13,22 @@ Download and install NodeJS & npm
 
 https://nodejs.org/en/download
 
-Install .NET Core 7
+Install .NET Core 7 SDK
 
 https://dotnet.microsoft.com/en-us/download/dotnet/7.0
 
 On MacOS Silicon run command
 
-MacOS ARM64: sudo ln -s /usr/local/share/dotnet/x64/dotnet /usr/local/bin/
+MacOS ARM64: ```sudo ln -s /usr/local/share/dotnet/x64/dotnet /usr/local/bin/```
 
 Install Dotnet Entity Framework
 
-MacOS ARM64: dotnet tool install dotnet-ef --global -a arm64
-Windows: dotnet tool install --global dotnet-ef --version 7.0.9
+MacOS ARM64: ```dotnet tool install dotnet-ef --global -a arm64```
+Windows: dotnet ```tool install --global dotnet-ef --version 7.0.9```
+
+If you get error while installing Dotnet EF, try this command:
+
+Windows: ```dotnet nuget add source https://api.nuget.org/v3/index.json -n nuget.org```
 
 ## Build solution
 

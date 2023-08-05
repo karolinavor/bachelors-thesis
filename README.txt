@@ -13,7 +13,7 @@ Download and install NodeJS & npm
 
 https://nodejs.org/en/download
 
-Install .NET Core 7
+Install .NET Core 7 SDK
 
 https://dotnet.microsoft.com/en-us/download/dotnet/7.0
 
@@ -26,6 +26,10 @@ Install Dotnet Entity Framework
 MacOS ARM64: dotnet tool install dotnet-ef --global -a arm64
 Windows: dotnet tool install --global dotnet-ef --version 7.0.9
 
+If you get error while installing Dotnet EF, try this command:
+
+Windows: dotnet nuget add source https://api.nuget.org/v3/index.json -n nuget.org
+
 ## Build solution
 
 Open .sln file in Rider/Visual Studio and build. Application will automatically download frontend and backend packages.
@@ -34,10 +38,8 @@ Open .sln file in Rider/Visual Studio and build. Application will automatically 
 
 Before you start using application you need to create database.
 
-```
 dotnet ef migrations add InitialCreate 
 dotnet ef database update
-```
 
 ## Run project
 
