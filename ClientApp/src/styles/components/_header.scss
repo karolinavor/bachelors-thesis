@@ -87,6 +87,10 @@
       font-weight: 400;
 
       cursor: default;
+
+      .Link:hover {
+        text-decoration: underline;
+      }
     }
 
     .Header-notifications-list {

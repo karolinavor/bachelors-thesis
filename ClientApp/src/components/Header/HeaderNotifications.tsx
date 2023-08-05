@@ -23,7 +23,7 @@ export default function HeaderNotifications() {
             case 8: 
                 return (notif.courseFileID > 0 ?
                 <div className={!notif.read ? "unread" : "read"} key={index}>
-                        <span>New file comment in <a className="Link" href={`/course/${notif.courseID}/file/${notif.courseFileID}`}>{courseState.courses.find((c) => c.courseID === notif.courseID)?.title}</a>.</span>
+                        <span>New <a className="Link" href={`/course/${notif.courseID}/file/${notif.courseFileID}`}>file comment</a> in <a className="Link" href={`/course/${notif.courseID}}`}>{courseState.courses.find((c) => c.courseID === notif.courseID)?.title}</a>.</span>
                 </div> :
                 <div className={!notif.read ? "unread" : "read"} key={index}>
                     <span>New comment in course <a className="Link" href={`/course/${notif.courseID}`}>{courseState.courses.find((c) => c.courseID === notif.courseID).title}</a>.</span>

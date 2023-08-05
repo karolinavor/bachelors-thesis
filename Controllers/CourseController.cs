@@ -10,11 +10,14 @@ public static class CourseController
 {
     public static void MapCourseControllerRoutes(this WebApplication app)
     {
-        app.MapGet("api/course/{courseID}/get", async (StudyDb db, int courseID) =>
+        app.MapGet("api/course/{courseID}/get", async (StudyDb db, int courseID, HttpContext context) =>
         {
+            var user = db.Users.SingleOrDefault(u => u.Email == context.User.FindFirstValue("preferred_username"));
+            if (user is null) return Results.NotFound();
+            
             var course = await db.Courses.FindAsync(courseID);
             if (course is null) return Results.NotFound();
-            var notificationSet = db.Notifications.SingleOrDefault(s => s.CourseID == courseID);
+            var notificationSet = db.Notifications.SingleOrDefault(s => s.CourseID == courseID && s.UserID == user.UserID);
             if (notificationSet != null) {
                 course.NotificationSet = true;
             } else {

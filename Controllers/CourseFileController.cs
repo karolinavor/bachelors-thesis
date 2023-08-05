@@ -19,7 +19,7 @@ public static class CourseFileController
 
             var courseFile = await db.CourseFiles.FindAsync(courseFileID);
             if (courseFile is null) return Results.NotFound();
-            var notificationSet = db.Notifications.SingleOrDefault(s => s.CourseFileID == courseFileID);
+            var notificationSet = db.Notifications.SingleOrDefault(s => s.CourseFileID == courseFileID && s.UserID == user.UserID);
             if (notificationSet != null) {
                 courseFile.NotificationSet = true;
             } else {
