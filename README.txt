@@ -6,7 +6,7 @@ Download and install NodeJS & npm
 https://nodejs.org/en/download
 https://docs.npmjs.com/downloading-and-installing-node-js-and-npm
 
-Install .NET Core
+Install .NET Core 7
 
 https://dotnet.microsoft.com/en-us/download
 

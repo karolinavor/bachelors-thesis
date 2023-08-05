@@ -21,4 +21,4 @@ dotnet ef database update
 
 ## Run project
 
-Open .sln file in Rider/Visual Studio and click run button to start application. Application will automatically download frontend and backend packeges and then it will open in browser on port 44424.
+Open .sln file in Rider/Visual Studio and click run button to start application. Application will automatically download frontend and backend packages and then it will open in browser on port 44424.
