@@ -62,7 +62,7 @@ export default function Profile() {
                                     </div>
                                 </div>
                             </Link>
-                            {file.userID === userState.user.userID &&
+                            {(file.userID === userState.user.userID || userState.user.isAdmin) &&
                                 <button className="Button ml-1" onClick={() => openDeleteFileModal(file.courseFileID, file.courseID)}>
                                     <img src={deleteIcon} alt="Delete icon" />
                                 </button>

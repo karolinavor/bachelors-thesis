@@ -240,7 +240,7 @@ export default function Course() {
                                                 
                                             </div>
                                         </Link>
-                                        {file.userID === userState.user.userID &&
+                                        {(file.userID === userState.user.userID || userState.user.isAdmin) &&
                                             <button className="Button ml-1" onClick={() => openDeleteFileModal(file.courseFileID)}>
                                                 <img src={deleteIcon} alt="Delete icon" />
                                             </button>
