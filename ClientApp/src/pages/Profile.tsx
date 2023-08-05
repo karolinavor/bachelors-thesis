@@ -3,8 +3,8 @@ import { useDispatch, useSelector } from 'react-redux';
 import { AppDispatch, RootState } from '../store/store';
 import { CommentType, FileType } from '../types/types';
 import { Link } from 'react-router-dom';
-import likeBlueIcon from "../assets/like-blue.svg"
-import dislikeBlueIcon from "../assets/dislike-blue.svg"
+import likeBlackIcon from "../assets/like-black.svg"
+import dislikeBlackIcon from "../assets/dislike-black.svg"
 import Comment from "../components/Comment"
 import { fetchUser } from '../store/reducers/userSlice';
 import deleteIcon from "../assets/delete.svg";
@@ -56,9 +56,9 @@ export default function Profile() {
                                 <div className="flex align-center">{file.name}.{file.filetype}</div>
                                 <div className="flex gap-5">
                                     <div className="flex align-center gap-25">
-                                        <img src={likeBlueIcon} alt="Like icon" className="me-1" /> {file.likes ?? 0}</div>
+                                        <img src={likeBlackIcon} alt="Like icon" className="me-1" /> {file.likes ?? 0}</div>
                                     <div className="flex align-center gap-25">
-                                        <img src={dislikeBlueIcon} alt="Dislike icon" /> {file.dislikes ?? 0}
+                                        <img src={dislikeBlackIcon} alt="Dislike icon" /> {file.dislikes ?? 0}
                                     </div>
                                 </div>
                             </Link>

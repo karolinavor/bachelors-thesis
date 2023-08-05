@@ -10,8 +10,8 @@ import bellTicked from "../assets/bell-ticked.svg"
 import deleteIcon from "../assets/delete.svg"
 import editIcon from "../assets/edit.svg"
 import uploadIcon from "../assets/upload.svg"
-import likeBlueIcon from "../assets/like-blue.svg"
-import dislikeBlueIcon from "../assets/dislike-blue.svg"
+import likeBlackIcon from "../assets/like-black.svg"
+import dislikeBlackIcon from "../assets/dislike-black.svg"
 import { toastNotificationAdd } from '../store/reducers/toastNotificationsSlice';
 import { FetchNumberOfFiles, fetchCourse, fetchCourseComments, fetchCourseFiles } from '../store/reducers/courseSlice';
 import closeIcon from "../assets/close.svg"
@@ -233,9 +233,9 @@ export default function Course() {
                                             <div className="flex align-center">{file.name}.{file.filetype}</div>
                                             <div className="flex gap-5">
                                                 <div className="flex align-center gap-25">
-                                                    <img src={likeBlueIcon} alt="Like icon" className="me-1" /> {file.likes ?? 0}</div>
+                                                    <img src={likeBlackIcon} alt="Like icon" className="me-1" /> {file.likes ?? 0}</div>
                                                 <div className="flex align-center gap-25">
-                                                    <img src={dislikeBlueIcon} alt="Dislike icon" /> {file.dislikes ?? 0}
+                                                    <img src={dislikeBlackIcon} alt="Dislike icon" /> {file.dislikes ?? 0}
                                                 </div>
                                                 
                                             </div>
