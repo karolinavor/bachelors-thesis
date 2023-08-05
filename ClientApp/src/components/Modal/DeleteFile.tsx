@@ -28,7 +28,7 @@ export default function DeleteFile(props: PropsWithChildren<ModalInterface>) {
 				dispatch(fetchUser())
 				dispatch(modalClose())
 			} else if (props.refresh === "course") {
-				dispatch(fetchCourseFiles(props.courseFileID))
+				dispatch(fetchCourseFiles(props.courseID))
 				dispatch(modalClose())
 			} else {
 				window.location.href = `/course/${props.courseID}`;
