@@ -32,7 +32,8 @@ export interface ModalInterface {
   courseID?: number,
   courseFileID?: number,
   newsID?: number,
-  commentID?: number
+  commentID?: number,
+  refresh?: string
 }
 
 export default function ModalContainer(props: PropsWithChildren<ModalSliceState>) {
@@ -75,7 +76,7 @@ export default function ModalContainer(props: PropsWithChildren<ModalSliceState>
       case `deleteCourse`:
         return <DeleteCourse courseID={props.data.courseID ?? 0} />
       case `deleteFile`:
-        return <DeleteFile courseFileID={props.data.courseFileID ?? 0} courseID={props.data.courseID ?? 0}/>
+        return <DeleteFile courseFileID={props.data.courseFileID ?? 0} courseID={props.data.courseID ?? 0} refresh={props.data.refresh}/>
       case `deleteComment`:
         return <DeleteComment commentID={props.data.commentID ?? 0} courseFileID={props.data.courseFileID ?? 0} courseID={props.data.courseID ?? 0} />
       case `deleteNews`:

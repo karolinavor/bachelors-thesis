@@ -11,6 +11,20 @@
     display: flex;
     justify-content: space-between;
     padding: .75rem;
+    
+    & > * {
+      min-height: 32px;
+      
+      @include media(2K) {
+        min-height: 36px;
+      }
+    }
+    
+    & > a {
+      width: 100%;
+      display: flex;
+      justify-content: space-between;
+    }
   }
   
   a.Table-row:hover {

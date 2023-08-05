@@ -86,6 +86,17 @@ export default function Course() {
         }))
     }
 
+    async function openDeleteFileModal(courseFileID: number) {
+        dispatch(modalOpen({
+            type: `deleteFile`,
+            data: {
+                courseFileID: courseFileID,
+                courseID: parseInt(courseID),
+                refresh: "course"
+            }
+        }))
+    }
+
     async function toggleNotifications() {
         const formData = {
             courseID: courseID
@@ -217,18 +228,26 @@ export default function Course() {
                         </div>
                             <div className="Table">
                                 {courseState?.files?.length > 0 ? courseState?.files?.filter((f, index) => f.name.toLowerCase().includes(filter) || f.filetype.toLowerCase().includes(filter) || filter === '').map((file: FileType, index) => 
-                                    <Link className="Table-row" key={index} to={"file/" + file.courseFileID}>
-                                        <div>{file.name}.{file.filetype}</div>
-                                        <div className="flex gap-5">
-                                            <div className="flex align-center gap-25">
-                                                <img src={likeBlueIcon} alt="Like icon" className="me-1" /> {file.likes ?? 0}</div>
-                                            <div className="flex align-center gap-25">
-                                                <img src={dislikeBlueIcon} alt="Dislike icon" /> {file.dislikes ?? 0}
+                                    <div className="Table-row" key={index}>
+                                        <Link to={"file/" + file.courseFileID}>
+                                            <div className="flex align-center">{file.name}.{file.filetype}</div>
+                                            <div className="flex gap-5">
+                                                <div className="flex align-center gap-25">
+                                                    <img src={likeBlueIcon} alt="Like icon" className="me-1" /> {file.likes ?? 0}</div>
+                                                <div className="flex align-center gap-25">
+                                                    <img src={dislikeBlueIcon} alt="Dislike icon" /> {file.dislikes ?? 0}
+                                                </div>
+                                                
                                             </div>
-                                        </div>
-                                    </Link>
+                                        </Link>
+                                        {file.userID === userState.user.userID &&
+                                            <button className="Button ml-1" onClick={() => openDeleteFileModal(file.courseFileID)}>
+                                                <img src={deleteIcon} alt="Delete icon" />
+                                            </button>
+                                        }
+                                    </div>
                                 ) : 
-                                <div className="Table-row">No files</div>}
+                                <div className="Table-row"><div className="flex align-center">No files</div></div>}
                             </div>
                         </section>
                         <div>

@@ -234,3 +234,5 @@ _Pvt_Extensions
 FileSystem
 Migrations
 Study.db
+Study.db-wal
+Study.db-shm

@@ -7,7 +7,8 @@ export interface ModalSliceState {
     courseID?: number,
     newsID?: number,
     courseFileID?: number,
-    commentID?: number
+    commentID?: number,
+    refresh?: string
   } | null
 }
 
@@ -17,7 +18,8 @@ export interface ModalSliceOpenState {
     courseID?: number,
     newsID?: number,
     courseFileID?: number,
-    commentID?: number
+    commentID?: number,
+    refresh?: string
   } | null
 }
 

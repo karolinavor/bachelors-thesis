@@ -7,6 +7,8 @@ import likeBlueIcon from "../assets/like-blue.svg"
 import dislikeBlueIcon from "../assets/dislike-blue.svg"
 import Comment from "../components/Comment"
 import { fetchUser } from '../store/reducers/userSlice';
+import deleteIcon from "../assets/delete.svg";
+import {modalOpen} from "../store/reducers/modalSlice";
 
 export default function Profile() {
 
@@ -19,6 +21,17 @@ export default function Profile() {
 
     async function getUserData() {
         await dispatch(fetchUser())
+    }
+
+    async function openDeleteFileModal(courseFileID: number, courseID: number) {
+        dispatch(modalOpen({
+            type: `deleteFile`,
+            data: {
+                courseFileID: courseFileID,
+                courseID: courseID,
+                refresh: "profile"
+            }
+        }))
     }
 
     return (
@@ -38,18 +51,25 @@ export default function Profile() {
                 <h2>User files</h2>
                 <div className="Table">
                     {userState?.files?.length > 0 ? userState?.files?.map((file: FileType, index) => 
-                        <Link className="Table-row" key={index} to={"/course/"+file.courseID+"/file/" + file.courseFileID}>
-                            <div>{file.name}.{file.filetype}</div>
-                            <div className="flex gap-5">
-                                <div className="flex align-center gap-25">
-                                    <img src={likeBlueIcon} alt="Like icon" className="me-1" /> {file.likes ?? 0}</div>
-                                <div className="flex align-center gap-25">
-                                    <img src={dislikeBlueIcon} alt="Dislike icon" /> {file.dislikes ?? 0}
+                        <div className="Table-row" key={index}>
+                            <Link to={"/course/"+file.courseID+"/file/" + file.courseFileID}>
+                                <div className="flex align-center">{file.name}.{file.filetype}</div>
+                                <div className="flex gap-5">
+                                    <div className="flex align-center gap-25">
+                                        <img src={likeBlueIcon} alt="Like icon" className="me-1" /> {file.likes ?? 0}</div>
+                                    <div className="flex align-center gap-25">
+                                        <img src={dislikeBlueIcon} alt="Dislike icon" /> {file.dislikes ?? 0}
+                                    </div>
                                 </div>
-                            </div>
-                        </Link>
+                            </Link>
+                            {file.userID === userState.user.userID &&
+                                <button className="Button ml-1" onClick={() => openDeleteFileModal(file.courseFileID, file.courseID)}>
+                                    <img src={deleteIcon} alt="Delete icon" />
+                                </button>
+                            }
+                        </div>
                     ) : 
-                    <div className="Table-row">No files</div>}
+                    <div className="Table-row"><div className="flex align-center">No files</div></div>}
                 </div>
             </section>
             <section>

@@ -5,7 +5,8 @@ import { modalClose } from '../../store/reducers/modalSlice'
 import { AppDispatch } from '../../store/store'
 import { ModalInterface } from './Modal'
 import { toastNotificationAdd } from '../../store/reducers/toastNotificationsSlice'
-import { fetchCourse } from '../../store/reducers/courseSlice'
+import {fetchCourse, fetchCourseFiles} from '../../store/reducers/courseSlice'
+import {fetchUser} from "../../store/reducers/userSlice";
 
 export default function DeleteFile(props: PropsWithChildren<ModalInterface>) {
 	const dispatch: AppDispatch = useDispatch()
@@ -15,7 +16,6 @@ export default function DeleteFile(props: PropsWithChildren<ModalInterface>) {
 			method: "DELETE",
 		});
 		if (response.status === 200) {
-			window.location.href = `/course/${props.courseID}`;
 			dispatch(
 				toastNotificationAdd({
 					notificationID: Date.now(),
@@ -24,6 +24,15 @@ export default function DeleteFile(props: PropsWithChildren<ModalInterface>) {
 				})
 			);
 			dispatch(fetchCourse(props.courseID))
+			if (props.refresh === "profile") {
+				dispatch(fetchUser())
+				dispatch(modalClose())
+			} else if (props.refresh === "course") {
+				dispatch(fetchCourseFiles(props.courseFileID))
+				dispatch(modalClose())
+			} else {
+				window.location.href = `/course/${props.courseID}`;
+			}
 		} else {
 			dispatch(
 				toastNotificationAdd({

@@ -38,7 +38,7 @@ Open .sln file in Rider/Visual Studio and build. Application will automatically 
 
 Before you start using application you need to create database.
 
-dotnet ef migrations add InitialCreate 
+dotnet ef migrations add InitialCreate
 dotnet ef database update
 
 ## Run project
