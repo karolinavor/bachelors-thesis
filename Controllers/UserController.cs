@@ -37,8 +37,23 @@ public static class UserController
                     user.IsAdmin = false;
                 }
 
-            var comments = db.Comments.Where(u => u.UserID == user.UserID);
-            var files = db.CourseFiles.Where(u => u.UserID == user.UserID);
+            var comments = db.Comments.Where(u => u.UserID == user.UserID).OrderByDescending(s => s.DateAdded);
+            foreach (var comment in comments)
+            {
+                comment.Likes = db.Reactions.Where(s => s.CommentID == comment.CommentID && s.ReactionType == ReactionType.Like).Count();
+                comment.Dislikes = db.Reactions.Where(s => s.CommentID == comment.CommentID && s.ReactionType == ReactionType.Dislike).Count();
+                var reacted = db.Reactions.SingleOrDefault(s => s.UserID == user.UserID && s.CommentID == comment.CommentID);
+                if (reacted != null) {
+                    if (reacted.ReactionType == ReactionType.Like) {
+                        comment.Reacted = ReactedType.Liked;
+                    } else {
+                        comment.Reacted = ReactedType.Disliked;
+                    }
+                } else {
+                    comment.Reacted = ReactedType.None;
+                }
+            }
+            var files = db.CourseFiles.Where(u => u.UserID == user.UserID).OrderByDescending(s => s.DateAdded);
             
             var result = new {
                 user,

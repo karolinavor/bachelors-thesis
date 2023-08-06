@@ -13,6 +13,7 @@ import { toastNotificationAdd } from "../store/reducers/toastNotificationsSlice"
 import { fetchFileComments } from "../store/reducers/fileSlice";
 import { fetchCourseComments } from "../store/reducers/courseSlice";
 import { fetchDashboardComments } from "../store/reducers/dashboardSlice";
+import { fetchUser } from "../store/reducers/userSlice";
 
 type CommentTypeExtended = {
   comment: CommentType,
@@ -61,11 +62,13 @@ export default function Comment({ comment, showCommentCategory, limitLines }: Co
         })
       );
       if (window.location.pathname.includes("file/")) {
-        dispatch(fetchFileComments({id: comment.courseFileID, showItems: 5}))
+        await dispatch(fetchFileComments({id: comment.courseFileID, showItems: 5}))
       } else if (window.location.pathname.includes("course/")) {
-        dispatch(fetchCourseComments({id: comment.courseID, showItems: 5}))
+        await dispatch(fetchCourseComments({id: comment.courseID, showItems: 5}))
       } else if (window.location.pathname.includes("dashboard")) {
-        dispatch(fetchDashboardComments())
+        await dispatch(fetchDashboardComments())
+      } else if (window.location.pathname.includes("profile")) {
+        await dispatch(fetchUser())
       }
     } else {
       dispatch(
