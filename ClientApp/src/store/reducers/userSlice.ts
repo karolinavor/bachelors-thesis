@@ -43,7 +43,7 @@ export const fetchUserFromAPI = async () => {
 }
 
 export const userSlice = createSlice({
-  name: `file`,
+  name: `user`,
   initialState: initialUserState,
   reducers: {},
   extraReducers: (builder) => {

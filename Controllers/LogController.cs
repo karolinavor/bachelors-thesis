@@ -1,9 +1,9 @@
-﻿using BachelorThesis.Models;
+﻿using BachelorsThesis.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using BachelorThesis.Database;
+using BachelorsThesis.Database;
 
-namespace BachelorThesis.Controllers;
+namespace BachelorsThesis.Controllers;
 
 public static class LogController
 {

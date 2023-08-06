@@ -1,6 +1,6 @@
 ﻿using System.Net;
-using BachelorThesis.Controllers;
-using BachelorThesis.Database;
+using BachelorsThesis.Controllers;
+using BachelorsThesis.Database;
 using Microsoft.AspNetCore.Authentication.OpenIdConnect;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc.Authorization;

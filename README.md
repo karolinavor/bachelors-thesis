@@ -46,3 +46,7 @@ dotnet ef database update
 ## Run project
 
 Start application in Rider/Visual Studio by clicking Run button. Application will open in browser on port 44424.
+
+## Available on the internet
+
+https://bachelorsthesis.azurewebsites.net

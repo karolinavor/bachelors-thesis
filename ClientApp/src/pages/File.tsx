@@ -5,7 +5,7 @@ import { getLocalDate, getLocalTime } from '../utils/getTime';
 import { modalOpen } from '../store/reducers/modalSlice';
 import { AppDispatch, RootState } from '../store/store';
 import { useDispatch, useSelector } from 'react-redux';
-import Comment from './Comment';
+import Comment from '../components/Comment';
 import bellIcon from "../assets/bell.svg"
 import downloadIcon from "../assets/download.svg"
 import deleteIcon from "../assets/delete.svg"

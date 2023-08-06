@@ -96,7 +96,6 @@ export const fileSlice = createSlice({
       }
     })
     builder.addCase(fetchFileComments.fulfilled, (state, action) => {
-      console.log(action.payload)
       return {
         ...state, loading: `idle`,
         comments: action.payload.comments,

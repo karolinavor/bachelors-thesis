@@ -1,7 +1,7 @@
-using BachelorThesis.Models;
+using BachelorsThesis.Models;
 using Microsoft.EntityFrameworkCore;
 
-namespace BachelorThesis.Database
+namespace BachelorsThesis.Database
 {
   public class StudyDb : DbContext
   {

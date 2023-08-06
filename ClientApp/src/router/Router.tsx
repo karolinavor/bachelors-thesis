@@ -1,12 +1,12 @@
 import React from 'react'
-import { LoaderFunction, Navigate, createBrowserRouter } from 'react-router-dom'
+import { createBrowserRouter } from 'react-router-dom'
 
 import Layout from '../components/Layout';
 import Dashboard from '../pages/Dashboard';
 import Login from "../pages/Login";
 import Profile from "../pages/Profile";
-import File from '../components/File';
-import Course from '../components/Course';
+import File from '../pages/File';
+import Course from '../pages/Course';
 import Error from '../pages/Error'
 import News from '../pages/News';
 import Log from '../pages/Log';

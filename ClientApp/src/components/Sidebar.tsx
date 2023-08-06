@@ -24,7 +24,7 @@ export default function Sidebar() {
         }))
     }
 
-    let filteredCourses = coursesState?.courses?.filter(f => f.short.toLowerCase().includes(filter) || f.title.toLowerCase().includes(filter) || filter === '')
+    let filteredCourses = coursesState?.courses?.filter(f => (f.short.toLowerCase() + `.` + f.title.toLowerCase()).includes(filter) || filter === '')
     
     return (
         <aside>

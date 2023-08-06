@@ -11,21 +11,16 @@ a, button {
 .Button {
   padding: 0.5rem 0.75rem;
 
-  background-color: #006FAD;
-  color: white;
+  background-color: $light_blue;
+  color: $white;
   box-shadow: 0px 8px 15px rgba(0, 0, 0, 0.1);
   border: none;
   border-radius: 7px;
-  
   font-size: 1rem;
   cursor: pointer;
 
-  &:hover {
-    background-color: #00568C;
-  }
-
-  &.active {
-    background-color: #00568C;
+  &:hover,&.active {
+    background-color: $dark_blue;
   }
 }
 

@@ -2,10 +2,10 @@
 using System.Net.Http.Headers;
 using System.Net.Mail;
 using System.Security.Claims;
-using BachelorThesis.Models;
+using BachelorsThesis.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using BachelorThesis.Database;
+using BachelorsThesis.Database;
 using System.Security.Principal;
 using System.Text.Json;
 using Microsoft.AspNetCore.Authentication;
@@ -14,7 +14,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.Identity.Client;
 using Microsoft.Identity.Web;
 
-namespace BachelorThesis.Controllers;
+namespace BachelorsThesis.Controllers;
 
 public static class UserController
 {

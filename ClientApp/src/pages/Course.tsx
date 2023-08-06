@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { useParams, Outlet, Link, useLocation } from 'react-router-dom';
 import { CommentType, FileType } from "../types/types"
-import Comment from './Comment';
+import Comment from '../components/Comment';
 import { modalOpen } from '../store/reducers/modalSlice';
 import { useDispatch, useSelector } from 'react-redux';
 import { AppDispatch, RootState } from '../store/store';
@@ -227,7 +227,7 @@ export default function Course() {
                             </button>
                         </div>
                             <div className="Table">
-                                {courseState?.files?.length > 0 ? courseState?.files?.filter((f, index) => f.name.toLowerCase().includes(filter) || f.filetype.toLowerCase().includes(filter) || filter === '').map((file: FileType, index) => 
+                                {courseState?.files?.length > 0 ? courseState?.files?.filter((f, index) => (f.name.toLowerCase() + `.` + f.filetype).includes(filter) || filter === '').map((file: FileType, index) => 
                                     <div className="Table-row" key={index}>
                                         <Link to={"file/" + file.courseFileID}>
                                             <div className="flex align-center">{file.name}.{file.filetype}</div>

@@ -34,7 +34,7 @@ export const fetchNotificationsFromAPI = async () => {
 }
 
 export const notificationsSlice = createSlice({
-  name: `notification`,
+  name: `notifications`,
   initialState: initialNotificationsState,
   reducers: {},
   extraReducers: (builder) => {
