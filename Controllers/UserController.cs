@@ -54,6 +54,21 @@ public static class UserController
                 }
             }
             var files = db.CourseFiles.Where(u => u.UserID == user.UserID).OrderByDescending(s => s.DateAdded);
+            foreach (var courseFile in files) {
+                courseFile.Likes = db.Reactions.Where(s => s.CourseFileID == courseFile.CourseFileID && s.ReactionType == ReactionType.Like).Count();
+                courseFile.Dislikes = db.Reactions.Where(s => s.CourseFileID == courseFile.CourseFileID && s.ReactionType == ReactionType.Dislike).Count();
+
+                var reacted = db.Reactions.SingleOrDefault(s => s.UserID == user.UserID && s.CourseFileID == courseFile.CourseFileID);
+                if (reacted != null) {
+                    if (reacted.ReactionType == ReactionType.Like) {
+                        courseFile.Reacted = ReactedType.Liked;
+                    } else {
+                        courseFile.Reacted = ReactedType.Disliked;
+                    }
+                } else {
+                    courseFile.Reacted = ReactedType.None;
+                }
+            }
             
             var result = new {
                 user,

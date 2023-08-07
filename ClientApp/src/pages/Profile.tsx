@@ -75,14 +75,16 @@ export default function Profile() {
             <section>
                 <h2>User comments</h2>
                 <div className="Comments">
-                    {userState?.comments?.map((comment: CommentType, index) => 
-                        <Comment
-                            key={index}
-                            comment={comment}
-                            showCommentCategory={true}
-                            limitLines={true}
-                        />
-                    )}
+                        {userState?.comments.length > 0 ?userState?.comments?.map((comment: CommentType, index) => 
+                            <Comment
+                                key={index}
+                                comment={comment}
+                                showCommentCategory={true}
+                                limitLines={true}
+                            />
+                        ) :
+                        <div>No comments</div>
+                    }
                 </div>
             </section>
         </>
